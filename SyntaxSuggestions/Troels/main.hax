@@ -1,0 +1,51 @@
+#use <std_matrix>
+
+// All programs start in the main method.
+// the string array is the input from stdin (like ./a derp herp)
+void
+main (string args[])
+{
+    int i, j = 1, z = 0; // Multiple declerations and assignments in a single line.
+
+    int matrix[3, 3]; // a 3 x 3 matrix of integers (size depening on compiler 64/32 bit)
+
+    matrix = [7, 8, 9; 4, 5, 6; 1, 2, 3]; // The numbers on a numpad.
+
+    print(matrix); // From std_matrix print is defined for matrixes, prints each row on a new line.
+
+    print("Double each element and add one");
+
+    doubleEachElementAndAddOne(matrix);
+
+    print(matrix);
+}
+
+// This method prints:
+// 7    8    9
+// 4    5    6
+// 1    2    3
+// Double each element and add one
+// 15  17   19
+// 9   11   13
+// 3    5    7
+
+
+// Any method declared with the keyword ``comp'' will be converted to OpenCL code. 
+// the return type must be the last keyword next to the name of the method. (void is equal to no return)
+// The [,] syntax indicates a 2D array (matrix), a [,,] would indicate a 3D and so furth.
+// The [*] syntax accepts a matrix of any dimension.
+comp void doubleEachElementAndAddOne(int matrix[*]) 
+{
+    // Paralel for loop, indicates that every inner execution can be done in whatever order the compiler may see fit.
+    // A matrix is layed our sequentially in memeory so one doesn't need to worry about it being 
+    pfor(int i = 0; i < matrix.length; i++) {
+        matrix[i] *= 2; // compound asingment equal to: matrix[i] = matrix[i] * 2
+    }
+
+    // Alternatively the foreach syntax can be used, a form of syntaxic sugar
+    // The expression ``int i in matrix'' expands to ``int i = 0; i < matrix.length; i++''
+    pforeach(int i in matrix)
+    {
+        i += 1;
+    }
+}
