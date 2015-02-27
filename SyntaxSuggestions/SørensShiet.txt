@@ -18,7 +18,7 @@ print(matrix * d);
         // output:
         // 24   36
 	// 60   94
-        // 20  35
+
 
 Måske det skal være en | fremfor ; da det tegn er reseveret for at afslutte et statement. 
 Tror bare vi kan komme i problemer med dette.
