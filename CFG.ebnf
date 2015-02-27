@@ -1,0 +1,50 @@
+CFG:
+
+   top-levels -> top-level
+               | top-level top-levels
+
+    top-level -> stmts
+   
+        stmts -> stmt;
+               | stmt; stmts 
+	          
+         stmt -> expr
+               | assignment
+               | declaration   
+
+         expr -> val
+               | val infix-binary-operator expr
+               | id post-unary-operator
+               | (expr)   
+
+   assignment -> id assignment-char stmt   
+
+  declaration -> datatype id assignment-char stmt
+	           | collection<datatype> id[const-list] assignment-char stmt
+
+          val -> id                     [A-Za-z_][A-Za-z0-9_]*
+	           | constant    			[1-9]+[0-9]* 
+	           | -constant    			-[1-9]+[0-9]* 
+	           | [val-list-list]		
+ 
+val-list-list -> val-list
+               | val-list; val-list-list
+                                                                                            
+     val-list -> val
+	           | val, val-list                                                                           
+
+   const-list -> const
+	           | const, const-list
+  
+     datatype -> int
+               | float
+               
+  infix-b-opp -> +
+               | -
+               | *
+               | /
+               | % 
+               
+postfix-u-opp -> ++
+               | --
+               
