@@ -14,9 +14,13 @@ print(box * 5);
 
 d := box + 3;
 
-print(box[1,2])
+print(box[1,2]);
         //output
         // 4
+
+print(box[1,]);
+        //output:
+        //1 3
 
 print(box * d);
         // output:
