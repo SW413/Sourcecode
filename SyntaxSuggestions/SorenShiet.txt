@@ -4,21 +4,25 @@ int a = 5;
 b:= 7;
 float c = 6.4;
 
-iMatrix matrix[2;2] = [1, 3; // == [1, 3; 4, 7];
-                       4, 7];
+matrix<int> box[2,2] = [1, 3; // == [1, 3; 4, 7];
+                        4, 7];
 
-print(matrix * 5);
+print(box * 5);
         // output:
         // 5   15
         // 20  35
 
-d := matrix + 3;
+d := box + 3;
 
-print(matrix * d);
+print(box[1,2])
+	//output
+	// 4
+
+print(box * d);
         // output:
         // 24   36
 	// 60   94
 
 
-Måske det skal være en | fremfor ; da det tegn er reseveret for at afslutte et statement. 
-Tror bare vi kan komme i problemer med dette.
+// Måske det skal være en | fremfor ; da det tegn er reseveret for at afslutte et statement. 
+// Tror bare vi kan komme i problemer med dette.
