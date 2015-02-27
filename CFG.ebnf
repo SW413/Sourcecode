@@ -7,7 +7,7 @@ CFG:
    
         stmts -> stmt;
                | stmt; stmts 
-	          
+              
          stmt -> expr
                | assignment
                | declaration   
@@ -20,21 +20,21 @@ CFG:
    assignment -> id assignment-char stmt   
 
   declaration -> datatype id assignment-char stmt
-	           | collection<datatype> id[const-list] assignment-char stmt
+               | collection<datatype> id[const-list] assignment-char stmt
 
           val -> id                     [A-Za-z_][A-Za-z0-9_]*
-	           | constant    			[1-9]+[0-9]* 
-	           | -constant    			-[1-9]+[0-9]* 
-	           | [val-list-list]		
+               | constant               [1-9]+[0-9]* 
+               | -constant              -[1-9]+[0-9]* 
+               | [val-list-list]        
  
 val-list-list -> val-list
                | val-list; val-list-list
                                                                                             
      val-list -> val
-	           | val, val-list                                                                           
+               | val, val-list                                                                           
 
    const-list -> const
-	           | const, const-list
+               | const, const-list
   
      datatype -> int
                | float
@@ -47,4 +47,4 @@ val-list-list -> val-list
                
 postfix-u-opp -> ++
                | --
-               
+                                         
