@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/IdeaProjects/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from C:/Git/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -107,6 +107,16 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConstantList(@NotNull testParser.ConstantListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#dimension}.
+	 * @param ctx the parse tree
+	 */
+	void enterDimension(@NotNull testParser.DimensionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#dimension}.
+	 * @param ctx the parse tree
+	 */
+	void exitDimension(@NotNull testParser.DimensionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#datatype}.
 	 * @param ctx the parse tree

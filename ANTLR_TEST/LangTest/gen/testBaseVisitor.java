@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/IdeaProjects/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from C:/Git/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -81,6 +81,13 @@ public class testBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements t
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitConstantList(@NotNull testParser.ConstantListContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitDimension(@NotNull testParser.DimensionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

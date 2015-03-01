@@ -10,9 +10,8 @@ topLevel
     ;
 
 statements
-    : statement ';'
-    | statement ';' statements
-    | /* epsilon */
+    : statement ';' statements
+    | '' /* Epsilon == empty char '' */
     ;
 
 statement

@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/IdeaProjects/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from C:/Git/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -131,6 +131,18 @@ public class testBaseListener implements testListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitConstantList(@NotNull testParser.ConstantListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDimension(@NotNull testParser.DimensionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDimension(@NotNull testParser.DimensionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
