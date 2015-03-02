@@ -5,6 +5,8 @@ grammar test;
     | topLevel topLevels
     ; */
 
+//PARSER
+
 topLevel
     : statements EOF
     ;
@@ -85,21 +87,25 @@ constant
     | FLOATNUM
     ;
 
+//LEXER
+
 MATRIX: 'matrix' ;
 
 INT: 'int' ;
-INTNUM: '0' | SIGN? '1'..'9' '0'..'9'* ;
+INTNUM: '0' | SIGN? [1-9][0-9]* ;
 
 FLOAT: 'float' ;
-FLOATNUM: '0.0' | SIGN? ('1'..'9' '0'..'9'* | '0') '.' '0'..'9'* '1'..'9' ;
+FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 
 SIGN: '-' ;
 
-ID: ('a'..'z'|'A'..'Z'|'_')+;
+ID: [a-zA-Z_][a-zA-Z0-9_]* ;
 
 //Whitespace and comments
 
-WS: [ \t|\n]+ -> skip;
+WS: [ \t ]+ -> skip;
+
+NL: [ \r \n | \n ] -> skip;
 
 COMMENT
     :   '/*' .*? '*/' -> skip
