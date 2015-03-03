@@ -12,25 +12,35 @@ topLevel
     ;
 
 statements
-    : statement ';' statements
+    : statement statements
     | '' /* Epsilon == empty char '' */
     ;
 
 statement
-    : expression
-    | assignment
-    | declaration
+    : expression ';'
+    | assignment ';'
+    | declaration ';'
     ;
 
 expression
-    : value
-    | value infixBinaryOperator expression
-    | ID postUnaryOperator
-    | '(' expression ')'
+    : addexpression
     ;
 
+addexpression
+    : multiexpression (( '+' | '-' ) multiexpression) *
+    ;
+
+multiexpression
+    : primary (( '*' | '/' ) primary) *
+    ;
+
+primary
+    : '(' expression ')' | value | '-' primary
+    ;
+
+
 assignment
-    : ID '=' expression
+    : ID '=' addexpression
     ;
 
 declaration
