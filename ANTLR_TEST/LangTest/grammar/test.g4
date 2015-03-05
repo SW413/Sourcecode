@@ -77,11 +77,13 @@ dimension
 datatype
     : INT
     | FLOAT
+    | BOOL
     ;
 
 collection
     : MATRIX
-    | ('rowvector' | 'colvector')
+    | ROWVECTOR
+    | COLVECTOR
     ;
 
 infixBinaryOperator
@@ -106,6 +108,12 @@ INTNUM: '0' | SIGN? [1-9][0-9]* ;
 
 FLOAT: 'float' ;
 FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
+
+BOOL: 'bool' ;
+
+ROWVECTOR: 'rowvector' | 'rvec' ;
+
+COLVECTOR: 'colvector' | 'cvec' ; 
 
 SIGN: '-' ;
 
