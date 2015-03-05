@@ -8,12 +8,7 @@ grammar test;
 //PARSER
 
 topLevel
-    : /*functiondeclarations */ statements EOF
-    ;
-
-statements
-    : statement statements
-    | '' /* Epsilon == empty char '' */
+    : functiondeclaration* statement* EOF
     ;
 
 statement
@@ -21,12 +16,6 @@ statement
     | assignment ';'
     | declaration ';'
     | functioncall ';'
-    | functiondeclaration
-    ;
-
-functiondeclarations
-    : functiondeclaration functiondeclarations
-    | '' /* Epsilon */
     ;
 
 functiondeclaration
@@ -34,8 +23,7 @@ functiondeclaration
     ;
 
 parameterlist
-    : datatype ID ( ',' datatype ID ) *
-    | '' /* Epsilon */
+    : (datatype ID ( ',' datatype ID )*)?
     ;
 
 functioncall

@@ -18,16 +18,6 @@ public interface testListener extends ParseTreeListener {
 	 */
 	void exitTopLevel(@NotNull testParser.TopLevelContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link testParser#statements}.
-	 * @param ctx the parse tree
-	 */
-	void enterStatements(@NotNull testParser.StatementsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link testParser#statements}.
-	 * @param ctx the parse tree
-	 */
-	void exitStatements(@NotNull testParser.StatementsContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link testParser#statement}.
 	 * @param ctx the parse tree
 	 */
@@ -37,16 +27,6 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(@NotNull testParser.StatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link testParser#functiondeclarations}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctiondeclarations(@NotNull testParser.FunctiondeclarationsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link testParser#functiondeclarations}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctiondeclarations(@NotNull testParser.FunctiondeclarationsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#functiondeclaration}.
 	 * @param ctx the parse tree

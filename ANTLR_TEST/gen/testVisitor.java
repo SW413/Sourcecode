@@ -17,23 +17,11 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTopLevel(@NotNull testParser.TopLevelContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link testParser#statements}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStatements(@NotNull testParser.StatementsContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link testParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStatement(@NotNull testParser.StatementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link testParser#functiondeclarations}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctiondeclarations(@NotNull testParser.FunctiondeclarationsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link testParser#functiondeclaration}.
 	 * @param ctx the parse tree
