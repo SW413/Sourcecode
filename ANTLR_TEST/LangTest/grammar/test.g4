@@ -8,7 +8,7 @@ grammar test;
 //PARSER
 
 topLevel
-    : functiondeclarations /* statements */ EOF
+    : /*functiondeclarations */ statements EOF
     ;
 
 statements
@@ -20,6 +20,8 @@ statement
     : expression ';'
     | assignment ';'
     | declaration ';'
+    | functioncall ';'
+    | functiondeclaration
     ;
 
 functiondeclarations
@@ -32,7 +34,7 @@ functiondeclaration
     ;
 
 parameterlist
-    : declaration ( ',' declaration ) *
+    : datatype ID ( ',' datatype ID ) *
     | '' /* Epsilon */
     ;
 
@@ -64,9 +66,9 @@ primary
     | functioncall
     ;
 
-
 assignment
     : ID '=' addexpression
+    | ID '=' functioncall
     ;
 
 declaration
@@ -78,6 +80,7 @@ value
     : ID
     | constant
     | '[' valueListList ']'
+    | functioncall
     ;
 
 valueListList

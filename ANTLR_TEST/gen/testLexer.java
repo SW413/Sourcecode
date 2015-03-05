@@ -1,4 +1,4 @@
-// Generated from C:/Git/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
