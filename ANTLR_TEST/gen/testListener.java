@@ -1,4 +1,4 @@
-// Generated from /Users/michno/Desktop/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
+// Generated from C:/Git/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -37,6 +37,56 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(@NotNull testParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#functiondeclarations}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctiondeclarations(@NotNull testParser.FunctiondeclarationsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#functiondeclarations}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctiondeclarations(@NotNull testParser.FunctiondeclarationsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#functiondeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctiondeclaration(@NotNull testParser.FunctiondeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#functiondeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctiondeclaration(@NotNull testParser.FunctiondeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#parameterlist}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameterlist(@NotNull testParser.ParameterlistContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#parameterlist}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameterlist(@NotNull testParser.ParameterlistContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctioncall(@NotNull testParser.FunctioncallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctioncall(@NotNull testParser.FunctioncallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#argumentlist}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgumentlist(@NotNull testParser.ArgumentlistContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#argumentlist}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgumentlist(@NotNull testParser.ArgumentlistContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#expression}.
 	 * @param ctx the parse tree

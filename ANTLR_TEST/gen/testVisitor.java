@@ -1,4 +1,4 @@
-// Generated from /Users/michno/Desktop/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
+// Generated from C:/Git/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -28,6 +28,36 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStatement(@NotNull testParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#functiondeclarations}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctiondeclarations(@NotNull testParser.FunctiondeclarationsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#functiondeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctiondeclaration(@NotNull testParser.FunctiondeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#parameterlist}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterlist(@NotNull testParser.ParameterlistContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#functioncall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctioncall(@NotNull testParser.FunctioncallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#argumentlist}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgumentlist(@NotNull testParser.ArgumentlistContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link testParser#expression}.
 	 * @param ctx the parse tree
