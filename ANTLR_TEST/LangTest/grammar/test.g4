@@ -57,6 +57,7 @@ primary
 assignment
     : ID '=' addexpression
     | ID '=' functioncall
+    | ID '=' BOOLVAL
     ;
 
 declaration
@@ -127,6 +128,7 @@ FLOAT: 'float' ;
 FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 
 BOOL: 'bool' ;
+BOOLVAL: 'True' | 'False' ;
 
 ROWVECTOR: 'rowvector' | 'rvec' ;
 
