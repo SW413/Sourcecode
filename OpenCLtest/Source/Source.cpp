@@ -41,7 +41,7 @@ int main()
 	char *source_str;
 
 	/* Load kernel source file */
-	int a = fopen_s(&fp,fileName, "r");
+	int a = fopen_s(&fp, fileName, "r");
 	if (a != 0) {
 		fprintf(stderr, "Failed to load kernel.\n");
 		exit(1);
@@ -53,7 +53,7 @@ int main()
 	/* Load random data from file */
 
 	int *input = (int *)malloc(10000 * sizeof(int));
-	
+
 	fopen_s(&fp, "10000_random_numbers", "r");
 
 	for (size_t ii = 0; ii < 10000; ii++)

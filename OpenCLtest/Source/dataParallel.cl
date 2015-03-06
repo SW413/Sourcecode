@@ -12,6 +12,4 @@ __kernel void dataParallel(__global float* A, __global float* B, __global float*
 	{
 		C[base + i * edgesize] = A[base + i * edgesize] * B[base + i * edgesize];
 	}
-
-	
 }
