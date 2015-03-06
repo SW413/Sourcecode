@@ -25,7 +25,6 @@ controlblock
 
 condition
     : expression conditionalOperator expression
-    | BOOLVAL
     ;
 
 functiondeclaration
