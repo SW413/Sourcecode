@@ -16,14 +16,25 @@ statement
     | assignment ';'
     | declaration ';'
     | functioncall ';'
+    | controlblock
+    ;
+
+controlblock
+    : IF '(' condition ')' '{' statement '}' (ELSE IF '(' condition ')' '{' statement '}')* (ELSE '{' statement '}')?
+    ;
+
+condition
+    : expression conditionalOperator expression
+    | BOOLVAL
     ;
 
 functiondeclaration
-    : ( datatype | collection '<' datatype '>' | 'void' ) ID '(' parameterlist ')' '{' ( statement )* ( 'return' expression ';' )? '}'
+    : ( datatype | collectiontype '<' datatype '>' | 'void' ) ID '(' parameterlist ')' '{' ( statement )* ( 'return' expression ';' )? '}'
     ;
 
 parameterlist
-    : (datatype ID ( ',' datatype ID )*)?
+    : ((datatype ID | STRING | collectiontype '<' datatype '>' ID)( ',' (datatype ID | STRING | collectiontype '<' datatype '>' ID) )*)?
+    | ''
     ;
 
 functioncall
@@ -62,7 +73,7 @@ assignment
 
 declaration
     : datatype assignment
-    | collection '<' datatype '>' ID '[' dimension ']' '=' expression
+    | collectiontype '<' datatype '>' ID '[' dimension ']' '=' expression
     ;
 
 value
@@ -70,6 +81,12 @@ value
     | constant
     | '[' valueListList ']'
     | functioncall
+    | collectionEntrance
+    | BOOLVAL
+    ;
+
+collectionEntrance
+    : ID '[' dimension ']'
     ;
 
 valueListList
@@ -98,7 +115,7 @@ datatype
     | BOOL
     ;
 
-collection
+collectiontype
     : MATRIX
     | ROWVECTOR
     | COLVECTOR
@@ -112,12 +129,19 @@ postUnaryOperator
     : '++' | '--'
     ;
 
+conditionalOperator
+    : '==' | '!=' | '<=' | '>=' | '<' | '>' ;
+
 constant
     : INTNUM
     | FLOATNUM
     ;
 
 //LEXER
+
+IF: 'if' ;
+
+ELSE: 'else' ;
 
 MATRIX: 'matrix' ;
 
@@ -129,6 +153,8 @@ FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 
 BOOL: 'bool' ;
 BOOLVAL: 'True' | 'False' ;
+
+STRING: '"' ~('\r' | '\n' | '"')* '"' ;
 
 ROWVECTOR: 'rowvector' | 'rvec' ;
 

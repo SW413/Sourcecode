@@ -28,6 +28,26 @@ public interface testListener extends ParseTreeListener {
 	 */
 	void exitStatement(@NotNull testParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link testParser#controlblock}.
+	 * @param ctx the parse tree
+	 */
+	void enterControlblock(@NotNull testParser.ControlblockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#controlblock}.
+	 * @param ctx the parse tree
+	 */
+	void exitControlblock(@NotNull testParser.ControlblockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void enterCondition(@NotNull testParser.ConditionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#condition}.
+	 * @param ctx the parse tree
+	 */
+	void exitCondition(@NotNull testParser.ConditionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link testParser#functiondeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -138,6 +158,16 @@ public interface testListener extends ParseTreeListener {
 	 */
 	void exitValue(@NotNull testParser.ValueContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link testParser#collectionEntrance}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollectionEntrance(@NotNull testParser.CollectionEntranceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#collectionEntrance}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollectionEntrance(@NotNull testParser.CollectionEntranceContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link testParser#valueListList}.
 	 * @param ctx the parse tree
 	 */
@@ -188,15 +218,15 @@ public interface testListener extends ParseTreeListener {
 	 */
 	void exitDatatype(@NotNull testParser.DatatypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link testParser#collection}.
+	 * Enter a parse tree produced by {@link testParser#collectiontype}.
 	 * @param ctx the parse tree
 	 */
-	void enterCollection(@NotNull testParser.CollectionContext ctx);
+	void enterCollectiontype(@NotNull testParser.CollectiontypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link testParser#collection}.
+	 * Exit a parse tree produced by {@link testParser#collectiontype}.
 	 * @param ctx the parse tree
 	 */
-	void exitCollection(@NotNull testParser.CollectionContext ctx);
+	void exitCollectiontype(@NotNull testParser.CollectiontypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#infixBinaryOperator}.
 	 * @param ctx the parse tree
@@ -217,6 +247,16 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPostUnaryOperator(@NotNull testParser.PostUnaryOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#conditionalOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditionalOperator(@NotNull testParser.ConditionalOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#conditionalOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditionalOperator(@NotNull testParser.ConditionalOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#constant}.
 	 * @param ctx the parse tree

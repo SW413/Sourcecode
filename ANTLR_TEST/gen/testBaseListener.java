@@ -40,6 +40,30 @@ public class testBaseListener implements testListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterControlblock(@NotNull testParser.ControlblockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitControlblock(@NotNull testParser.ControlblockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCondition(@NotNull testParser.ConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCondition(@NotNull testParser.ConditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctiondeclaration(@NotNull testParser.FunctiondeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -172,6 +196,18 @@ public class testBaseListener implements testListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCollectionEntrance(@NotNull testParser.CollectionEntranceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCollectionEntrance(@NotNull testParser.CollectionEntranceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterValueListList(@NotNull testParser.ValueListListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -232,13 +268,13 @@ public class testBaseListener implements testListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCollection(@NotNull testParser.CollectionContext ctx) { }
+	@Override public void enterCollectiontype(@NotNull testParser.CollectiontypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCollection(@NotNull testParser.CollectionContext ctx) { }
+	@Override public void exitCollectiontype(@NotNull testParser.CollectiontypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -263,6 +299,18 @@ public class testBaseListener implements testListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPostUnaryOperator(@NotNull testParser.PostUnaryOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConditionalOperator(@NotNull testParser.ConditionalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConditionalOperator(@NotNull testParser.ConditionalOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

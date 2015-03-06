@@ -23,6 +23,18 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(@NotNull testParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link testParser#controlblock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitControlblock(@NotNull testParser.ControlblockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#condition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCondition(@NotNull testParser.ConditionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link testParser#functiondeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -89,6 +101,12 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitValue(@NotNull testParser.ValueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link testParser#collectionEntrance}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCollectionEntrance(@NotNull testParser.CollectionEntranceContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link testParser#valueListList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -119,11 +137,11 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDatatype(@NotNull testParser.DatatypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link testParser#collection}.
+	 * Visit a parse tree produced by {@link testParser#collectiontype}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCollection(@NotNull testParser.CollectionContext ctx);
+	T visitCollectiontype(@NotNull testParser.CollectiontypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link testParser#infixBinaryOperator}.
 	 * @param ctx the parse tree
@@ -136,6 +154,12 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPostUnaryOperator(@NotNull testParser.PostUnaryOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#conditionalOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionalOperator(@NotNull testParser.ConditionalOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link testParser#constant}.
 	 * @param ctx the parse tree

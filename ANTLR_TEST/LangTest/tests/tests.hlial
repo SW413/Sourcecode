@@ -1,0 +1,46 @@
+//Test program
+void print(){}
+
+void customPrintMatrix(matrix<float> a) {
+   /* print("This is a custom matrix print");
+    print(a[1,1]);
+    print(a[2,2]);
+    print(a[3,3]);*/
+}
+
+float addIntAndFloat(int a, float b) {
+    return a + b;
+}
+
+matrix<float> matrix1[3,3] = [1, 0, 1;
+                              2, 5, 1;
+                              0, 3, 1];
+
+customPrintMatrix(matrix1);
+
+int tmp = 2;
+float tmpF = 2.2;
+
+float c = addIntAndFloat(tmp, tmpF);
+
+if( c > tmpF) {
+    //"Success!"
+    //exit();
+    a;
+} else if (c == tmp) {
+    //"Trying the old manual way..."
+    float res = tmp + tmpF;
+    if(c == res) {
+        //print("YAY!!);
+        //exit();
+        a;
+    } else {
+        //print("fubar");
+        //exit();
+        a;
+    }
+} else {
+    //print("Goodbye");
+    //exit();
+    a;
+}
