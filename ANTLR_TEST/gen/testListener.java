@@ -1,4 +1,4 @@
-// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
+// Generated from C:/Users/Mathias/.babun/cygwin/home/Mathias/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -37,6 +37,16 @@ public interface testListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitControlblock(@NotNull testParser.ControlblockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link testParser#loop}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop(@NotNull testParser.LoopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link testParser#loop}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop(@NotNull testParser.LoopContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#condition}.
 	 * @param ctx the parse tree

@@ -1,4 +1,4 @@
-// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
+// Generated from C:/Users/Mathias/.babun/cygwin/home/Mathias/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -28,6 +28,12 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitControlblock(@NotNull testParser.ControlblockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link testParser#loop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLoop(@NotNull testParser.LoopContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link testParser#condition}.
 	 * @param ctx the parse tree

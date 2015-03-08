@@ -17,11 +17,18 @@ statement
     | declaration ';'
     | functioncall ';'
     | controlblock
+    | loop
     ;
 
 controlblock
-    : IF '(' condition ')' '{' statement '}' (ELSE IF '(' condition ')' '{' statement '}')* (ELSE '{' statement '}')?
+    : IF '(' condition ')' '{' statement* '}' (ELSE IF '(' condition ')' '{' statement* '}')* (ELSE '{' statement* '}')?
     ;
+
+loop
+    : WHILE '(' (condition | BOOLVAL) ')' '{' statement* '}'
+    | FOR '(' datatype? assignment ';' condition ';' expression ')' '{' statement* '}'
+    ;
+
 
 condition
     : expression conditionalOperator expression
@@ -47,6 +54,7 @@ argumentlist
 
 expression
     : addexpression
+    | ID postUnaryOperator
     ;
 
 addexpression
@@ -139,8 +147,10 @@ constant
 //LEXER
 
 IF: 'if' ;
-
 ELSE: 'else' ;
+
+WHILE: 'while' ;
+FOR: 'for' ;
 
 MATRIX: 'matrix' ;
 
