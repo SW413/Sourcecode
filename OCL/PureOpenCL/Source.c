@@ -61,7 +61,7 @@ int main()
 		fscanf(fp, "%d, ", &input[ii]);
 	}
 
-	printf_s("%d\n%d\n", input[0], input[9999]);
+	printf("%d\n%d\n", input[0], input[9999]);
 
 	/* Initialize input data */
 	for (i = 0; i < MATRIX_SIDE_SIZE; i++) {
