@@ -3,7 +3,7 @@ grammar test;
 //PARSER
 
 topLevel
-    : functiondeclaration* statement* EOF
+    : importing* functiondeclaration* statement* EOF
     ;
 
 statement
@@ -14,6 +14,10 @@ statement
     | controlblock
     | loop
     ;
+
+importing
+    : IMPORT '<' LIBRARY '>'
+    ; 
 
 controlblock
     : IF '(' condition ')' '{' statement* '}' (ELSE IF '(' condition ')' '{' statement* '}')* (ELSE '{' statement* '}')?
@@ -132,8 +136,9 @@ constant
     | FLOATNUM
     ;
 
-//LEXER
-
+//LEXER 
+IMPORT: 'include' | 'import' ;  
+  
 IF: 'if' ;
 ELSE: 'else' ;
 
@@ -141,6 +146,8 @@ WHILE: 'while' ;
 FOR: 'for' ;
 
 MATRIX: 'matrix' ;
+ROWVECTOR: 'rowvector' | 'rvec' ;
+COLVECTOR: 'colvector' | 'cvec' ;  
 
 INT: 'int' ;
 INTNUM: '0' | SIGN? [1-9][0-9]* ;
@@ -153,13 +160,11 @@ BOOLVAL: 'True' | 'False' ;
 
 STRING: '"' .*? '"' ;
 
-ROWVECTOR: 'rowvector' | 'rvec' ;
-
-COLVECTOR: 'colvector' | 'cvec' ; 
-
 SIGN: '-' ;
 
-ID: [a-zA-Z_][a-zA-Z0-9_]* ;
+ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
+
+LIBRARY: [a-zA-Z0-9_]+('.')?[a-zA-Z0-9_]* ; 
 
 //Whitespace and comments
 
