@@ -1,10 +1,24 @@
-grammar test;
+grammar ourLang;
 
 //PARSER
 
 topLevel
-    : functiondeclaration* statement* EOF
+    : import* functiondeclaration* statement* EOF
     ;
+
+importing
+    : IMPORT '<' LIBRARY '>'
+    | IMPORT '"' LIBRARY '"'
+    ;   
+    
+functiondeclaration
+    : ( datatype | collectiontype '<' datatype '>' | 'void' ) ID '(' parameterlist ')' '{' ( statement )* ( 'return' expression ';' )? '}'
+    ;
+
+parameterlist
+    : ((datatype ID | STRING | collectiontype '<' datatype '>' ID)( ',' (datatype ID | STRING | collectiontype '<' datatype '>' ID) )*)?
+    | 
+    ;   
 
 statement
     : expression ';'
@@ -29,14 +43,6 @@ condition
     : expression conditionalOperator expression
     ;
 
-functiondeclaration
-    : ( datatype | collectiontype '<' datatype '>' | 'void' ) ID '(' parameterlist ')' '{' ( statement )* ( 'return' expression ';' )? '}'
-    ;
-
-parameterlist
-    : ((datatype ID | STRING | collectiontype '<' datatype '>' ID)( ',' (datatype ID | STRING | collectiontype '<' datatype '>' ID) )*)?
-    | 
-    ;
 
 functioncall
     : ID '(' argumentlist ')'
@@ -133,6 +139,9 @@ constant
     ;
 
 //LEXER
+
+IMPORT : 'import' ; 
+LIBRARY : [a-zA-Z_][a-zA-Z0-9_]* ;
 
 IF: 'if' ;
 ELSE: 'else' ;
