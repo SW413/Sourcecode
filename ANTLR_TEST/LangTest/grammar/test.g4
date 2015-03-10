@@ -1,10 +1,5 @@
 grammar test;
 
-/* topLevels
-    : topLevel
-    | topLevel topLevels
-    ; */
-
 //PARSER
 
 topLevel
@@ -40,7 +35,7 @@ functiondeclaration
 
 parameterlist
     : ((datatype ID | STRING | collectiontype '<' datatype '>' ID)( ',' (datatype ID | STRING | collectiontype '<' datatype '>' ID) )*)?
-    | ''
+    | 
     ;
 
 functioncall
@@ -48,8 +43,9 @@ functioncall
     ;
 
 argumentlist
-    : expression ( ',' expression ) *
-    | ''
+    : expression ( ',' expression ) * 
+    | STRING
+    | 
     ;
 
 expression
@@ -86,7 +82,7 @@ declaration
 value
     : ID
     | constant
-    | '[' valueListList ']'
+    | '[' valueList ( ';' valueList )* ']'
     | functioncall
     | collectionEntrance
     | BOOLVAL
@@ -96,24 +92,16 @@ collectionEntrance
     : ID '[' entranceCoordinate ']'
     ;
 
-valueListList
-    : valueList
-    | valueList ';' valueListList
-    ;
-
 valueList
-    : value
-    | value ',' valueList
+    : value ( ',' value)*
     ;
 
 constantList
-    : constant
-    | constant ',' constantList
+    : constant ( ',' constant )*
     ;
 
 entranceCoordinate
-    : INTNUM
-    | INTNUM ',' INTNUM
+    : INTNUM ( ',' INTNUM )?
     ;
 
 datatype
@@ -163,7 +151,7 @@ FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 BOOL: 'bool' ;
 BOOLVAL: 'True' | 'False' ;
 
-STRING: '"' ~('\r' | '\n' | '"')* '"' ;
+STRING: '"' .*? '"' ;
 
 ROWVECTOR: 'rowvector' | 'rvec' ;
 
