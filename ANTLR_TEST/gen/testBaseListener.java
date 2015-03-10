@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/.babun/cygwin/home/Mathias/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -256,13 +256,13 @@ public class testBaseListener implements testListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDimension(@NotNull testParser.DimensionContext ctx) { }
+	@Override public void enterEntranceCoordinate(@NotNull testParser.EntranceCoordinateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDimension(@NotNull testParser.DimensionContext ctx) { }
+	@Override public void exitEntranceCoordinate(@NotNull testParser.EntranceCoordinateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

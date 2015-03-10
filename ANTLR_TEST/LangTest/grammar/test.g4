@@ -80,7 +80,7 @@ assignment
 
 declaration
     : datatype assignment
-    | collectiontype '<' datatype '>' ID '[' dimension ']' '=' expression
+    | collectiontype '<' datatype '>' ID '=' expression
     ;
 
 value
@@ -93,7 +93,7 @@ value
     ;
 
 collectionEntrance
-    : ID '[' dimension ']'
+    : ID '[' entranceCoordinate ']'
     ;
 
 valueListList
@@ -111,7 +111,7 @@ constantList
     | constant ',' constantList
     ;
 
-dimension
+entranceCoordinate
     : INTNUM
     | INTNUM ',' INTNUM
     ;

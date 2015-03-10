@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/.babun/cygwin/home/Mathias/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -157,7 +157,7 @@ public class testBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements t
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDimension(@NotNull testParser.DimensionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEntranceCoordinate(@NotNull testParser.EntranceCoordinateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

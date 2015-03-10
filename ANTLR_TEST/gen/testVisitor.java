@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/.babun/cygwin/home/Mathias/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -131,11 +131,11 @@ public interface testVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstantList(@NotNull testParser.ConstantListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link testParser#dimension}.
+	 * Visit a parse tree produced by {@link testParser#entranceCoordinate}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDimension(@NotNull testParser.DimensionContext ctx);
+	T visitEntranceCoordinate(@NotNull testParser.EntranceCoordinateContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link testParser#datatype}.
 	 * @param ctx the parse tree

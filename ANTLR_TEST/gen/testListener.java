@@ -1,4 +1,4 @@
-// Generated from C:/Users/Mathias/.babun/cygwin/home/Mathias/Sourcecode/ANTLR_TEST/LangTest/grammar\test.g4 by ANTLR 4.5
+// Generated from /Users/michno/Desktop/AAU/SW4-P4/Sourcecode/ANTLR_TEST/LangTest/grammar/test.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -208,15 +208,15 @@ public interface testListener extends ParseTreeListener {
 	 */
 	void exitConstantList(@NotNull testParser.ConstantListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link testParser#dimension}.
+	 * Enter a parse tree produced by {@link testParser#entranceCoordinate}.
 	 * @param ctx the parse tree
 	 */
-	void enterDimension(@NotNull testParser.DimensionContext ctx);
+	void enterEntranceCoordinate(@NotNull testParser.EntranceCoordinateContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link testParser#dimension}.
+	 * Exit a parse tree produced by {@link testParser#entranceCoordinate}.
 	 * @param ctx the parse tree
 	 */
-	void exitDimension(@NotNull testParser.DimensionContext ctx);
+	void exitEntranceCoordinate(@NotNull testParser.EntranceCoordinateContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link testParser#datatype}.
 	 * @param ctx the parse tree
