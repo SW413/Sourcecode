@@ -158,6 +158,26 @@ public interface ourLangListener extends ParseTreeListener {
 	 */
 	void exitAssignment(ourLangParser.AssignmentContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ourLangParser#valassignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterValassignment(ourLangParser.ValassignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ourLangParser#valassignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitValassignment(ourLangParser.ValassignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ourLangParser#collectionassignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollectionassignment(ourLangParser.CollectionassignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ourLangParser#collectionassignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollectionassignment(ourLangParser.CollectionassignmentContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ourLangParser#declaration}.
 	 * @param ctx the parse tree
 	 */

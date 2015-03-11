@@ -15,35 +15,40 @@ float addIntAndFloat(int a, float b) {
     return a + b;
 }
 
-/*matrix<float> matrix1 = [1, 0, 1;
+matrix<float> matrix1 = [1, 0, 1;
                          2, 5, 1;
-                         0, 3, 1]; */
+                         0, 3, 1];
 
+for(int i = 1; i <= 3; i++) {
+	matrix1[i,i] = i + 23;
+}
+
+
+//Diagonal from 1,1 to 3,3 should be 24 25 26
 customPrintMatrix(matrix1);
 
 int tmp = 2;
 float tmpF = 2.2;
+float c = 0;
 
-float c = addIntAndFloat(tmp, tmpF);
+while(c < tmpf) {
+    c = addIntAndFloat(tmp, tmpF);
+}
 
-if( c > tmpF) {
+if( c == addIntAndFloat(tmp, tmpF)) {
     print("Success!");
     exit();
-    a;
-} else if (c == tmp) {
+} else if (c != tmp) {
     //"Trying the old manual way..."
     float res = tmp + tmpF;
     if(c == res) {
         print("YAY!!");
         exit();
-        a;
     } else {
         print("fubar");
         exit();
-        a;
     }
 } else {
     print("Goodbye");
     exit();
-    a;
 }

@@ -73,14 +73,22 @@ primary
     ;
 
 assignment
-    : ID '=' addexpression
-    | ID '=' functioncall
-    | ID '=' BOOLVAL
+    : valassignment
+	| collectionassignment
     ;
 
+valassignment
+	: ID '=' ( expression | BOOLVAL )
+	;
+
+collectionassignment
+	: ID '=' expression
+	| collectionEntrance '=' expression
+	;
+	
 declaration
-    : datatype assignment
-    | collectiontype '<' datatype '>' ID '=' expression
+    : datatype valassignment
+    | collectiontype '<' datatype '>' collectionassignment
     ;
 
 value
@@ -105,7 +113,7 @@ constantList
     ;
 
 entranceCoordinate
-    : INTNUM ( ',' INTNUM )?
+    : (ID | INTNUM) ( ',' (ID | INTNUM) )?
     ;
 
 datatype
