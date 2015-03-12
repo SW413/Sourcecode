@@ -20,14 +20,18 @@ importing
     ; 
 
 controlblock
-    : IF '(' condition ')' '{' statement* '}' (ELSE IF '(' condition ')' '{' statement* '}')* (ELSE '{' statement* '}')?
+    : IF '(' condition ')' block (ELSE IF '(' condition ')' block)* (ELSE block)?
     ;
 
 loop
-    : WHILE '(' (condition | BOOLVAL) ')' '{' statement* '}'
-    | FOR '(' datatype? assignment ';' condition ';' expression ')' '{' statement* '}'
+    : WHILE '(' (condition | BOOLVAL) ')' block
+    | FOR '(' (datatype? assignment)? ';' condition? ';' expression? ')' block
     ;
 
+block
+    : '{' statement* '}'
+    ;
+    
 condition
     : expression conditionalOperator expression
     ;
@@ -56,10 +60,14 @@ argumentlist
     ;
 
 expression
-    : addexpression
+    : expression ( '*' | '/' ) expression
+    | expression ( '+' | '-' ) expression
+    | '(' expression ')'
+    | value
     | ID postUnaryOperator
     ;
 
+/*
 addexpression
     : multiexpression (( '+' | '-' ) multiexpression) *
     ;
@@ -74,6 +82,7 @@ primary
     | '-' primary
     | functioncall
     ;
+*/ 
 
 assignment
     : valassignment
@@ -129,10 +138,6 @@ collectiontype
     : MATRIX
     | ROWVECTOR
     | COLVECTOR
-    ;
-
-infixBinaryOperator
-    : '+' | '-' | '*' | '/' | '%'
     ;
 
 postUnaryOperator

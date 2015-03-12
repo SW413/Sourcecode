@@ -58,6 +58,16 @@ public interface ourLangListener extends ParseTreeListener {
 	 */
 	void exitLoop(ourLangParser.LoopContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ourLangParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(ourLangParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ourLangParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(ourLangParser.BlockContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ourLangParser#condition}.
 	 * @param ctx the parse tree
 	 */
@@ -127,36 +137,6 @@ public interface ourLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpression(ourLangParser.ExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ourLangParser#addexpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterAddexpression(ourLangParser.AddexpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ourLangParser#addexpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitAddexpression(ourLangParser.AddexpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ourLangParser#multiexpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterMultiexpression(ourLangParser.MultiexpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ourLangParser#multiexpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitMultiexpression(ourLangParser.MultiexpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ourLangParser#primary}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrimary(ourLangParser.PrimaryContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ourLangParser#primary}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrimary(ourLangParser.PrimaryContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ourLangParser#assignment}.
 	 * @param ctx the parse tree
@@ -267,16 +247,6 @@ public interface ourLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCollectiontype(ourLangParser.CollectiontypeContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ourLangParser#infixBinaryOperator}.
-	 * @param ctx the parse tree
-	 */
-	void enterInfixBinaryOperator(ourLangParser.InfixBinaryOperatorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ourLangParser#infixBinaryOperator}.
-	 * @param ctx the parse tree
-	 */
-	void exitInfixBinaryOperator(ourLangParser.InfixBinaryOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ourLangParser#postUnaryOperator}.
 	 * @param ctx the parse tree

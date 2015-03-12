@@ -76,6 +76,18 @@ public class ourLangBaseListener implements ourLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBlock(ourLangParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlock(ourLangParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCondition(ourLangParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -155,42 +167,6 @@ public class ourLangBaseListener implements ourLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpression(ourLangParser.ExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAddexpression(ourLangParser.AddexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAddexpression(ourLangParser.AddexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMultiexpression(ourLangParser.MultiexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMultiexpression(ourLangParser.MultiexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPrimary(ourLangParser.PrimaryContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrimary(ourLangParser.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -323,18 +299,6 @@ public class ourLangBaseListener implements ourLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCollectiontype(ourLangParser.CollectiontypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInfixBinaryOperator(ourLangParser.InfixBinaryOperatorContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInfixBinaryOperator(ourLangParser.InfixBinaryOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
