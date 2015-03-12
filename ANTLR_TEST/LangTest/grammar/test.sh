@@ -9,7 +9,7 @@ else
 fi 
 java -jar $path ourLang.g4
 javac ourLang*.java 
-echo "What test?"
+echo "What test? (type first unique string)" 
 ls ../tests
-read theTest
-java org.antlr.v4.runtime.misc.TestRig ourLang topLevel -gui ../tests/$theTest
+read query
+find ../tests/ -name "$query*" | xargs java org.antlr.v4.runtime.misc.TestRig ourLang topLevel -gui &

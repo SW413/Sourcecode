@@ -1,15 +1,12 @@
 include <randomstuff.lib>
+include <morerandomstuff.somelib>
 
-//Empty program
-void print(){}
- 
-//Emp
-/*void customPrintMatrix( matrix<float> a) {
+void customPrintMatrix( matrix<float> a) {
     print("This is a custom matrix print");
     print(a[1,1]);
     print(a[2,2]);
     print(a[3,3]);
-}    */
+}
 
 float addIntAndFloat(int a, float b) {
     return a + b;

@@ -51,6 +51,7 @@ parameterlist
 
 functioncall
     : ID '(' argumentlist ')'
+    | PRINT '(' argumentlist ')'
     ;
 
 argumentlist
@@ -172,7 +173,7 @@ FLOAT: 'float' ;
 FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 
 BOOL: 'bool' ;
-BOOLVAL: 'True' | 'False' ;
+BOOLVAL: 'true' | 'false' ;
 
 STRING: '"' .*? '"' ;
 
@@ -180,7 +181,9 @@ SIGN: '-' ;
 
 ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
 
-LIBRARY: [a-zA-Z0-9_]+('.')?[a-zA-Z0-9_]* ; 
+LIBRARY: [a-zA-Z0-9_]+('.')?[a-zA-Z0-9_]*;
+
+PRINT: 'print' ; 
 
 //Whitespace and comments
 
