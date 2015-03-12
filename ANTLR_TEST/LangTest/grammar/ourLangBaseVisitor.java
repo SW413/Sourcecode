@@ -66,6 +66,13 @@ public class ourLangBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitFunctionbody(ourLangParser.FunctionbodyContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitParameterlist(ourLangParser.ParameterlistContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

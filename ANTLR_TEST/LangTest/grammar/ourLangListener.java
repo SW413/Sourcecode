@@ -78,6 +78,16 @@ public interface ourLangListener extends ParseTreeListener {
 	 */
 	void exitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ourLangParser#functionbody}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionbody(ourLangParser.FunctionbodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ourLangParser#functionbody}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionbody(ourLangParser.FunctionbodyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ourLangParser#parameterlist}.
 	 * @param ctx the parse tree
 	 */

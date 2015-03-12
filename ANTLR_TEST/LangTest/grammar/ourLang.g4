@@ -28,13 +28,16 @@ loop
     | FOR '(' datatype? assignment ';' condition ';' expression ')' '{' statement* '}'
     ;
 
-
 condition
     : expression conditionalOperator expression
     ;
 
 functiondeclaration
-    : ( datatype | collectiontype '<' datatype '>' | 'void' ) ID '(' parameterlist ')' '{' ( statement )* ( 'return' expression ';' )? '}'
+    : ( datatype | collectiontype '<' datatype '>' | 'void' ) ID '(' parameterlist ')' functionbody
+    ; 
+    
+functionbody
+    : '{' ( statement )* ( 'return' expression ';' )? '}' 
     ;
 
 parameterlist

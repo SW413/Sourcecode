@@ -53,6 +53,12 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ourLangParser#functionbody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionbody(ourLangParser.FunctionbodyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ourLangParser#parameterlist}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
