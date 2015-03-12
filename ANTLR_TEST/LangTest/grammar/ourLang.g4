@@ -60,7 +60,7 @@ argumentlist
     ;
 
 expression
-    : expression ( '*' | '/' ) expression
+    : expression ( '*' | '/' | '%' ) expression
     | expression ( '+' | '-' ) expression
     | '(' expression ')'
     | value
