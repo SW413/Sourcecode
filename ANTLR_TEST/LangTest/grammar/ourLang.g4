@@ -68,35 +68,18 @@ expression
     | ID postUnaryOperator
     ;
 
-/*
-addexpression
-    : multiexpression (( '+' | '-' ) multiexpression) *
-    ;
-
-multiexpression
-    : primary (( '*' | '/' ) primary) *
-    ;
-
-primary
-    : '(' expression ')'
-    | value
-    | '-' primary
-    | functioncall
-    ;
-*/ 
-
 assignment
     : valassignment
 	| collectionassignment
     ;
 
 valassignment
-	: ID '=' ( expression | BOOLVAL )
+	: ID assignmentOperator ( expression | BOOLVAL )
 	;
 
 collectionassignment
 	: ID '=' expression
-	| collectionEntrance '=' expression
+	| collectionEntrance assignmentOperator expression
 	;
 	
 declaration
@@ -141,9 +124,12 @@ collectiontype
     | COLVECTOR
     ;
 
-postUnaryOperator
+postUnaryOperator 
     : '++' | '--'
     ;
+
+assignmentOperator
+    : '=' | '+=' | '-=' | '*=' | '/=' ;
 
 conditionalOperator
     : '==' | '!=' | '<=' | '>=' | '<' | '>' ;
