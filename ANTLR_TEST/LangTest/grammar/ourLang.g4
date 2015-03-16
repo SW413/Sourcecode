@@ -85,6 +85,12 @@ collectionassignment
 declaration
     : datatype valassignment
     | collectiontype '<' datatype '>' collectionassignment
+    ; 
+    
+datatype
+    : INT
+    | FLOAT
+    | BOOL
     ;
 
 value
@@ -110,12 +116,6 @@ constantList
 
 entranceCoordinate
     : (ID | INTNUM) ( ',' (ID | INTNUM) )?
-    ;
-
-datatype
-    : INT
-    | FLOAT
-    | BOOL
     ;
 
 collectiontype
@@ -152,10 +152,10 @@ MATRIX: 'matrix' ;
 ROWVECTOR: 'rowvector' | 'rvec' ;
 COLVECTOR: 'colvector' | 'cvec' ;  
 
-INT: 'int' ;
+INT: 'int' | 'int16' | 'int32' | 'int64' ;
 INTNUM: '0' | SIGN? [1-9][0-9]* ;
 
-FLOAT: 'float' ;
+FLOAT: 'float' | 'float16' | 'float32' | 'float64' ;  
 FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 
 BOOL: 'bool' ;
