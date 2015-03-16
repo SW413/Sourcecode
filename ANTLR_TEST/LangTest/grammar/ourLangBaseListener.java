@@ -88,13 +88,13 @@ public class ourLangBaseListener implements ourLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCondition(ourLangParser.ConditionContext ctx) { }
+	@Override public void enterConditionalExpression(ourLangParser.ConditionalExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCondition(ourLangParser.ConditionContext ctx) { }
+	@Override public void exitConditionalExpression(ourLangParser.ConditionalExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

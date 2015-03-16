@@ -20,20 +20,21 @@ importing
     ; 
 
 controlblock
-    : IF '(' condition ')' block (ELSE IF '(' condition ')' block)* (ELSE block)?
+    : IF '(' conditionalExpression ')' block (ELSE IF '(' conditionalExpression ')' block)* (ELSE block)?
     ;
 
 loop
-    : WHILE '(' (condition | BOOLVAL) ')' block
-    | FOR '(' (datatype? assignment)? ';' condition? ';' expression? ')' block
+    : WHILE '(' (conditionalExpression | BOOLVAL) ')' block
+    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' block
     ;
 
 block
     : '{' statement* '}'
     ;
     
-condition
+conditionalExpression
     : expression conditionalOperator expression
+    | conditionalExpression ('&&' | '||') conditionalExpression
     ;
 
 functiondeclaration

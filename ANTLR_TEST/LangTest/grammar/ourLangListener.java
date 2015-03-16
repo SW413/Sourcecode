@@ -68,15 +68,15 @@ public interface ourLangListener extends ParseTreeListener {
 	 */
 	void exitBlock(ourLangParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ourLangParser#condition}.
+	 * Enter a parse tree produced by {@link ourLangParser#conditionalExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterCondition(ourLangParser.ConditionContext ctx);
+	void enterConditionalExpression(ourLangParser.ConditionalExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ourLangParser#condition}.
+	 * Exit a parse tree produced by {@link ourLangParser#conditionalExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitCondition(ourLangParser.ConditionContext ctx);
+	void exitConditionalExpression(ourLangParser.ConditionalExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ourLangParser#functiondeclaration}.
 	 * @param ctx the parse tree
