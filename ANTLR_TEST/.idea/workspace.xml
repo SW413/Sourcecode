@@ -2,8 +2,45 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="c6cdda94-15e2-43cb-9aac-ab94d8828397" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/test.g4" afterPath="$PROJECT_DIR$/LangTest/grammar/test.g4" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConditionContext.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangBaseListener.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangBaseListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangLexer.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangLexer.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangListener.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ArgumentlistContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ArgumentlistContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$AssignmentContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$AssignmentContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$AssignmentOperatorContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$AssignmentOperatorContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$BlockContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$BlockContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$CollectionEntranceContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$CollectionEntranceContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$CollectionassignmentContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$CollectionassignmentContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$CollectiontypeContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$CollectiontypeContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConditionalExpressionContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConditionalExpressionContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConditionalOperatorContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConditionalOperatorContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConstantContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConstantContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConstantListContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ConstantListContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ControlblockContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ControlblockContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$DatatypeContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$DatatypeContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$DeclarationContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$DeclarationContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$EntranceCoordinateContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$EntranceCoordinateContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ExpressionContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ExpressionContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$FunctionbodyContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$FunctionbodyContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$FunctioncallContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$FunctioncallContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$FunctiondeclarationContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$FunctiondeclarationContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ImportingContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ImportingContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$LoopContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$LoopContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ParameterlistContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ParameterlistContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$PostUnaryOperatorContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$PostUnaryOperatorContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$StatementContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$StatementContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$TopLevelContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$TopLevelContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ValassignmentContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ValassignmentContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ValueContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ValueContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ValueListContext.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser$ValueListContext.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser.class" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLang.tokens" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLang.tokens" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangBaseListener.java" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangBaseListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangLexer.java" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangLexer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangLexer.tokens" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangLexer.tokens" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangListener.java" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LangTest/grammar/ourLangParser.java" afterPath="$PROJECT_DIR$/LangTest/grammar/ourLangParser.java" />
     </list>
     <ignored path="ANTLR_TEST.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,60 +64,7 @@
     <favorites_list name="ANTLR_TEST" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="tests.hlial" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LangTest/tests/tests.hlial">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="690" max-vertical-offset="780">
-              <caret line="46" column="1" selection-start-line="46" selection-start-column="1" selection-end-line="46" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.g4" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LangTest/grammar/test.g4">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="915" max-vertical-offset="2850">
-              <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LangTest/grammar/testListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.8" vertical-offset="0" max-vertical-offset="4275">
-              <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testParser.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LangTest/grammar/testParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="31080">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testBaseListener.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LangTest/grammar/testBaseListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.12261581" vertical-offset="285" max-vertical-offset="5475">
-              <caret line="28" column="47" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -129,8 +113,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -201,6 +183,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -493,11 +477,12 @@
       <workItem from="1425821131553" duration="585000" />
       <workItem from="1425974405760" duration="1886000" />
       <workItem from="1425991278847" duration="537000" />
+      <workItem from="1426580905404" duration="31000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19414000" />
+    <option name="totallyTimeSpent" value="19445000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="58" y="23" width="1382" height="877" extended-state="6" />
@@ -525,8 +510,8 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25671643" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -560,6 +545,46 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/LangTest/tests/tests.hlial">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="690" max-vertical-offset="780">
+          <caret line="46" column="1" selection-start-line="46" selection-start-column="1" selection-end-line="46" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LangTest/grammar/test.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="915" max-vertical-offset="2850">
+          <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LangTest/grammar/testListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="4275">
+          <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LangTest/grammar/testParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="31080">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LangTest/grammar/testBaseListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5475">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LangTest/tests/tests.hlial">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="765">
@@ -705,17 +730,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LangTest/grammar/testListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.8" vertical-offset="0" max-vertical-offset="4275">
+        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="4275">
           <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LangTest/grammar/testBaseListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12261581" vertical-offset="285" max-vertical-offset="5475">
+        <state vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="5475">
           <caret line="28" column="47" selection-start-line="28" selection-start-column="47" selection-end-line="28" selection-end-column="47" />
           <folding />
         </state>

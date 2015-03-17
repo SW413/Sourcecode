@@ -7,5 +7,5 @@ if [[ $ans = 'y' ]]; then
 else
 	path='/usr/local/lib/antlr-4.5-complete.jar'
 fi 
-java -jar $path ourLang.g4
+java -jar $path ourLang.g4 -no-listener -visitor
 javac ourLang*.java 
