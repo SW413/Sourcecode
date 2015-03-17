@@ -20,12 +20,12 @@ importing
     ; 
 
 controlblock
-    : IF '(' conditionalExpression ')' block (ELSE IF '(' conditionalExpression ')' block)* (ELSE block)?
+    : IF '(' conditionalExpression ')' ifBlock=block (ELSE IF '(' conditionalExpression ')' elseIfBlock=block)* (ELSE elseBlock=block)?
     ;
 
 loop
-    : WHILE '(' (conditionalExpression | BOOLVAL) ')' block
-    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' block
+    : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block
+    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' forBlock=block
     ;
 
 block
@@ -62,11 +62,11 @@ argumentlist
     ;
 
 expression
-    : expression ( '*' | '/' | '%' ) expression
-    | expression ( '+' | '-' ) expression
-    | '(' expression ')'
-    | value
-    | ID postUnaryOperator
+    : expression ( '*' | '/' | '%' ) expression     #mulExpr
+    | expression ( '+' | '-' ) expression           #addExpr
+    | '(' expression ')'                            #parenExpr
+    | value                                         #valueExpr
+    | ID postUnaryOperator                          #postIDExpr
     ;
 
 assignment

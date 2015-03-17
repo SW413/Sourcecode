@@ -345,6 +345,9 @@ public class ourLangParser extends Parser {
 	}
 
 	public static class ControlblockContext extends ParserRuleContext {
+		public BlockContext ifBlock;
+		public BlockContext elseIfBlock;
+		public BlockContext elseBlock;
 		public List<TerminalNode> IF() { return getTokens(ourLangParser.IF); }
 		public TerminalNode IF(int i) {
 			return getToken(ourLangParser.IF, i);
@@ -393,7 +396,7 @@ public class ourLangParser extends Parser {
 			setState(100);
 			match(T__4);
 			setState(101);
-			block();
+			((ControlblockContext)_localctx).ifBlock = block();
 			setState(111);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
@@ -412,7 +415,7 @@ public class ourLangParser extends Parser {
 					setState(106);
 					match(T__4);
 					setState(107);
-					block();
+					((ControlblockContext)_localctx).elseIfBlock = block();
 					}
 					} 
 				}
@@ -427,7 +430,7 @@ public class ourLangParser extends Parser {
 				setState(114);
 				match(ELSE);
 				setState(115);
-				block();
+				((ControlblockContext)_localctx).elseBlock = block();
 				}
 			}
 
@@ -445,6 +448,8 @@ public class ourLangParser extends Parser {
 	}
 
 	public static class LoopContext extends ParserRuleContext {
+		public BlockContext whileBlock;
+		public BlockContext forBlock;
 		public TerminalNode WHILE() { return getToken(ourLangParser.WHILE, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -506,7 +511,7 @@ public class ourLangParser extends Parser {
 				setState(124);
 				match(T__4);
 				setState(125);
-				block();
+				((LoopContext)_localctx).whileBlock = block();
 				}
 				break;
 			case FOR:
@@ -559,7 +564,7 @@ public class ourLangParser extends Parser {
 				setState(142);
 				match(T__4);
 				setState(143);
-				block();
+				((LoopContext)_localctx).forBlock = block();
 				}
 				break;
 			default:
@@ -1190,26 +1195,75 @@ public class ourLangParser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
+		public ExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_expression; }
+	 
+		public ExpressionContext() { }
+		public void copyFrom(ExpressionContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ValueExprContext extends ExpressionContext {
+		public ValueContext value() {
+			return getRuleContext(ValueContext.class,0);
+		}
+		public ValueExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitValueExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AddExprContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public ValueContext value() {
-			return getRuleContext(ValueContext.class,0);
+		public AddExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitAddExpr(this);
+			else return visitor.visitChildren(this);
 		}
+	}
+	public static class MulExprContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public MulExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitMulExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ParenExprContext extends ExpressionContext {
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public ParenExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitParenExpr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PostIDExprContext extends ExpressionContext {
 		public TerminalNode ID() { return getToken(ourLangParser.ID, 0); }
 		public PostUnaryOperatorContext postUnaryOperator() {
 			return getRuleContext(PostUnaryOperatorContext.class,0);
 		}
-		public ExpressionContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_expression; }
+		public PostIDExprContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitExpression(this);
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitPostIDExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1234,6 +1288,10 @@ public class ourLangParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,25,_ctx) ) {
 			case 1:
 				{
+				_localctx = new ParenExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
 				setState(258);
 				match(T__3);
 				setState(259);
@@ -1244,12 +1302,18 @@ public class ourLangParser extends Parser {
 				break;
 			case 2:
 				{
+				_localctx = new ValueExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(262);
 				value();
 				}
 				break;
 			case 3:
 				{
+				_localctx = new PostIDExprContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
 				setState(263);
 				match(ID);
 				setState(264);
@@ -1270,7 +1334,7 @@ public class ourLangParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new MulExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(267);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
@@ -1287,7 +1351,7 @@ public class ourLangParser extends Parser {
 						break;
 					case 2:
 						{
-						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx = new AddExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(270);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
