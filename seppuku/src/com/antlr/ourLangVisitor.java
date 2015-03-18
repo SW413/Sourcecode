@@ -48,19 +48,19 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(ourLangParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code multiCondExpr}
-	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMultiCondExpr(ourLangParser.MultiCondExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code singleCondExpr}
 	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code multiCondExpr}
+	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiCondExpr(ourLangParser.MultiCondExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ourLangParser#functiondeclaration}.
 	 * @param ctx the parse tree
@@ -114,6 +114,13 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAddExpr(ourLangParser.AddExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code postIDExpr}
+	 * labeled alternative in {@link ourLangParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostIDExpr(ourLangParser.PostIDExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code mulExpr}
 	 * labeled alternative in {@link ourLangParser#expression}.
 	 * @param ctx the parse tree
@@ -127,13 +134,6 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParenExpr(ourLangParser.ParenExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code postIDExpr}
-	 * labeled alternative in {@link ourLangParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPostIDExpr(ourLangParser.PostIDExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ourLangParser#assignment}.
 	 * @param ctx the parse tree
@@ -195,6 +195,18 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBoolean(ourLangParser.BooleanContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ourLangParser#complexdatatype}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComplexdatatype(ourLangParser.ComplexdatatypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ourLangParser#functiondatatype}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctiondatatype(ourLangParser.FunctiondatatypeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code valID}
 	 * labeled alternative in {@link ourLangParser#value}.

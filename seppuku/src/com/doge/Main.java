@@ -1,5 +1,7 @@
 package com.doge;
 import com.antlr.*;
+import com.doge.checking.SymbolTable;
+import com.doge.checking.visitorChecker;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.FileInputStream;
@@ -31,6 +33,7 @@ public class Main {
         ourLangParser parser = new ourLangParser(tokens);
         ParseTree tree = parser.topLevel(); // parse
         System.out.println(tree.toStringTree(parser)); // print tree as text
-        tree.accept(new visitorTest());
+        SymbolTable symbolTable = new SymbolTable();
+        tree.accept(new visitorChecker(symbolTable));
     }
 }

@@ -38,7 +38,7 @@ conditionalExpression
     ;
 
 functiondeclaration
-    : ( datatype | collectiontype '<' datatype '>' | 'void' ) ID '(' parameterlist ')' functionbody
+    : functiondatatype ID '(' parameterlist ')' functionbody
     ; 
     
 functionbody
@@ -84,14 +84,24 @@ collectionassignment
 	;
 	
 declaration
-    : datatype ID '=' expression                         #primitiveDecl
-    | collectiontype '<' datatype '>' ID '=' expression  #complexDecl
+    : datatype ID '=' expression                        #primitiveDecl
+    | complexdatatype ID '=' expression                 #complexDecl
     ; 
     
 datatype
-    : INT     #integer
-    | FLOAT   #floatingpoint
-    | BOOL    #boolean
+    : INT                               #integer
+    | FLOAT                             #floatingpoint
+    | BOOL                              #boolean
+    ;
+
+complexdatatype
+    : collectiontype '<' datatype '>'
+    ;
+
+functiondatatype
+    : datatype
+    | complexdatatype
+    | VOID
     ;
 
 value
@@ -161,6 +171,8 @@ FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
 
 BOOL: 'bool' ;
 BOOLVAL: 'true' | 'false' ;
+
+VOID: 'void' ;
 
 STRING: '"' .*? '"' ;
 
