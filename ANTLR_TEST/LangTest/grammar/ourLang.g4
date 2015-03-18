@@ -7,7 +7,7 @@ topLevel
     ;
 
 statement
-    : expression ';'
+    : expression ';'              
     | assignment ';'
     | declaration ';'
     | functioncall ';'
@@ -33,8 +33,8 @@ block
     ;
     
 conditionalExpression
-    : expression conditionalOperator expression
-    | conditionalExpression ('&&' | '||') conditionalExpression
+    : expression conditionalOperator expression                  #singleCondExpr
+    | conditionalExpression ('&&' | '||') conditionalExpression  #multiCondExpr
     ;
 
 functiondeclaration
@@ -51,12 +51,12 @@ parameterlist
     ;
 
 functioncall
-    : ID '(' argumentlist ')'
-    | PRINT '(' argumentlist ')'
+    : ID '(' argumentlist ')'          #customFunc
+    | PRINT '(' argumentlist ')'       #printFunc
     ;
 
 argumentlist
-    : expression ( ',' expression ) * 
+    : expression ( ',' expression ) *
     | STRING
     | 
     ;
@@ -79,28 +79,28 @@ valassignment
 	;
 
 collectionassignment
-	: ID '=' expression
-	| collectionEntrance assignmentOperator expression
+	: ID '=' expression                                 #entireCollectionAssignment
+	| collectionEntrance assignmentOperator expression  #collectionEntranceAssignment
 	;
 	
 declaration
-    : datatype valassignment
-    | collectiontype '<' datatype '>' collectionassignment
+    : datatype valassignment                                #primitiveDecl
+    | collectiontype '<' datatype '>' collectionassignment  #complexDecl
     ; 
     
 datatype
-    : INT
-    | FLOAT
-    | BOOL
+    : INT     #integer
+    | FLOAT   #floatingpoint
+    | BOOL    #boolean
     ;
 
 value
-    : ID
-    | constant
-    | '[' valueList ( ';' valueList )* ']'
-    | functioncall
-    | collectionEntrance
-    | BOOLVAL
+    : ID                                     #valID
+    | constant                               #valConstant
+    | '[' valueList ( ';' valueList )* ']'   #valList
+    | functioncall                           #valFuncCall
+    | collectionEntrance                     #valCollectionEntrance
+    | BOOLVAL                                #valBool
     ;
 
 collectionEntrance
@@ -120,9 +120,9 @@ entranceCoordinate
     ;
 
 collectiontype
-    : MATRIX
-    | ROWVECTOR
-    | COLVECTOR
+    : MATRIX       #collectionMatrix
+    | ROWVECTOR    #collectionRVector
+    | COLVECTOR    #collectionCVector
     ;
 
 postUnaryOperator 
@@ -136,8 +136,8 @@ conditionalOperator
     : '==' | '!=' | '<=' | '>=' | '<' | '>' ;
 
 constant
-    : INTNUM
-    | FLOATNUM
+    : INTNUM  
+    | FLOATNUM 
     ;
 
 //LEXER 
