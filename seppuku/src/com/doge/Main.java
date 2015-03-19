@@ -1,6 +1,7 @@
 package com.doge;
 import com.antlr.*;
 import com.doge.AST.AST;
+import com.doge.AST.AddExpressionNode;
 import com.doge.checking.SymbolTable;
 import com.doge.checking.visitorChecker;
 import org.antlr.v4.runtime.*;
@@ -35,7 +36,12 @@ public class Main {
         ParseTree tree = parser.topLevel(); // parse
         System.out.println(tree.toStringTree(parser)); // print tree as text
         AST abstractSyntaxTree = new AST(null);
+        tree.accept(new visitorTest(abstractSyntaxTree));
+
+        //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
+
+
         //tree.accept(new visitorChecker(symbolTable));
     }
 }

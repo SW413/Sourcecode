@@ -7,9 +7,14 @@ import java.util.ArrayList;
  */
 public class ExpressionNode extends StatementNode {
 
-    private ArrayList<ExpressionNode> expressions = new ArrayList<ExpressionNode>();
+    private String value;
 
-    //TODO: hvad skal den ellers indeholde
+    public String getValue(){
+        return this.value;
+    }
+    public void setValue(String value){
+        this.value = value;
+    }
 
     public ExpressionNode(AST parent) {
         super(parent);

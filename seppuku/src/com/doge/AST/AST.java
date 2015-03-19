@@ -17,6 +17,11 @@ public class AST implements ParseTree {
         this.parent = parent;
     }
 
+    public void setParent(AST parent){
+        parent.children.add(this);
+        this.parent = parent;
+    }
+
     @Override
     public ParseTree getParent() {
         return this.parent;
@@ -27,6 +32,9 @@ public class AST implements ParseTree {
         return this.children.get(i);
     }
 
+    public void addChild(AST child){
+        this.children.add(child);
+    }
     @Override
     public <T> T accept(ParseTreeVisitor<? extends T> parseTreeVisitor) {
         return parseTreeVisitor.visit(this);

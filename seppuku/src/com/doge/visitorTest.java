@@ -1,5 +1,8 @@
 package com.doge;
 import com.antlr.*;
+import com.doge.AST.*;
+import com.doge.types.ValueType;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import java.io.IOException;
@@ -12,10 +15,27 @@ import java.util.LinkedList;
  **/
 public class visitorTest extends ourLangBaseVisitor<Void> {
 
+    private AST ast;
+
+    public visitorTest(AST ast){
+        this.ast = ast;
+    }
+
     @Override public Void visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
 
         //Datatype
-        System.out.println(ctx.datatype().children.get(0));
+        System.out.println(ctx.children.get(0).getChild(0).toString());
+        ValueType valueType = ValueType.valueOf(ctx.children.get(0).getChild(0).toString().toUpperCase());
+
+        Variable variable = new Variable(valueType, ctx.ID().getText());
+        ExpressionNode expressionNode = new ExpressionNode(null);
+        // TODO Ændre hvordan den får sat expression. Den skal ikke bare tage teksten, den skal lave træet af expression, så den skal altså visit dens expression barn, som kan være value osv osv.
+        expressionNode.setValue(ctx.expression().getText());
+        DeclarationNode node = new DeclarationNode(ast, variable, expressionNode);
+        expressionNode.setParent(node);
+        node.setParent(ast);
+
+
         //val
         //System.out.println(ctx.valassignment().assignmentOperator().getText());
 
@@ -28,7 +48,7 @@ public class visitorTest extends ourLangBaseVisitor<Void> {
     }
 
     @Override public Void visitFloatingpoint(ourLangParser.FloatingpointContext ctx) {
-        System.out.println(ctx.FLOAT());
+        //System.out.println(ctx.FLOAT());
         return null;
     }
 
