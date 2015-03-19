@@ -23,8 +23,8 @@ public class visitorChecker extends ourLangBaseVisitor<Void> {
 
     @Override
     public Void visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
-        //symbolTable.currentScope().define(ctx.ID().getSymbol().);
-        symbolTable.pushScope(ScopeType.FUNCTION);
+        //symbolTable.currentScope().define(ctx.ID().getText(), ctx.functiondatatype().);
+        symbolTable.pushScope(ScopeType.LOCAL);
 
         return super.visitFunctiondeclaration(ctx);
     }

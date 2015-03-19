@@ -7,8 +7,7 @@ topLevel
     ;
 
 statement
-    : expression ';'              
-    | assignment ';'
+    : assignment ';'
     | declaration ';'
     | functioncall ';'
     | controlblock

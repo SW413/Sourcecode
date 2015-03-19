@@ -17,7 +17,7 @@ public class visitorTest extends ourLangBaseVisitor<Void> {
         //Datatype
         System.out.println(ctx.datatype().children.get(0));
         //val
-        System.out.println(ctx.valassignment().assignmentOperator().getText());
+        //System.out.println(ctx.valassignment().assignmentOperator().getText());
 
         return visitChildren(ctx);
     }

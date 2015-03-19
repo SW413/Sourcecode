@@ -18,8 +18,8 @@ public class SymbolTable {
     }
 
     protected void init() {
-        scopeStack = new Stack<>();
-        allScopes = new ArrayList<>();
+        scopeStack = new Stack<Scope>();
+        allScopes = new ArrayList<Scope>();
         scopeId = 0;
 
         Scope globals = new Scope(ScopeType.GLOBAL, nextScopeId(), null);
