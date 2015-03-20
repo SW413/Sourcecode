@@ -1,22 +1,27 @@
 package com.doge.AST;
 
-import java.util.ArrayList;
-
+import com.doge.types.OperatorType;
 /**
  * Created by michno on 19/3/15.
  */
 public class ExpressionNode extends StatementNode {
 
-    private String value;
+    private Object lValue;
+    private OperatorType operatorType;
+    private Object rValue;
 
-    public String getValue(){
-        return this.value;
+    public Object getLValue(){
+        return this.lValue;
     }
-    public void setValue(String value){
-        this.value = value;
+    public OperatorType getOperatorType() { return this.operatorType; }
+    public Object getRValue(){
+        return this.rValue;
     }
 
-    public ExpressionNode(AST parent) {
+    public ExpressionNode(AST parent, Object lValue, OperatorType operatorType, Object rValue) {
         super(parent);
+        this.lValue = lValue;
+        this.operatorType = operatorType;
+        this.rValue = rValue;
     }
 }

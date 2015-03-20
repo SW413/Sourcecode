@@ -1,9 +1,7 @@
 package com.doge;
 import com.antlr.*;
 import com.doge.AST.AST;
-import com.doge.AST.AddExpressionNode;
 import com.doge.checking.SymbolTable;
-import com.doge.checking.visitorChecker;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.FileInputStream;

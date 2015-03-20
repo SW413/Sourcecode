@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.types.OperatorType;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,8 @@ import java.util.ArrayList;
  */
 public class ConditionalExpressionNode extends ExpressionNode {
     //TODO: make this shit
-    public ConditionalExpressionNode(AST parent) {
-        super(parent);
+
+    public ConditionalExpressionNode(AST parent, Object lValue, OperatorType operatorType, Object rValue) {
+        super(parent, lValue, operatorType, rValue);
     }
 }

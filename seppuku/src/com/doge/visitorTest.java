@@ -1,4 +1,6 @@
 package com.doge;
+import com.doge.types.OperatorType;
+import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.AST.*;
 import com.doge.types.ValueType;
@@ -13,7 +15,7 @@ import java.util.LinkedList;
 /**
  * Created by michno on 18/3/15.
  **/
-public class visitorTest extends ourLangBaseVisitor<Void> {
+public class visitorTest extends ourLangBaseVisitor<AST> {
 
     private AST ast;
 
@@ -21,44 +23,50 @@ public class visitorTest extends ourLangBaseVisitor<Void> {
         this.ast = ast;
     }
 
-    @Override public Void visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
-
-        //Datatype
-        System.out.println(ctx.children.get(0).getChild(0).toString());
-        ValueType valueType = ValueType.valueOf(ctx.children.get(0).getChild(0).toString().toUpperCase());
-
-        Variable variable = new Variable(valueType, ctx.ID().getText());
-        ExpressionNode expressionNode = new ExpressionNode(null);
-        // TODO Ændre hvordan den får sat expression. Den skal ikke bare tage teksten, den skal lave træet af expression, så den skal altså visit dens expression barn, som kan være value osv osv.
-        expressionNode.setValue(ctx.expression().getText());
-        DeclarationNode node = new DeclarationNode(ast, variable, expressionNode);
-        expressionNode.setParent(node);
-        node.setParent(ast);
+    @Override
+    public AST visitTopLevel(ourLangParser.TopLevelContext ctx) {
 
 
-        //val
-        //System.out.println(ctx.valassignment().assignmentOperator().getText());
 
-        return visitChildren(ctx);
+        return super.visitTopLevel(ctx);
     }
 
-    @Override public Void visitInteger(ourLangParser.IntegerContext ctx) {
-        //System.out.println(ctx.INT());
-        return null;
+    @Override
+    public AST visitStatement(ourLangParser.StatementContext ctx) {
+        return super.visitStatement(ctx);
     }
 
-    @Override public Void visitFloatingpoint(ourLangParser.FloatingpointContext ctx) {
-        //System.out.println(ctx.FLOAT());
-        return null;
+    @Override
+    public DeclarationNode visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
+
+        Variable variable = new Variable(TypeParser.parseValueType(ctx.datatype().getText()), ctx.ID().getText());
+        DeclarationNode node = new DeclarationNode(null, variable, (ExpressionNode) visit(ctx.getChild(3)));
+
+        return node;
     }
 
-    @Override public Void visitBoolean(ourLangParser.BooleanContext ctx) {
-        System.out.println(ctx.BOOL());
-        return null;
+    @Override
+    public ConstantExpressionNode visitValueExpr(ourLangParser.ValueExprContext ctx) {
+        return new ConstantExpressionNode(null, ctx.value().getText());
     }
 
-    @Override public Void visitValassignment(ourLangParser.ValassignmentContext ctx) {
-        System.out.println(ctx.ID());
-        return null;
+    @Override
+    public ExpressionNode visitAddExpr(ourLangParser.AddExprContext ctx) {
+        return new ExpressionNode(null, visit(ctx.expression().get(0)), OperatorType.ADD, visit(ctx.expression().get(1)));
+    }
+
+    @Override
+    public AST visitMulExpr(ourLangParser.MulExprContext ctx) {
+        return super.visitMulExpr(ctx);
+    }
+
+    @Override
+    public AST visitParenExpr(ourLangParser.ParenExprContext ctx) {
+        return super.visitParenExpr(ctx);
+    }
+
+    @Override
+    public AST visitPostIDExpr(ourLangParser.PostIDExprContext ctx) {
+        return super.visitPostIDExpr(ctx);
     }
 }
