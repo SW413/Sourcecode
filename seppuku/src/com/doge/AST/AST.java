@@ -14,6 +14,8 @@ public class AST implements ParseTree {
     private ArrayList<AST> children = new ArrayList<AST>();
 
     public AST(AST parent) {
+        if (parent != null)
+            parent.addChild(this);
         this.parent = parent;
     }
 
@@ -32,9 +34,12 @@ public class AST implements ParseTree {
         return this.children.get(i);
     }
 
-    public void addChild(AST child){
-        this.children.add(child);
+    public void addChild(AST node) {
+        this.children.add(node);
     }
+
+    public ArrayList<AST> getChildren() { return this.children; }
+
     @Override
     public <T> T accept(ParseTreeVisitor<? extends T> parseTreeVisitor) {
         return parseTreeVisitor.visit(this);

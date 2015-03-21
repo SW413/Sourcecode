@@ -8,5 +8,7 @@ public enum OperatorType {
     SUB,
     MUL,
     DIV,
-    MOD;
+    MOD,
+    INCREMENT,
+    DECREMENT;
 }

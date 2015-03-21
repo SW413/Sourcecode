@@ -5,24 +5,29 @@ package com.doge.types;
  */
 public class TypeParser {
 
-    public static OperatorType parseOperator(char opp) {
+    public static OperatorType parseOperator(String opp) {
         OperatorType oppType = null;
         switch (opp){
-            case '+':
+            case "+":
                 oppType = OperatorType.ADD;
                 break;
-            case '-':
+            case "-":
                 oppType = OperatorType.SUB;
                 break;
-            case '*':
+            case "*":
                 oppType = OperatorType.MUL;
                 break;
-            case '/':
+            case "/":
                 oppType = OperatorType.DIV;
                 break;
-            case '%':
+            case "%":
                 oppType = OperatorType.MOD;
                 break;
+            case "++":
+                oppType = OperatorType.INCREMENT;
+                break;
+            case "--":
+                oppType = OperatorType.DECREMENT;
             default:
                 //TODO make error handler
                 System.out.println("Parse error");
@@ -32,20 +37,21 @@ public class TypeParser {
     }
 
     public static ValueType parseValueType(String datatype) {
-        if (datatype.equals("int")) {
-            return ValueType.INT;
-        } else if (datatype.equals("int16")) {
-            return ValueType.INT16;
-        } else if (datatype.equals("int64")) {
-            return ValueType.INT64;
-        } else if (datatype.equals("float")) {
-            return ValueType.FLOAT;
-        } else if (datatype.equals("float16")) {
-            return ValueType.FLOAT16;
-        } else if (datatype.equals("float64")) {
-            return ValueType.FLOAT64;
-        } else if (datatype.equals("bool")) {
-            return ValueType.BOOLEAN;
+        switch (datatype) {
+            case "int":
+                return ValueType.INT;
+            case "int16":
+                return ValueType.INT16;
+            case "int64":
+                return ValueType.INT64;
+            case "float":
+                return ValueType.FLOAT;
+            case "float16":
+                return ValueType.FLOAT16;
+            case "float64":
+                return ValueType.FLOAT64;
+            case "bool":
+                return ValueType.BOOLEAN;
         }
         return null;
     }
