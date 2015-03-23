@@ -98,12 +98,25 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
             parentStack.pop();
             return tmp.getFunctionBody();
         }
-        else if(parentStack.peek().getClass() == ConditionalNode.class){
+        else if(parentStack.peek().getClass() == ConditionalNode.class ){
             ConditionalNode parent = (ConditionalNode) parentStack.peek();
+
+            if(parent.IsDoneWithIf()){
+                if(parent.getElseBody() == null){
+                    parent.setElseBody(new StatementNode(parent));
+                }
+                StatementNode tmp = parent.getElseBody();
+
+                parentStack.push(tmp);
+                visit(ctx.getChild(0));
+                parentStack.pop();
+
+                parent.setElseBody(tmp);
+                return tmp;
+        }
             if(parent.getBody() == null){
                 parent.setBody(new StatementNode(parent));
             }
-
             StatementNode tmp = parent.getBody();
 
             parentStack.push(tmp);
@@ -170,6 +183,29 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         parentStack.push(conditionalNode);
         for(int i = 0; i < ctx.ifBlock.getChildCount();i++)
         visit(ctx.ifBlock.getChild(i));
+
+        //TODO Kan ændres til følgende kommentar hvis det er :
+        /*for(int i = 8; i < ctx.getChildCount();i = i+6){
+            if(ctx.getChild(i).getClass() == ourLangParser.ConditionalExpressionContext.class){
+            ConditionalNode tmp = new ConditionalNode(parentStack.peek(),(ConditionalExpressionNode) visit(ctx.getChild(i)));
+            parentStack.push(tmp);
+            visit(ctx.getChild(i + 2));
+            parentStack.pop();
+            conditionalNode.AddIfElse(tmp);}
+        }*/
+        //Find the conditionalExpressions to fill in the IFElses.
+        for(int i = 5; i < ctx.getChildCount();i++) {
+            if (ctx.getChild(i).getClass() == ourLangParser.SingleCondExprContext.class) {
+                ConditionalNode tmp = new ConditionalNode(parentStack.peek(), (ConditionalExpressionNode) visit(ctx.getChild(i)));
+                parentStack.push(tmp);
+                visit(ctx.getChild(i + 2));
+                parentStack.pop();
+                conditionalNode.AddIfElse(tmp);
+            }
+        }
+        conditionalNode.setDoneWithIf(true);
+        for(int i = 0; i < ctx.elseBlock.getChildCount();i++)
+            visit(ctx.elseBlock.getChild(i));
         parentStack.pop();
         return conditionalNode;
     }

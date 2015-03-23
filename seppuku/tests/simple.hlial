@@ -15,6 +15,20 @@ if(tmp == 2){
 else if(tmp == 3){
     int hej = 2;
 }
+else if(tmp == 5){
+    int heeeeej = 2;
+}
+else if(tmp == 5){
+    int heeeeej = 2;
+}
+else if(tmp == 5){
+    int heeeeej = 2;
+}
+else if(tmp == 5){
+    int heeeeej = 2;
+}
 else{
     int hej = 2;
+    int temp = 34224;
+    float tempsss = 3.2;
 }
