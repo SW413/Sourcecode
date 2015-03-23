@@ -1,19 +1,31 @@
 package com.doge.AST;
 
+import com.doge.types.AssignmentOperatorType;
+
 /**
  * Created by michno on 19/3/15.
  */
 public class AssignmentNode extends StatementNode {
     private Variable variable;
+    private AssignmentOperatorType assignmentOperator;
     private ExpressionNode expression;
 
-    //TODO: Måske ENUM?
-    private String assignmentOpperator;
-
-    public AssignmentNode(AST parent, Variable variable, ExpressionNode expression, String assignmentOpperator) {
+    public AssignmentNode(AST parent, Variable variable, AssignmentOperatorType assignmentOperator, ExpressionNode expression) {
         super(parent);
         this.variable = variable;
+        this.assignmentOperator = assignmentOperator;
         this.expression = expression;
-        this.assignmentOpperator = assignmentOpperator;
+    }
+
+    public Variable getVariable() {
+        return variable;
+    }
+
+    public AssignmentOperatorType getAssignmentOperator() {
+        return assignmentOperator;
+    }
+
+    public ExpressionNode getExpression() {
+        return expression;
     }
 }

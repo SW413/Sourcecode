@@ -56,6 +56,33 @@ public class TypeParser {
         return oppType;
     }
 
+    public static AssignmentOperatorType parseAssignmentOperator(String opp) {
+        AssignmentOperatorType oppType = null;
+        switch (opp){
+            case "=":
+                oppType = AssignmentOperatorType.BASIC;
+                break;
+            case "+=":
+                oppType = AssignmentOperatorType.ADD;
+                break;
+            case "-=":
+                oppType = AssignmentOperatorType.SUB;
+                break;
+            case "*=":
+                oppType = AssignmentOperatorType.MUL;
+                break;
+            case "/=":
+                oppType = AssignmentOperatorType.DIV;
+                break;
+
+            default:
+                //TODO make error handler
+                System.out.println("Parse error");
+        }
+
+        return oppType;
+    }
+
     public static ValueType parseValueType(String datatype) {
         switch (datatype) {
             case "int":

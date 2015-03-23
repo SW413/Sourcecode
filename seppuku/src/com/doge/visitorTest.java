@@ -3,6 +3,9 @@ package com.doge;
 import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.AST.*;
+import com.doge.types.ValueType;
+
+import java.lang.reflect.Type;
 import java.util.Stack;
 
 
@@ -17,6 +20,10 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         this.ast = ast;
     }
 
+
+    /**
+     * TopLevel
+     */
     @Override
     public AST visitTopLevel(ourLangParser.TopLevelContext ctx) {
         TopNode top/*kek*/ = new TopNode(this.ast);
@@ -30,6 +37,10 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         return top/*kek*/;
     }
 
+    /**
+     * Importing, functiondecls, and statements
+     *
+     */
     @Override
     public AST visitImporting(ourLangParser.ImportingContext ctx) {
         TopNode tmp = (TopNode)parentStack.peek();
@@ -52,31 +63,6 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         TopNode tmp = (TopNode) parentStack.peek();
         tmp.addFunctionDeclaration(functionDclNode);
         return functionDclNode;
-    }
-
-    @Override
-    public AST visitParameterlist(ourLangParser.ParameterlistContext ctx) {
-        FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
-        for (int i = 0; i < ctx.getChildCount(); i++){
-            if (!ctx.getChild(i).getText().equals(",")) {
-                tmp.setParameter(new Variable(
-                        TypeParser.parseValueType(ctx.getChild(i).getChild(0).getText()),
-                        ctx.getChild(i).getChild(1).getText()));
-            }
-        }
-        return super.visitParameterlist(ctx);
-    }
-
-    @Override
-    public AST visitFunctionbody(ourLangParser.FunctionbodyContext ctx) {
-        return visitChildren(ctx);
-    }
-
-    @Override
-    public AST visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
-        FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
-        tmp.setFunctionReturn(new FunctionReturnNode(tmp, (ExpressionNode) visit(ctx.expression())));
-        return tmp.getFunctionReturn();
     }
 
     @Override
@@ -129,20 +115,124 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         return null;
     }
 
+    /**
+     * Related to functions
+     *
+     */
+    @Override
+    public AST visitParameterlist(ourLangParser.ParameterlistContext ctx) {
+        FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
+        for (int i = 0; i < ctx.getChildCount(); i++){
+            if (!ctx.getChild(i).getText().equals(",")) {
+                tmp.setParameter(new Variable(
+                        TypeParser.parseValueType(ctx.getChild(i).getChild(0).getText()),
+                        ctx.getChild(i).getChild(1).getText()));
+            }
+        }
+        return super.visitParameterlist(ctx);
+    }
+
+    @Override
+    public AST visitFunctionbody(ourLangParser.FunctionbodyContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public AST visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
+        FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
+        tmp.setFunctionReturn(new FunctionReturnNode(tmp, (ExpressionNode) visit(ctx.expression())));
+        return tmp.getFunctionReturn();
+    }
+
+    /**
+     * Decls
+     *
+     */
     @Override
     public DeclarationNode visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
         return new DeclarationNode(
                 parentStack.peek(),
                 new Variable(TypeParser.parseValueType(ctx.datatype().getText()), ctx.ID().getText()),
-                (ExpressionNode) visit(ctx.getChild(3)));
+                (ExpressionNode) visit(ctx.expression()));
 
     }
 
     @Override
-    public ConstantExpressionNode visitValueExpr(ourLangParser.ValueExprContext ctx) {
-        return new ConstantExpressionNode(null, ctx.value().getText());
+    public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
+        return new DeclarationNode(
+                parentStack.peek(),
+                new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText()),
+                (ExpressionNode) visit(ctx.expression()));
     }
 
+    /**
+     * Assignment
+     *
+     */
+
+    @Override
+    public AST visitValassignment(ourLangParser.ValassignmentContext ctx) {
+        return new AssignmentNode(
+                parentStack.peek(),
+                new Variable(null, ctx.ID().getText()),
+                TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
+                (ExpressionNode) visit(ctx.expression()));
+    }
+
+    /**
+     * Values
+     *
+     */
+    @Override
+    public AST visitValID(ourLangParser.ValIDContext ctx) {
+        return new ConstantExpressionNode(null, new Variable(null, ctx.ID().getText()));
+    }
+
+    @Override
+    public AST visitValConstant(ourLangParser.ValConstantContext ctx) {
+        return new ConstantExpressionNode(null, ctx.constant().getText());
+    }
+
+    @Override
+    public AST visitValList(ourLangParser.ValListContext ctx) {
+        //TODO bedre repræsentation af valList!!
+        return new ConstantExpressionNode(null, ctx.getText());
+    }
+
+    @Override
+    public AST visitValFuncCall(ourLangParser.ValFuncCallContext ctx) {
+        return visit(ctx.functioncall());
+    }
+
+    @Override
+    public AST visitCustomFunc(ourLangParser.CustomFuncContext ctx) {
+        return new ConstantExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.argumentlist().getText()));
+    }
+
+    @Override
+    public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
+        return new ConstantExpressionNode(null, new Variable(null, "PRINT", ctx.argumentlist().getText()));
+    }
+
+    @Override
+    public AST visitValCollectionEntrance(ourLangParser.ValCollectionEntranceContext ctx) {
+        return super.visitValCollectionEntrance(ctx);
+    }
+
+    @Override
+    public AST visitCollectionEntrance(ourLangParser.CollectionEntranceContext ctx) {
+        return new ConstantExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.entranceCoordinate().getText()));
+    }
+
+    @Override
+    public AST visitValBool(ourLangParser.ValBoolContext ctx) {
+        return new ConstantExpressionNode(null, ctx.BOOLVAL().getText());
+    }
+
+    /**
+     * Expressions
+     *
+     */
     @Override
     public ExpressionNode visitAddExpr(ourLangParser.AddExprContext ctx) {
         return new ExpressionNode(
@@ -175,6 +265,10 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 null);
     }
 
+    /**
+     * ControlBlocks
+     *
+     */
     @Override
     public AST visitControlblock(ourLangParser.ControlblockContext ctx) {
            ConditionalNode conditionalNode = new ConditionalNode(parentStack.peek(),
