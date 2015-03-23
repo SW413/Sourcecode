@@ -6,3 +6,15 @@ int tmp = 2;
 float tmpF = 2.2;
 
 int16 res = tmp + 2;
+
+
+if(tmp == 2){
+    int hej = 2;
+    int heaj = 3;
+}
+else if(tmp == 3){
+    int hej = 2;
+}
+else{
+    int hej = 2;
+}

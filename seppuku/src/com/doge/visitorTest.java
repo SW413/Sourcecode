@@ -98,6 +98,21 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
             parentStack.pop();
             return tmp.getFunctionBody();
         }
+        else if(parentStack.peek().getClass() == ConditionalNode.class){
+            ConditionalNode parent = (ConditionalNode) parentStack.peek();
+            if(parent.getBody() == null){
+                parent.setBody(new StatementNode(parent));
+            }
+
+            StatementNode tmp = parent.getBody();
+
+            parentStack.push(tmp);
+            visit(ctx.getChild(0));
+            parentStack.pop();
+
+            parent.setBody(tmp);
+            return tmp;
+        }
         return null;
     }
 
@@ -145,6 +160,34 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 new Variable(null, ctx.ID().getText()),
                 TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
                 null);
+    }
+
+    @Override
+    public AST visitControlblock(ourLangParser.ControlblockContext ctx) {
+           ConditionalNode conditionalNode = new ConditionalNode(parentStack.peek(),
+                                                                (ConditionalExpressionNode) visit(ctx.conditionalExpression(0)));
+
+        parentStack.push(conditionalNode);
+        for(int i = 0; i < ctx.ifBlock.getChildCount();i++)
+        visit(ctx.ifBlock.getChild(i));
+        parentStack.pop();
+        return conditionalNode;
+    }
+
+    @Override
+    public AST visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx) {
+        ConditionalExpressionNode tmp =  new ConditionalExpressionNode(
+                null,
+                visit(ctx.expression(0)),
+                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                visit(ctx.expression(1)));
+
+        return tmp;
+    }
+
+    @Override
+    public AST visitBlock(ourLangParser.BlockContext ctx) {
+        return super.visitBlock(ctx);
     }
 
 }

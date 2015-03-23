@@ -10,5 +10,11 @@ public enum OperatorType {
     DIV,
     MOD,
     INCREMENT,
-    DECREMENT;
+    DECREMENT,
+    EQUAL,
+    NOTEQUAL,
+    BIGGERTHAN,
+    LESSTHAN,
+    BIGGEROREQUAL,
+    LESSOREQUAL;
 }

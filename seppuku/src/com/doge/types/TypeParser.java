@@ -28,6 +28,26 @@ public class TypeParser {
                 break;
             case "--":
                 oppType = OperatorType.DECREMENT;
+                break;
+            case "==":
+                oppType = OperatorType.EQUAL;
+                break;
+            case "!=":
+                oppType = OperatorType.NOTEQUAL;
+                break;
+            case "<=":
+                oppType = OperatorType.LESSOREQUAL;
+                break;
+            case ">=":
+                oppType = OperatorType.BIGGEROREQUAL;
+                break;
+            case "<":
+                oppType = OperatorType.LESSTHAN;
+                break;
+            case ">":
+                oppType = OperatorType.BIGGERTHAN;
+                break;
+
             default:
                 //TODO make error handler
                 System.out.println("Parse error");
