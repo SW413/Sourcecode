@@ -1,17 +1,8 @@
 package com.doge;
-import com.doge.types.OperatorType;
+
 import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.AST.*;
-import com.doge.types.ValueType;
-import com.sun.xml.internal.bind.v2.TODO;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.antlr.v4.runtime.tree.RuleNode;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.Stack;
 
 
@@ -51,26 +42,63 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    //TODO FuncDecl. node!!
     public AST visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
-        TopNode tmp = (TopNode)parentStack.peek();
-        if (tmp.getFunctionDeclarations() == null)
-            tmp.setFunctionDeclarations(new AST(tmp));
-        parentStack.push(tmp.getFunctionDeclarations());
-        visitChildren(ctx);
+        Variable funcVariable = new Variable(TypeParser.parseValueType(ctx.functiondatatype().getText()), ctx.ID().getText());
+        FunctionDclNode functionDclNode = new FunctionDclNode(parentStack.peek(), funcVariable);
+        parentStack.push(functionDclNode);
+        visit(ctx.parameterlist());
+        visit(ctx.functionbody());
         parentStack.pop();
-        return tmp.getFunctionDeclarations();
+        TopNode tmp = (TopNode) parentStack.peek();
+        tmp.addFunctionDeclaration(functionDclNode);
+        return functionDclNode;
+    }
+
+    @Override
+    public AST visitParameterlist(ourLangParser.ParameterlistContext ctx) {
+        FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
+        for (int i = 0; i < ctx.getChildCount(); i++){
+            if (!ctx.getChild(i).getText().equals(",")) {
+                tmp.setParameter(new Variable(
+                        TypeParser.parseValueType(ctx.getChild(i).getChild(0).getText()),
+                        ctx.getChild(i).getChild(1).getText()));
+            }
+        }
+        return super.visitParameterlist(ctx);
+    }
+
+    @Override
+    public AST visitFunctionbody(ourLangParser.FunctionbodyContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public AST visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
+        FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
+        tmp.setFunctionReturn(new FunctionReturnNode(tmp, (ExpressionNode) visit(ctx.expression())));
+        return tmp.getFunctionReturn();
     }
 
     @Override
     public AST visitStatement(ourLangParser.StatementContext ctx) {
-        TopNode tmp = (TopNode)parentStack.peek();
-        if (tmp.getStatements() == null)
-            tmp.setStatements(new StatementNode(tmp));
-        parentStack.push(tmp.getStatements());
-        visitChildren(ctx);
-        parentStack.pop();
-        return tmp.getStatements();
+        if (parentStack.peek().getClass() == TopNode.class) {
+            TopNode tmp = (TopNode)parentStack.peek();
+            if (tmp.getStatements() == null)
+                tmp.setStatements(new StatementNode(tmp));
+            parentStack.push(tmp.getStatements());
+            visitChildren(ctx);
+            parentStack.pop();
+            return tmp.getStatements();
+        } else if(parentStack.peek().getClass() == FunctionDclNode.class) {
+            FunctionDclNode tmp = (FunctionDclNode)parentStack.peek();
+            if (tmp.getFunctionBody() == null)
+                tmp.setFunctionBody(new StatementNode(tmp));
+            parentStack.push(tmp.getFunctionBody());
+            visitChildren(ctx);
+            parentStack.pop();
+            return tmp.getFunctionBody();
+        }
+        return null;
     }
 
     @Override

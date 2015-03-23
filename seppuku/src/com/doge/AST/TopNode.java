@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class TopNode extends AST {
     private AST imports;
-    private AST functionDeclarations;
+    private ArrayList<FunctionDclNode> functionDeclarations = new ArrayList<FunctionDclNode>();
     private AST statements;
 
     public TopNode(AST parent) {
@@ -20,16 +20,16 @@ public class TopNode extends AST {
 
     public void setImports(AST imports) {
         this.imports = imports;
-        this.addChild(imports);
+        //this.addChild(imports);
     }
 
-    public AST getFunctionDeclarations() {
-        return functionDeclarations;
+    public FunctionDclNode getFunctionDeclaration(int i) {
+        return functionDeclarations.get(i);
     }
 
-    public void setFunctionDeclarations(AST functionDeclarations) {
-        this.functionDeclarations = functionDeclarations;
-        this.addChild(functionDeclarations);
+    public void addFunctionDeclaration(FunctionDclNode functionDeclaration) {
+        this.functionDeclarations.add(functionDeclaration);
+        //this.addChild(functionDeclaration);
     }
 
     public AST getStatements() {
@@ -38,6 +38,6 @@ public class TopNode extends AST {
 
     public void setStatements(AST statements) {
         this.statements = statements;
-        this.addChild(statements);
+        //this.addChild(statements);
     }
 }

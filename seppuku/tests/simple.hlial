@@ -1,3 +1,7 @@
+int dinMor(int a, int b) {
+    return a + b;
+}
+
 int tmp = 2;
 float tmpF = 2.2;
 

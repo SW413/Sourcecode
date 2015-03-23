@@ -41,12 +41,21 @@ functiondeclaration
     ; 
     
 functionbody
-    : '{' ( statement )* ( 'return' expression ';' )? '}' 
+    : '{' ( statement )* functionreturn? '}'
     ;
 
+functionreturn
+    : 'return' expression ';'
+    ;
+
+
 parameterlist
-    : ((datatype ID | STRING | collectiontype '<' datatype '>' ID)( ',' (datatype ID | STRING | collectiontype '<' datatype '>' ID) )*)?
+    : (parameter( ',' parameter )*)?
     | 
+    ;
+
+parameter
+    : (datatype | complexdatatype ) ID
     ;
 
 functioncall
