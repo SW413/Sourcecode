@@ -298,7 +298,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
                 null);
     }
-    
+
     @Override
     public AST visitWhileLoop(ourLangParser.WhileLoopContext ctx) {
         WhileLoopNode whileLoopNode = new WhileLoopNode(parentStack.peek());
