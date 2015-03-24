@@ -1,5 +1,7 @@
 package com.doge;
 
+import com.doge.types.AssignmentOperatorType;
+import com.doge.types.EntranceParser;
 import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.AST.*;
@@ -179,6 +181,26 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 (ExpressionNode) visit(ctx.expression()));
     }
 
+    @Override
+    public AST visitEntireCollectionAssignment(ourLangParser.EntireCollectionAssignmentContext ctx) {
+        return new AssignmentNode(
+                parentStack.peek(),
+                new Variable(null, ctx.ID().getText()),
+                AssignmentOperatorType.BASIC,
+                (ExpressionNode) visit(ctx.expression()));
+    }
+
+    @Override
+    public AST visitCollectionEntranceAssignment(ourLangParser.CollectionEntranceAssignmentContext ctx) {
+        return new AssignmentNode(
+                parentStack.peek(),
+                new Variable(null,
+                        ctx.collectionEntrance().ID().getText(),
+                        EntranceParser.ParseEntrance(ctx.collectionEntrance().entranceCoordinate().getText())),
+                TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
+                (ExpressionNode) visit(ctx.expression()));
+    }
+
     /**
      * Values
      *
@@ -263,11 +285,6 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 new Variable(null, ctx.ID().getText()),
                 TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
                 null);
-    }
-
-    @Override
-    public AST visitLoop(ourLangParser.LoopContext ctx) {
-        return super.visitLoop(ctx);
     }
 
     /**

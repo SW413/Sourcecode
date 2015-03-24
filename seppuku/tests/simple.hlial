@@ -3,7 +3,6 @@ int dinMor(int a, int b) {
 }
 
 int tmp = 2;
-float tmpF = 2.2;
 matrix<int> a = [2,1,2;1,2,2];
 
 int16 res = tmp + 2;
