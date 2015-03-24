@@ -14,7 +14,8 @@ a[1,1] = 2;
 if(tmp == 2){
     int hej = 2;
     int haj = 3;
-}
+}else if(tmp == 3){int hey = 3; int Michno = 2; int Cawlin = 420;}
+else if(tmp ==3){int troels = 3; int susanne = 4;}
 else{
     int hej = 2;
     int temp = 34224;
@@ -23,4 +24,15 @@ else{
 
 while(tmp == 2){
 int i = 2;
+}
+for(int i = 4; i <= 20; i++)
+{
+int a = 2;
+int b = 3;
+}
+int i = 8;
+for(i = 3; i <= 20; i++)
+{
+if(i == 7){int a = 3;}
+else{ tmp = a;}
 }

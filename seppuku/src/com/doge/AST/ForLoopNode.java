@@ -9,7 +9,7 @@ public class ForLoopNode extends StatementNode{
 
     private StatementNode body;
     private ConditionalExpressionNode condition;
-    private DeclarationNode initialize;
+    private AST initialize;
     private ExpressionNode update;
 
     public ForLoopNode(AST parent) {
@@ -32,11 +32,11 @@ public class ForLoopNode extends StatementNode{
         this.condition = condition;
     }
 
-    public DeclarationNode getInitialize() {
+    public AST getInitialize() {
         return initialize;
     }
 
-    public void setInitialize(DeclarationNode initialize) {
+    public void setInitialize(AST initialize) {
         this.initialize = initialize;
     }
 
