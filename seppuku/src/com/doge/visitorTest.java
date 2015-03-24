@@ -67,7 +67,19 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitStatement(ourLangParser.StatementContext ctx) {
-        if (parentStack.peek().getClass() == TopNode.class) {
+        if(parentStack.peek().getClass() == WhileLoopNode.class){
+            WhileLoopNode parent = (WhileLoopNode) parentStack.peek();
+            if(parent.getBody() == null){
+                parent.setBody(new StatementNode(null));
+            }
+            StatementNode tmp = parent.getBody();
+
+            parentStack.push(tmp);
+            visit(ctx.getChild(0));
+            parentStack.pop();
+            return parent.getBody();
+        }
+        else if (parentStack.peek().getClass() == TopNode.class) {
             TopNode tmp = (TopNode)parentStack.peek();
             if (tmp.getStatements() == null)
                 tmp.setStatements(new StatementNode(tmp));
@@ -266,8 +278,21 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitLoop(ourLangParser.LoopContext ctx) {
-        return super.visitLoop(ctx);
+    public AST visitWhileLoop(ourLangParser.WhileLoopContext ctx) {
+        WhileLoopNode whileLoopNode = new WhileLoopNode(parentStack.peek());
+        whileLoopNode.setCondNode((ConditionalExpressionNode)visit(ctx.conditionalExpression()));
+        parentStack.push(whileLoopNode);
+        for(int i = 0; i < ctx.whileBlock.getChildCount(); i++){
+            visit(ctx.whileBlock.getChild(i));
+        }
+        parentStack.pop();
+        return whileLoopNode;
+    }
+
+    @Override
+    public AST visitForLoop(ourLangParser.ForLoopContext ctx) {
+        ForLoopNode forLoopNode = new ForLoopNode(parentStack.peek());
+        forLoopNode.setInitialize(visit(ctx.));
     }
 
     /**
