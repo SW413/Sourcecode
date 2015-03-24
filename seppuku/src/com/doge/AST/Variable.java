@@ -13,6 +13,7 @@ public class Variable {
     private ValueType datatype;
     private String id;
     private ArrayList<String> arguments;
+    private int[] entrance;
 
     public Variable(ValueType datatype, String id, String arguments) {
         this.datatype = datatype;
@@ -21,13 +22,29 @@ public class Variable {
         this.arguments = new ArrayList<String>(Arrays.asList(arguments.split(",")));
     }
 
+    public Variable(ValueType datatype, String id, int[] entrance) {
+        this.datatype = datatype;
+        this.id = id;
+        this.entrance = entrance;
+    }
+
     public Variable(ValueType datatype, String id) {
         this.datatype = datatype;
         this.id = id;
     }
 
+
+
     public ValueType getDatatype(){ return this.datatype; }
 
     public String getId() { return this.id; }
+
+    public ArrayList<String> getArguments() {
+        return arguments;
+    }
+
+    public int[] getEntrance() {
+        return entrance;
+    }
 }
 

@@ -185,7 +185,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
      */
     @Override
     public AST visitValID(ourLangParser.ValIDContext ctx) {
-        return new ConstantExpressionNode(null, new Variable(null, ctx.ID().getText()));
+        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText()));
     }
 
     @Override
@@ -206,7 +206,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitCustomFunc(ourLangParser.CustomFuncContext ctx) {
-        return new ConstantExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.argumentlist().getText()));
+        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.argumentlist().getText()));
     }
 
     @Override
@@ -221,7 +221,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitCollectionEntrance(ourLangParser.CollectionEntranceContext ctx) {
-        return new ConstantExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.entranceCoordinate().getText()));
+        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.entranceCoordinate().getText()));
     }
 
     @Override
@@ -318,11 +318,6 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 visit(ctx.expression(1)));
 
         return tmp;
-    }
-
-    @Override
-    public AST visitBlock(ourLangParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
     }
 
 }

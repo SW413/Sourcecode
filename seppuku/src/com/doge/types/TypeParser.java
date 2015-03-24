@@ -99,6 +99,18 @@ public class TypeParser {
                 return ValueType.FLOAT64;
             case "bool":
                 return ValueType.BOOLEAN;
+            case "matrix<int>":
+                return ValueType.MATRIX_INT;
+            case "matrix<int16>":
+                return ValueType.MATRIX_INT16;
+            case "matrix<int64>":
+                return ValueType.MATRIX_INT64;
+            case "matrix<float>":
+                return ValueType.MATRIX_FLOAT;
+            case "matrix<float16>":
+                return ValueType.MATRIX_FLOAT16;
+            case "matrix<float64>":
+                return ValueType.MATRIX_FLOAT64;
         }
         return null;
     }

@@ -4,16 +4,20 @@ int dinMor(int a, int b) {
 
 int tmp = 2;
 float tmpF = 2.2;
+matrix<int> a = [2,1,2;1,2,2];
 
 int16 res = tmp + 2;
 
+tmp = 4;
+
+a[1,1] = 2;
 
 if(tmp == 2){
     int hej = 2;
-    int heaj = 3;
+    int haj = 3;
 }
 else{
     int hej = 2;
     int temp = 34224;
-    float tempsss = 3.2;
+    float temps = 3.2;
 }
