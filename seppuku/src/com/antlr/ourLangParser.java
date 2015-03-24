@@ -22,8 +22,8 @@ public class ourLangParser extends Parser {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, IMPORT=29, IF=30, ELSE=31, WHILE=32, 
 		FOR=33, MATRIX=34, ROWVECTOR=35, COLVECTOR=36, INT=37, INTNUM=38, FLOAT=39, 
-		FLOATNUM=40, BOOL=41, BOOLVAL=42, VOID=43, STRING=44, SIGN=45, ID=46, 
-		LIBRARY=47, PRINT=48, WS=49, NL=50, COMMENT=51, LINE_COMMENT=52;
+		FLOATNUM=40, BOOL=41, BOOLVAL=42, VOID=43, STRING=44, SIGN=45, PRINT=46, 
+		ID=47, LIBRARY=48, WS=49, NL=50, COMMENT=51, LINE_COMMENT=52;
 	public static final int
 		RULE_topLevel = 0, RULE_statement = 1, RULE_importing = 2, RULE_controlblock = 3, 
 		RULE_loop = 4, RULE_block = 5, RULE_conditionalExpression = 6, RULE_functiondeclaration = 7, 
@@ -50,14 +50,14 @@ public class ourLangParser extends Parser {
 		"'return'", "','", "'*'", "'/'", "'%'", "'+'", "'='", "'['", "']'", "'++'", 
 		"'--'", "'+='", "'-='", "'*='", "'/='", "'=='", "'!='", "'<='", "'>='", 
 		null, "'if'", "'else'", "'while'", "'for'", "'matrix'", null, null, null, 
-		null, null, null, "'bool'", null, "'void'", null, "'-'", null, null, "'print'"
+		null, null, null, "'bool'", null, "'void'", null, "'-'", "'print'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, "IMPORT", "IF", "ELSE", "WHILE", "FOR", 
 		"MATRIX", "ROWVECTOR", "COLVECTOR", "INT", "INTNUM", "FLOAT", "FLOATNUM", 
-		"BOOL", "BOOLVAL", "VOID", "STRING", "SIGN", "ID", "LIBRARY", "PRINT", 
+		"BOOL", "BOOLVAL", "VOID", "STRING", "SIGN", "PRINT", "ID", "LIBRARY", 
 		"WS", "NL", "COMMENT", "LINE_COMMENT"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -181,7 +181,7 @@ public class ourLangParser extends Parser {
 			setState(79);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << WHILE) | (1L << FOR) | (1L << MATRIX) | (1L << ROWVECTOR) | (1L << COLVECTOR) | (1L << INT) | (1L << FLOAT) | (1L << BOOL) | (1L << ID) | (1L << PRINT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << WHILE) | (1L << FOR) | (1L << MATRIX) | (1L << ROWVECTOR) | (1L << COLVECTOR) | (1L << INT) | (1L << FLOAT) | (1L << BOOL) | (1L << PRINT) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(76);
@@ -616,7 +616,7 @@ public class ourLangParser extends Parser {
 			setState(150);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << WHILE) | (1L << FOR) | (1L << MATRIX) | (1L << ROWVECTOR) | (1L << COLVECTOR) | (1L << INT) | (1L << FLOAT) | (1L << BOOL) | (1L << ID) | (1L << PRINT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << WHILE) | (1L << FOR) | (1L << MATRIX) | (1L << ROWVECTOR) | (1L << COLVECTOR) | (1L << INT) | (1L << FLOAT) | (1L << BOOL) | (1L << PRINT) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(147);
@@ -842,7 +842,7 @@ public class ourLangParser extends Parser {
 			setState(179);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << WHILE) | (1L << FOR) | (1L << MATRIX) | (1L << ROWVECTOR) | (1L << COLVECTOR) | (1L << INT) | (1L << FLOAT) | (1L << BOOL) | (1L << ID) | (1L << PRINT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << IF) | (1L << WHILE) | (1L << FOR) | (1L << MATRIX) | (1L << ROWVECTOR) | (1L << COLVECTOR) | (1L << INT) | (1L << FLOAT) | (1L << BOOL) | (1L << PRINT) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(176);
@@ -1167,8 +1167,8 @@ public class ourLangParser extends Parser {
 			case INTNUM:
 			case FLOATNUM:
 			case BOOLVAL:
-			case ID:
 			case PRINT:
+			case ID:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(222);
@@ -2573,7 +2573,7 @@ public class ourLangParser extends Parser {
 		"\f\33\16\33\u0155\13\33\3\34\3\34\3\34\5\34\u015a\n\34\3\35\3\35\3\35"+
 		"\5\35\u015f\n\35\3\36\3\36\3\37\3\37\3 \3 \3!\3!\3!\2\4\16\36\"\2\4\6"+
 		"\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@\2\n\3\2\n"+
-		"\13\3\2\16\20\4\2\21\21//\4\2((\60\60\3\2\25\26\4\2\22\22\27\32\4\2\4"+
+		"\13\3\2\16\20\4\2\21\21//\4\2((\61\61\3\2\25\26\4\2\22\22\27\32\4\2\4"+
 		"\5\33\36\4\2((**\u0177\2E\3\2\2\2\4a\3\2\2\2\6c\3\2\2\2\bh\3\2\2\2\n\u0092"+
 		"\3\2\2\2\f\u0094\3\2\2\2\16\u009d\3\2\2\2\20\u00aa\3\2\2\2\22\u00b1\3"+
 		"\2\2\2\24\u00bd\3\2\2\2\26\u00cc\3\2\2\2\30\u00d0\3\2\2\2\32\u00de\3\2"+
@@ -2587,7 +2587,7 @@ public class ourLangParser extends Parser {
 		"\2\2\2RT\3\2\2\2SQ\3\2\2\2TU\7\2\2\3U\3\3\2\2\2VW\5 \21\2WX\7\3\2\2Xb"+
 		"\3\2\2\2YZ\5&\24\2Z[\7\3\2\2[b\3\2\2\2\\]\5\32\16\2]^\7\3\2\2^b\3\2\2"+
 		"\2_b\5\b\5\2`b\5\n\6\2aV\3\2\2\2aY\3\2\2\2a\\\3\2\2\2a_\3\2\2\2a`\3\2"+
-		"\2\2b\5\3\2\2\2cd\7\37\2\2de\7\4\2\2ef\7\61\2\2fg\7\5\2\2g\7\3\2\2\2h"+
+		"\2\2b\5\3\2\2\2cd\7\37\2\2de\7\4\2\2ef\7\62\2\2fg\7\5\2\2g\7\3\2\2\2h"+
 		"i\7 \2\2ij\7\6\2\2jk\5\16\b\2kl\7\7\2\2lv\5\f\7\2mn\7!\2\2no\7 \2\2op"+
 		"\7\6\2\2pq\5\16\b\2qr\7\7\2\2rs\5\f\7\2su\3\2\2\2tm\3\2\2\2ux\3\2\2\2"+
 		"vt\3\2\2\2vw\3\2\2\2w{\3\2\2\2xv\3\2\2\2yz\7!\2\2z|\5\f\7\2{y\3\2\2\2"+
@@ -2605,7 +2605,7 @@ public class ourLangParser extends Parser {
 		"\5\36\20\2\u00a1\u00a7\3\2\2\2\u00a2\u00a3\f\3\2\2\u00a3\u00a4\t\2\2\2"+
 		"\u00a4\u00a6\5\16\b\4\u00a5\u00a2\3\2\2\2\u00a6\u00a9\3\2\2\2\u00a7\u00a5"+
 		"\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8\17\3\2\2\2\u00a9\u00a7\3\2\2\2\u00aa"+
-		"\u00ab\5,\27\2\u00ab\u00ac\7\60\2\2\u00ac\u00ad\7\6\2\2\u00ad\u00ae\5"+
+		"\u00ab\5,\27\2\u00ab\u00ac\7\61\2\2\u00ac\u00ad\7\6\2\2\u00ad\u00ae\5"+
 		"\26\f\2\u00ae\u00af\7\7\2\2\u00af\u00b0\5\22\n\2\u00b0\21\3\2\2\2\u00b1"+
 		"\u00b5\7\b\2\2\u00b2\u00b4\5\4\3\2\u00b3\u00b2\3\2\2\2\u00b4\u00b7\3\2"+
 		"\2\2\u00b5\u00b3\3\2\2\2\u00b5\u00b6\3\2\2\2\u00b6\u00b9\3\2\2\2\u00b7"+
@@ -2618,9 +2618,9 @@ public class ourLangParser extends Parser {
 		"\u00ca\3\2\2\2\u00ca\u00cd\3\2\2\2\u00cb\u00cd\3\2\2\2\u00cc\u00c9\3\2"+
 		"\2\2\u00cc\u00cb\3\2\2\2\u00cd\27\3\2\2\2\u00ce\u00d1\5(\25\2\u00cf\u00d1"+
 		"\5*\26\2\u00d0\u00ce\3\2\2\2\u00d0\u00cf\3\2\2\2\u00d1\u00d2\3\2\2\2\u00d2"+
-		"\u00d3\7\60\2\2\u00d3\31\3\2\2\2\u00d4\u00d5\7\60\2\2\u00d5\u00d6\7\6"+
+		"\u00d3\7\61\2\2\u00d3\31\3\2\2\2\u00d4\u00d5\7\61\2\2\u00d5\u00d6\7\6"+
 		"\2\2\u00d6\u00d7\5\34\17\2\u00d7\u00d8\7\7\2\2\u00d8\u00df\3\2\2\2\u00d9"+
-		"\u00da\7\62\2\2\u00da\u00db\7\6\2\2\u00db\u00dc\5\34\17\2\u00dc\u00dd"+
+		"\u00da\7\60\2\2\u00da\u00db\7\6\2\2\u00db\u00dc\5\34\17\2\u00dc\u00dd"+
 		"\7\7\2\2\u00dd\u00df\3\2\2\2\u00de\u00d4\3\2\2\2\u00de\u00d9\3\2\2\2\u00df"+
 		"\33\3\2\2\2\u00e0\u00e5\5\36\20\2\u00e1\u00e2\7\r\2\2\u00e2\u00e4\5\36"+
 		"\20\2\u00e3\u00e1\3\2\2\2\u00e4\u00e7\3\2\2\2\u00e5\u00e3\3\2\2\2\u00e5"+
@@ -2628,34 +2628,34 @@ public class ourLangParser extends Parser {
 		"\2\2\u00e9\u00eb\3\2\2\2\u00ea\u00e0\3\2\2\2\u00ea\u00e8\3\2\2\2\u00ea"+
 		"\u00e9\3\2\2\2\u00eb\35\3\2\2\2\u00ec\u00ed\b\20\1\2\u00ed\u00ee\7\6\2"+
 		"\2\u00ee\u00ef\5\36\20\2\u00ef\u00f0\7\7\2\2\u00f0\u00f5\3\2\2\2\u00f1"+
-		"\u00f5\5.\30\2\u00f2\u00f3\7\60\2\2\u00f3\u00f5\5:\36\2\u00f4\u00ec\3"+
+		"\u00f5\5.\30\2\u00f2\u00f3\7\61\2\2\u00f3\u00f5\5:\36\2\u00f4\u00ec\3"+
 		"\2\2\2\u00f4\u00f1\3\2\2\2\u00f4\u00f2\3\2\2\2\u00f5\u00fe\3\2\2\2\u00f6"+
 		"\u00f7\f\7\2\2\u00f7\u00f8\t\3\2\2\u00f8\u00fd\5\36\20\b\u00f9\u00fa\f"+
 		"\6\2\2\u00fa\u00fb\t\4\2\2\u00fb\u00fd\5\36\20\7\u00fc\u00f6\3\2\2\2\u00fc"+
 		"\u00f9\3\2\2\2\u00fd\u0100\3\2\2\2\u00fe\u00fc\3\2\2\2\u00fe\u00ff\3\2"+
 		"\2\2\u00ff\37\3\2\2\2\u0100\u00fe\3\2\2\2\u0101\u0104\5\"\22\2\u0102\u0104"+
 		"\5$\23\2\u0103\u0101\3\2\2\2\u0103\u0102\3\2\2\2\u0104!\3\2\2\2\u0105"+
-		"\u0106\7\60\2\2\u0106\u0109\5<\37\2\u0107\u010a\5\36\20\2\u0108\u010a"+
+		"\u0106\7\61\2\2\u0106\u0109\5<\37\2\u0107\u010a\5\36\20\2\u0108\u010a"+
 		"\7,\2\2\u0109\u0107\3\2\2\2\u0109\u0108\3\2\2\2\u010a#\3\2\2\2\u010b\u010c"+
-		"\7\60\2\2\u010c\u010d\7\22\2\2\u010d\u0113\5\36\20\2\u010e\u010f\5\60"+
+		"\7\61\2\2\u010c\u010d\7\22\2\2\u010d\u0113\5\36\20\2\u010e\u010f\5\60"+
 		"\31\2\u010f\u0110\5<\37\2\u0110\u0111\5\36\20\2\u0111\u0113\3\2\2\2\u0112"+
 		"\u010b\3\2\2\2\u0112\u010e\3\2\2\2\u0113%\3\2\2\2\u0114\u0115\5(\25\2"+
-		"\u0115\u0116\7\60\2\2\u0116\u0117\7\22\2\2\u0117\u0118\5\36\20\2\u0118"+
-		"\u011f\3\2\2\2\u0119\u011a\5*\26\2\u011a\u011b\7\60\2\2\u011b\u011c\7"+
+		"\u0115\u0116\7\61\2\2\u0116\u0117\7\22\2\2\u0117\u0118\5\36\20\2\u0118"+
+		"\u011f\3\2\2\2\u0119\u011a\5*\26\2\u011a\u011b\7\61\2\2\u011b\u011c\7"+
 		"\22\2\2\u011c\u011d\5\36\20\2\u011d\u011f\3\2\2\2\u011e\u0114\3\2\2\2"+
 		"\u011e\u0119\3\2\2\2\u011f\'\3\2\2\2\u0120\u0124\7\'\2\2\u0121\u0124\7"+
 		")\2\2\u0122\u0124\7+\2\2\u0123\u0120\3\2\2\2\u0123\u0121\3\2\2\2\u0123"+
 		"\u0122\3\2\2\2\u0124)\3\2\2\2\u0125\u0126\58\35\2\u0126\u0127\7\4\2\2"+
 		"\u0127\u0128\5(\25\2\u0128\u0129\7\5\2\2\u0129+\3\2\2\2\u012a\u012e\5"+
 		"(\25\2\u012b\u012e\5*\26\2\u012c\u012e\7-\2\2\u012d\u012a\3\2\2\2\u012d"+
-		"\u012b\3\2\2\2\u012d\u012c\3\2\2\2\u012e-\3\2\2\2\u012f\u0140\7\60\2\2"+
+		"\u012b\3\2\2\2\u012d\u012c\3\2\2\2\u012e-\3\2\2\2\u012f\u0140\7\61\2\2"+
 		"\u0130\u0140\5@!\2\u0131\u0132\7\23\2\2\u0132\u0137\5\62\32\2\u0133\u0134"+
 		"\7\3\2\2\u0134\u0136\5\62\32\2\u0135\u0133\3\2\2\2\u0136\u0139\3\2\2\2"+
 		"\u0137\u0135\3\2\2\2\u0137\u0138\3\2\2\2\u0138\u013a\3\2\2\2\u0139\u0137"+
 		"\3\2\2\2\u013a\u013b\7\24\2\2\u013b\u0140\3\2\2\2\u013c\u0140\5\32\16"+
 		"\2\u013d\u0140\5\60\31\2\u013e\u0140\7,\2\2\u013f\u012f\3\2\2\2\u013f"+
 		"\u0130\3\2\2\2\u013f\u0131\3\2\2\2\u013f\u013c\3\2\2\2\u013f\u013d\3\2"+
-		"\2\2\u013f\u013e\3\2\2\2\u0140/\3\2\2\2\u0141\u0142\7\60\2\2\u0142\u0143"+
+		"\2\2\u013f\u013e\3\2\2\2\u0140/\3\2\2\2\u0141\u0142\7\61\2\2\u0142\u0143"+
 		"\7\23\2\2\u0143\u0144\5\66\34\2\u0144\u0145\7\24\2\2\u0145\61\3\2\2\2"+
 		"\u0146\u014b\5.\30\2\u0147\u0148\7\r\2\2\u0148\u014a\5.\30\2\u0149\u0147"+
 		"\3\2\2\2\u014a\u014d\3\2\2\2\u014b\u0149\3\2\2\2\u014b\u014c\3\2\2\2\u014c"+
