@@ -1,4 +1,5 @@
 package com.doge;
+
 import com.antlr.*;
 import com.doge.AST.AST;
 import com.doge.checking.SymbolTable;

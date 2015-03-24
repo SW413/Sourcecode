@@ -1,7 +1,5 @@
 package com.doge.AST;
 
-import com.doge.types.OperatorType;
-
 /**
  * Created by michno on 20/3/15.
  */

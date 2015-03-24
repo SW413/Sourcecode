@@ -1,8 +1,6 @@
 package com.doge.AST;
 
 import com.doge.types.ValueType;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
