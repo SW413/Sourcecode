@@ -69,7 +69,19 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitStatement(ourLangParser.StatementContext ctx) {
-        if(parentStack.peek().getClass() == WhileLoopNode.class){
+        if(parentStack.peek().getClass() == ForLoopNode.class){
+            ForLoopNode parent = (ForLoopNode) parentStack.peek();
+            if(parent.getBody() == null){
+                parent.setBody(new StatementNode(null));
+            }
+            StatementNode tmp = parent.getBody();
+
+            parentStack.push(tmp);
+            visit(ctx.getChild(0));
+            parentStack.pop();
+            return parent.getBody();
+        }
+        else if(parentStack.peek().getClass() == WhileLoopNode.class){
             WhileLoopNode parent = (WhileLoopNode) parentStack.peek();
             if(parent.getBody() == null){
                 parent.setBody(new StatementNode(null));
@@ -235,6 +247,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitValFuncCall(ourLangParser.ValFuncCallContext ctx) {
+
         return visit(ctx.functioncall());
     }
 
@@ -304,9 +317,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         WhileLoopNode whileLoopNode = new WhileLoopNode(parentStack.peek());
         whileLoopNode.setCondNode((ConditionalExpressionNode)visit(ctx.conditionalExpression()));
         parentStack.push(whileLoopNode);
-        for(int i = 0; i < ctx.whileBlock.getChildCount(); i++){
-            visit(ctx.whileBlock.getChild(i));
-        }
+        visitChildren(ctx.whileBlock);
         parentStack.pop();
         return whileLoopNode;
     }
@@ -314,7 +325,25 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
     @Override
     public AST visitForLoop(ourLangParser.ForLoopContext ctx) {
         ForLoopNode forLoopNode = new ForLoopNode(parentStack.peek());
-        forLoopNode.setInitialize(visit(ctx.));
+
+        //M<sakes sure the intilizations do not appear on the tree as children to the for loop.
+        parentStack.push(null);
+        if(ctx.assignment() == null && ctx.declaration() != null){
+            forLoopNode.setInitialize((DeclarationNode)visit(ctx.declaration()));
+        }
+        else if(ctx.declaration() == null && ctx.assignment() != null){
+            forLoopNode.setInitialize((AssignmentNode)visit(ctx.assignment()));
+        }
+        //Reestablishes the previous stack, hack is over.
+        parentStack.pop();
+        forLoopNode.setCondition((ConditionalExpressionNode)visit(ctx.conditionalExpression()));
+        forLoopNode.setUpdate((ExpressionNode)visit(ctx.expression()));
+
+        parentStack.push(forLoopNode);
+        visitChildren(ctx.forBlock);
+        parentStack.pop();
+
+        return forLoopNode;
     }
 
     /**
