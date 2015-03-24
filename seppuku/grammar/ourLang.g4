@@ -24,7 +24,7 @@ controlblock
 
 loop
     : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block      #whileLoop
-    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' forBlock=block     #forLoop
+    | FOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' forBlock=block     #forLoop
     ;
 
 block

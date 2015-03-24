@@ -20,3 +20,7 @@ else{
     int temp = 34224;
     float temps = 3.2;
 }
+
+while(tmp == 2){
+int i = 2;
+}
