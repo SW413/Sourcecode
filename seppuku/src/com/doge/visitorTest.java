@@ -6,6 +6,7 @@ import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.AST.*;
 import com.doge.types.ValueType;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
             StatementNode tmp = parent.getBody();
 
             parentStack.push(tmp);
-            visit(ctx.getChild(0));
+            visitChildren(ctx);
             parentStack.pop();
             return parent.getBody();
         }
@@ -261,13 +262,24 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
             }
         }
-        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText(), arguments));
+        return new VariableExpressionNode(parentStack.peek(), new Variable(null, ctx.ID().getText(), arguments));
     }
 
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
-        return new ConstantExpressionNode(null, new Variable(null, "PRINT", ctx.argumentlist().getText()));
+        if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class)){
+        VariableExpressionNode tmp = new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", ctx.argumentlist().getText()));
+        return tmp;
+        }
+        ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
+        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
+            if(!ctx.argumentlist().getChild(i).getText().equals(",")) {
+                arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
+            }
+        }
+        return new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", arguments));
     }
+
 
     @Override
     public AST visitValCollectionEntrance(ourLangParser.ValCollectionEntranceContext ctx) {
@@ -334,7 +346,7 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
     public AST visitForLoop(ourLangParser.ForLoopContext ctx) {
         ForLoopNode forLoopNode = new ForLoopNode(parentStack.peek());
 
-        //M<sakes sure the intilizations do not appear on the tree as children to the for loop.
+        //Makes sure the intilizations do not appear on the tree as children to the for loop.
         parentStack.push(null);
         if(ctx.assignment() == null && ctx.declaration() != null){
             forLoopNode.setInitialize((DeclarationNode)visit(ctx.declaration()));
@@ -360,8 +372,14 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
      */
     @Override
     public AST visitControlblock(ourLangParser.ControlblockContext ctx) {
-           ConditionalNode conditionalNode = new ConditionalNode(parentStack.peek(),
-                                                                (ConditionalExpressionNode) visit(ctx.conditionalExpression(0)));
+        AST parent = parentStack.peek();
+
+        //Makes sure the intilizations do not appear on the tree as children to the for loop.
+        parentStack.push(null);
+
+        ConditionalNode conditionalNode = new ConditionalNode(parent, (ConditionalExpressionNode) visit(ctx.conditionalExpression(0)));
+        parentStack.pop();
+        //Reestablishes the previous stack, hack is over.
 
         parentStack.push(conditionalNode);
         for(int i = 0; i < ctx.ifBlock.getChildCount();i++)
