@@ -288,19 +288,24 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
             conditionalNode.AddIfElse(tmp);}
         }*/
         //Find the conditionalExpressions to fill in the IFElses.
-        for(int i = 5; i < ctx.getChildCount();i++) {
-            if (ctx.getChild(i).getClass() == ourLangParser.SingleCondExprContext.class) {
-                ConditionalNode tmp = new ConditionalNode(parentStack.peek(), (ConditionalExpressionNode) visit(ctx.getChild(i)));
-                parentStack.push(tmp);
-                visit(ctx.getChild(i + 2));
-                parentStack.pop();
-                conditionalNode.AddIfElse(tmp);
+        if(ctx.elseIfBlock != null) {
+            for (int i = 5; i < ctx.getChildCount(); i++) {
+                if (ctx.getChild(i).getClass() == ourLangParser.SingleCondExprContext.class) {
+                    ConditionalNode tmp = new ConditionalNode(null, (ConditionalExpressionNode) visit(ctx.getChild(i)));
+                    parentStack.push(tmp);
+                    visit(ctx.getChild(i + 2));
+                    parentStack.pop();
+                    conditionalNode.AddIfElse(tmp);
+                }
             }
         }
         conditionalNode.setDoneWithIf(true);
+        if(ctx.elseBlock != null){
         for(int i = 0; i < ctx.elseBlock.getChildCount();i++)
             visit(ctx.elseBlock.getChild(i));
+        }
         parentStack.pop();
+
         return conditionalNode;
     }
 
