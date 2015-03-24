@@ -439,8 +439,18 @@ public class ourLangParser extends Parser {
 	}
 
 	public static class LoopContext extends ParserRuleContext {
+		public LoopContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_loop; }
+	 
+		public LoopContext() { }
+		public void copyFrom(LoopContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class WhileLoopContext extends LoopContext {
 		public BlockContext whileBlock;
-		public BlockContext forBlock;
 		public TerminalNode WHILE() { return getToken(ourLangParser.WHILE, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -449,9 +459,24 @@ public class ourLangParser extends Parser {
 			return getRuleContext(ConditionalExpressionContext.class,0);
 		}
 		public TerminalNode BOOLVAL() { return getToken(ourLangParser.BOOLVAL, 0); }
+		public WhileLoopContext(LoopContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitWhileLoop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ForLoopContext extends LoopContext {
+		public BlockContext forBlock;
 		public TerminalNode FOR() { return getToken(ourLangParser.FOR, 0); }
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
+		}
+		public ConditionalExpressionContext conditionalExpression() {
+			return getRuleContext(ConditionalExpressionContext.class,0);
 		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -459,13 +484,10 @@ public class ourLangParser extends Parser {
 		public DatatypeContext datatype() {
 			return getRuleContext(DatatypeContext.class,0);
 		}
-		public LoopContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_loop; }
+		public ForLoopContext(LoopContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitLoop(this);
+			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitForLoop(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -478,6 +500,7 @@ public class ourLangParser extends Parser {
 			setState(149);
 			switch (_input.LA(1)) {
 			case WHILE:
+				_localctx = new WhileLoopContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(123);
@@ -502,10 +525,11 @@ public class ourLangParser extends Parser {
 				setState(129);
 				match(T__4);
 				setState(130);
-				((LoopContext)_localctx).whileBlock = block();
+				((WhileLoopContext)_localctx).whileBlock = block();
 				}
 				break;
 			case FOR:
+				_localctx = new ForLoopContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(131);
@@ -555,7 +579,7 @@ public class ourLangParser extends Parser {
 				setState(147);
 				match(T__4);
 				setState(148);
-				((LoopContext)_localctx).forBlock = block();
+				((ForLoopContext)_localctx).forBlock = block();
 				}
 				break;
 			default:
