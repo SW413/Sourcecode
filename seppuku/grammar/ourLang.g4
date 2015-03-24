@@ -23,8 +23,8 @@ controlblock
     ;
 
 loop
-    : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block
-    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' forBlock=block
+    : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block      #whileLoop
+    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' forBlock=block     #forLoop
     ;
 
 block

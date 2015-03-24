@@ -265,6 +265,11 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 null);
     }
 
+    @Override
+    public AST visitLoop(ourLangParser.LoopContext ctx) {
+        return super.visitLoop(ctx);
+    }
+
     /**
      * ControlBlocks
      *
