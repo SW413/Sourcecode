@@ -30,9 +30,11 @@ for(int i = 4; i <= 20; i++)
 int a = 2;
 int b = 3;
 }
-int i = 8;
+int i = dinMor(5, 3);
+int i = 5;
 for(i = 3; i <= 20; i++)
 {
 if(i == 7){int a = 3;}
 else{ tmp = a;}
 }
+

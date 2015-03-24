@@ -85,6 +85,8 @@ public class TypeParser {
 
     public static ValueType parseValueType(String datatype) {
         switch (datatype) {
+            case "void":
+                return ValueType.VOID;
             case "int":
                 return ValueType.INT;
             case "int16":

@@ -8,6 +8,7 @@ import com.doge.AST.*;
 import com.doge.types.ValueType;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Stack;
 
 
@@ -253,7 +254,14 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitCustomFunc(ourLangParser.CustomFuncContext ctx) {
-        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.argumentlist().getText()));
+        ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
+
+        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
+            if(!ctx.argumentlist().getChild(i).getText().equals(",")) {
+                arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
+            }
+        }
+        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText(), arguments));
     }
 
     @Override

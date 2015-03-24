@@ -1,6 +1,8 @@
 package com.doge.AST;
 
 import com.doge.types.ValueType;
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,14 +12,20 @@ import java.util.Arrays;
 public class Variable {
     private ValueType datatype;
     private String id;
-    private ArrayList<String> arguments;
+    private ArrayList<ExpressionNode> arguments;
+    private String printArgument;
     private int[] entrance;
+
+    public Variable(ValueType datatype, String id, ArrayList<ExpressionNode> arguments){
+        this.datatype = datatype;
+        this.id = id;
+        this.arguments = arguments;
+    }
 
     public Variable(ValueType datatype, String id, String arguments) {
         this.datatype = datatype;
         this.id = id;
-        //TODO måske argumenter som variables?
-        this.arguments = new ArrayList<String>(Arrays.asList(arguments.split(",")));
+        this.printArgument = arguments;
     }
 
     public Variable(ValueType datatype, String id, int[] entrance) {
@@ -37,7 +45,7 @@ public class Variable {
 
     public String getId() { return this.id; }
 
-    public ArrayList<String> getArguments() {
+    public ArrayList<ExpressionNode> getArguments() {
         return arguments;
     }
 
