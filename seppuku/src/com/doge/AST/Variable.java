@@ -14,7 +14,7 @@ public class Variable {
     private String id;
     private ArrayList<ExpressionNode> arguments;
     private String printArgument;
-    private int[] entrance;
+    private CollectionCoordinateNode entrance;
 
     public Variable(ValueType datatype, String id, ArrayList<ExpressionNode> arguments){
         this.datatype = datatype;
@@ -28,7 +28,7 @@ public class Variable {
         this.printArgument = arguments;
     }
 
-    public Variable(ValueType datatype, String id, int[] entrance) {
+    public Variable(ValueType datatype, String id, CollectionCoordinateNode entrance) {
         this.datatype = datatype;
         this.id = id;
         this.entrance = entrance;
@@ -49,7 +49,7 @@ public class Variable {
         return arguments;
     }
 
-    public int[] getEntrance() {
+    public CollectionCoordinateNode getEntrance() {
         return entrance;
     }
 }

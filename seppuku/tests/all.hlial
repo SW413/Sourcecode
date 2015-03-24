@@ -1,5 +1,5 @@
-include <randomstuff.lib>
-include <morerandomstuff.somelib>
+include <tests/simple.hlial>
+include <tests/while.hlial>
 
 void customPrintMatrix( matrix<float> a) {
     print("This is a custom matrix print");
@@ -16,8 +16,10 @@ matrix<float> matrix1 = [1, 0, 1;
                          2, 5, 1;
                          0, 3, 1];
 
+rvec<int> vec1 = [2, 4, 5];
+
 for(int i = 1; i <= 3; i++) {
-	matrix1[i,i] = i + 23;
+	matrix1[dinMor(2),i] = i + 23;
 }
 
 

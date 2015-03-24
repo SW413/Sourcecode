@@ -1,26 +1,24 @@
-package com.doge;
+package com.doge.AST;
 
 import com.doge.types.AssignmentOperatorType;
-import com.doge.types.EntranceParser;
 import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.AST.*;
-import com.doge.types.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Vector;
 
 
 /**
  * Created by michno on 18/3/15.
  **/
-public class visitorTest extends ourLangBaseVisitor<AST> {
+public class visitorAST extends ourLangBaseVisitor<AST> {
 
     private AST ast;
     private Stack<AST> parentStack = new Stack<AST>();
-    public visitorTest(AST ast){
+    public visitorAST(AST ast){
         this.ast = ast;
     }
 
@@ -45,13 +43,15 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
      * Importing, functiondecls, and statements
      *
      */
+
+    //TODO currently filepath is relative to compiler location... maybe it should be relative to sourcecode location
     @Override
     public AST visitImporting(ourLangParser.ImportingContext ctx) {
         TopNode tmp = (TopNode)parentStack.peek();
         if (tmp.getImports() == null)
             tmp.setImports(new ImportNode(tmp));
         parentStack.push(tmp.getImports());
-        visitChildren(ctx);
+        ((ImportNode) parentStack.peek()).addFile(ctx.LIBRARY().getText());
         parentStack.pop();
         return tmp.getImports();
     }
@@ -193,6 +193,13 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
                 (ExpressionNode) visit(ctx.expression()));
     }
 
+    @Override
+    public AST visitEntranceCoordinate(ourLangParser.EntranceCoordinateContext ctx) {
+        return new CollectionCoordinateNode(null,
+                (ExpressionNode) visit(ctx.value(0)),
+                (ExpressionNode) visit(ctx.value(1)));
+    }
+
     /**
      * Assignment
      *
@@ -218,13 +225,17 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitCollectionEntranceAssignment(ourLangParser.CollectionEntranceAssignmentContext ctx) {
-        return new AssignmentNode(
-                parentStack.peek(),
+        AST tmp = parentStack.peek();
+        parentStack.push(null);
+        AssignmentNode assignment = new AssignmentNode(
+                tmp,
                 new Variable(null,
                         ctx.collectionEntrance().ID().getText(),
-                        EntranceParser.ParseEntrance(ctx.collectionEntrance().entranceCoordinate().getText())),
+                        (CollectionCoordinateNode) visit(ctx.collectionEntrance().entranceCoordinate())),
                 TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
                 (ExpressionNode) visit(ctx.expression()));
+        parentStack.pop();
+        return assignment;
     }
 
     /**
@@ -241,10 +252,27 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
         return new ConstantExpressionNode(null, ctx.constant().getText());
     }
 
+    //This is bad and I should feel bad
     @Override
     public AST visitValList(ourLangParser.ValListContext ctx) {
-        //TODO bedre repræsentation af valList!!
-        return new ConstantExpressionNode(null, ctx.getText());
+        MatrixValNode matrix = new MatrixValNode(null);
+
+        //Visit all rows
+        for (ourLangParser.ValueListContext valueListContext : ctx.valueList()) {
+            VectorValNode row = new VectorValNode(null);
+            //Visit all values
+            for(ourLangParser.ValueContext valueContext : valueListContext.value()) {
+                row.addValue((ExpressionNode) visit(valueContext));
+            }
+            matrix.addRow(row);
+        }
+
+        //Return matrixNode if more than 1 row exists
+        if (matrix.getRows().size()>1)
+            return matrix;
+
+        //Return vectorNode if only one row exists
+        return matrix.getRows().get(0);
     }
 
     @Override
@@ -288,7 +316,11 @@ public class visitorTest extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitCollectionEntrance(ourLangParser.CollectionEntranceContext ctx) {
-        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText(), ctx.entranceCoordinate().getText()));
+        return new VariableExpressionNode(null,
+                new Variable(null,
+                        ctx.ID().getText(),
+                        (CollectionCoordinateNode) visit(ctx.entranceCoordinate()))
+        );
     }
 
     @Override
