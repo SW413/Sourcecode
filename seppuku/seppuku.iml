@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/.babun/cygwin/usr/local/lib/antlr-4.5-complete.jar!/" />
+          <root url="jar://C:/Babun/.babun/cygwin/usr/local/lib/antlr-4.5-complete.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
