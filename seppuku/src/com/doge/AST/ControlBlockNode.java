@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 import java.util.ArrayList;
 
 /**
@@ -21,5 +23,10 @@ public class ControlBlockNode extends StatementNode {
 
     public void setElse(ConditionalNode elseNode) {
         this.elseNode = elseNode;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitControlBlockNode(this);
+        else return node.visitChildren(this);
     }
 }

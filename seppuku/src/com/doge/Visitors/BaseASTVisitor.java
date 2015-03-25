@@ -36,7 +36,7 @@ public class BaseASTVisitor<T> implements IASTVisitor<T> {
     @Override public T visitChildren(AST node){
         T result = null;
         int n = node.getChildCount();
-
+        System.out.println(node);
         for (int i = 0; i < n ; i++) {
             AST child = node.getChild(i);
             result = child.accept(this);

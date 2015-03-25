@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 import java.util.ArrayList;
 
 /**
@@ -57,5 +59,10 @@ public class ConditionalNode extends AST{
 
     public void setBody(StatementNode body) {
         this.body = body;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitConditionalNode(this);
+        else return node.visitChildren(this);
     }
 }

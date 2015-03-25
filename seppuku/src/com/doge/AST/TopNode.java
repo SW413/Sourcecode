@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 import java.util.ArrayList;
 
 /**
@@ -39,5 +41,10 @@ public class TopNode extends AST {
     public void setStatements(AST statements) {
         this.statements = statements;
         //this.addChild(statements);
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitTopNode(this);
+        else return node.visitChildren(this);
     }
 }

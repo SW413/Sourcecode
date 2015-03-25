@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 import java.util.ArrayList;
 
 /**
@@ -21,5 +23,10 @@ public class DeclarationNode extends StatementNode {
 
     public ExpressionNode getExpression() {
         return this.expression;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitDeclarationNode(this);
+        else return node.visitChildren(this);
     }
 }

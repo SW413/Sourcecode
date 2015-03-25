@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 /**
  * Created by michno on 24/3/15.
  */
@@ -15,7 +17,10 @@ public class VariableExpressionNode extends ExpressionNode {
         return variable;
     }
 
-    public void setVariable(Variable variable) {
-        this.variable = variable;
+    public void setVariable(Variable variable) {this.variable = variable;}
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitVariableExpressionNode(this);
+        else return node.visitChildren(this);
     }
 }

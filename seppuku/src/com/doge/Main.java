@@ -41,7 +41,7 @@ public class Main {
 
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
-        abstractSyntaxTree.accept(new SymbolTableFillVisitor(abstractSyntaxTree));
+        abstractSyntaxTree.accept(new SymbolTableFillVisitor(abstractSyntaxTree.getChild(0)));
 
 
         //tree.accept(new visitorChecker(symbolTable));

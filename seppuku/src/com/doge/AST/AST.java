@@ -1,4 +1,5 @@
 package com.doge.AST;
+import com.antlr.ourLangVisitor;
 import com.doge.Visitors.IASTVisitor;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.misc.Interval;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by michno on 19/3/15.
  */
-public class AST  {
+public class AST {
 
     private AST parent;
     private ArrayList<AST> children = new ArrayList<AST>();
@@ -30,7 +31,7 @@ public class AST  {
     }
 
     public AST getChild(int i) {
-        return this.children.get(i);
+         return this.children.get(i);
     }
 
     public void addChild(AST node) {
@@ -41,7 +42,8 @@ public class AST  {
 
 
     public <T> T accept(IASTVisitor<? extends T> node) {
-        return node.visit(this);
+        if ( node instanceof IASTVisitor) return node.VisitTopNode((TopNode)this.getChild(0));
+        else return node.visitChildren(this);
     }
 
     public String getText() {

@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 /**
  * Created by michno on 23/3/15.
  */
@@ -13,5 +15,10 @@ public class FunctionReturnNode extends StatementNode {
 
     public ExpressionNode getExpression() {
         return expression;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitFunctionReturnNode(this);
+        else return node.visitChildren(this);
     }
 }

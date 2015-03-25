@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 /**
  * Created by Søren on 24-03-2015.
  */
@@ -26,5 +28,10 @@ public class WhileLoopNode extends StatementNode {
 
     public WhileLoopNode(AST parent) {
         super(parent);
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitWhileLoopNode(this);
+        else return node.visitChildren(this);
     }
 }

@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 import java.util.ArrayList;
 
 /**
@@ -22,5 +24,10 @@ public class MatrixValNode extends ExpressionNode {
 
     public void addRow(VectorValNode row){
         this.rows.add(row);
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitMatrixValNode(this);
+        else return node.visitChildren(this);
     }
 }

@@ -1,5 +1,6 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
 import com.doge.types.ValueType;
 
 
@@ -50,5 +51,10 @@ public class FunctionDclNode extends AST {
 
     public void setFunctionReturn(FunctionReturnNode functionReturn) {
         this.functionReturn = functionReturn;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitFunctionDclNode(this);
+        else return node.visitChildren(this);
     }
 }

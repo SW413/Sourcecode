@@ -1,5 +1,7 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -22,6 +24,11 @@ public class ImportNode extends AST {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitImportNode(this);
+        else return node.visitChildren(this);
     }
 
     public ArrayList<FileReader> getInputFiles() {

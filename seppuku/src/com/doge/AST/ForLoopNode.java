@@ -1,5 +1,6 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
 import com.doge.types.LoopType;
 
 /**
@@ -46,5 +47,10 @@ public class ForLoopNode extends StatementNode{
 
     public void setUpdate(ExpressionNode update) {
         this.update = update;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitForLoopNode(this);
+        else return node.visitChildren(this);
     }
 }
