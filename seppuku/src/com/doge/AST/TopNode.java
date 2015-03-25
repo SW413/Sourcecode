@@ -29,6 +29,10 @@ public class TopNode extends AST {
         return functionDeclarations.get(i);
     }
 
+    public ArrayList<FunctionDclNode> getFunctionDeclarations() {
+        return functionDeclarations;
+    }
+
     public void addFunctionDeclaration(FunctionDclNode functionDeclaration) {
         this.functionDeclarations.add(functionDeclaration);
         //this.addChild(functionDeclaration);

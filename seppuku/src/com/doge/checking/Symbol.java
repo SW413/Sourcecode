@@ -1,5 +1,6 @@
 package com.doge.checking;
 
+import com.doge.AST.Variable;
 import com.doge.types.ValueType;
 
 /**
@@ -8,20 +9,18 @@ import com.doge.types.ValueType;
 public class Symbol {
 
     protected Scope scope; // the owning scope
-    protected String name;
-    protected ValueType type;
+    protected Variable variable;
 
-    public Symbol(String name, ValueType type) {
-        this.name = name;
-        this.type = type;
+    public Symbol(Variable variable) {
+        this.variable = variable;
     }
 
     public String getName() {
-        return name;
+        return variable.getId();
     }
 
     public ValueType getType() {
-        return type;
+        return variable.getDatatype();
     }
 
     public void setScope(Scope scope) {
@@ -37,7 +36,7 @@ public class Symbol {
     }
 
     public String toString() {
-        if (type != null) return '<' + getName() + ":" + type + '>';
+        if (variable.getDatatype() != null) return '<' + getName() + ":" + getType() + '>';
         return getName();
     }
 }

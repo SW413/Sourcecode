@@ -8,7 +8,7 @@ public class FunctionCallNode extends ExpressionNode {
 
     private ArrayList<ExpressionNode> argumentList;
 
-    public FunctionCallNode(AST parent, Object lValue, OperatorType operatorType, Object rValue) {
+    public FunctionCallNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue) {
         super(parent, lValue, operatorType, rValue);
     }
 

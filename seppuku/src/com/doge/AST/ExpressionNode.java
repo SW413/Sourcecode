@@ -7,19 +7,19 @@ import com.doge.types.OperatorType;
  */
 public class ExpressionNode extends StatementNode {
 
-    private Object lValue;
+    private ExpressionNode lValue;
     private OperatorType operatorType;
-    private Object rValue;
+    private ExpressionNode rValue;
 
-    public Object getLValue(){
+    public ExpressionNode getLValue(){
         return this.lValue;
     }
     public OperatorType getOperatorType() { return this.operatorType; }
-    public Object getRValue(){
+    public ExpressionNode getRValue(){
         return this.rValue;
     }
 
-    public ExpressionNode(AST parent, Object lValue, OperatorType operatorType, Object rValue) {
+    public ExpressionNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue) {
         super(parent);
         this.lValue = lValue;
         this.operatorType = operatorType;

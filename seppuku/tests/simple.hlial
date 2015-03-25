@@ -1,40 +1,13 @@
-int dinMor(int a, int b) {
-    return a + b;
+int foo(int aF, int bF) {
+    int iShouldNotBeGlobal = 1 + aF + bF;
+    return iShouldNotBeGlobal;
 }
 
-int tmp = 2;
-matrix<int> a = [2,1,2;1,2,2];
-
-int16 res = tmp + 2;
-
-tmp = 4;
-
-a[1,1] = 2;
-
-if(tmp == 2){
-    int hej = 2;
-    int haj = 3;
-}else if(tmp == 3){int hey = 3; int Michno = 2; int Cawlin = 420;}
-else if(tmp ==3){int troels = 3; int susanne = 4;}
-else{
-    int hej = 2;
-    int temp = 34224;
-    float temps = 3.2;
-}
-
-while(tmp == 2){
-int i = 2;
-}
-for(int i = 4; i <= 20; i++)
-{
 int a = 2;
-int b = 3;
-}
-int i = dinMor(5, 3);
-int i = 5;
-for(i = 3; i <= 20; i++)
-{
-if(i == 7){int a = 3;}
-else{ tmp = a;}
-}
 
+float b = 3.2;
+
+matrix<int> d = [1, 2, 4;
+                 2, 3, 5];
+
+int res = a + 3;

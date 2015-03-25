@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class ConditionalExpressionNode extends ExpressionNode {
 
-    public ConditionalExpressionNode(AST parent, Object lValue, OperatorType operatorType, Object rValue) {
+    public ConditionalExpressionNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue) {
         super(parent, lValue, operatorType, rValue);
     }
     public <T> T accept(IASTVisitor<? extends T> node) {

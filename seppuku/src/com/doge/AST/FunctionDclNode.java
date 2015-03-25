@@ -33,6 +33,10 @@ public class FunctionDclNode extends AST {
         return this.parameters.get(i);
     }
 
+    public ArrayList<Variable> getParameters() {
+        return parameters;
+    }
+
     public int getParameterCount(){
         return this.parameters.size();
     }

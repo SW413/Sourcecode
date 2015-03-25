@@ -1,5 +1,6 @@
-package com.doge.AST;
+package com.doge.Visitors;
 
+import com.doge.AST.*;
 import com.doge.types.AssignmentOperatorType;
 import com.doge.types.TypeParser;
 import com.antlr.*;
@@ -233,7 +234,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     /**
      * Used for declaration of complex datatypes.
-     * @see com.doge.AST.visitorAST#visitPrimitiveDecl
+     * @see visitorAST#visitPrimitiveDecl
      *
      * @param ctx
      * @return
@@ -393,30 +394,30 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     public ExpressionNode visitAddExpr(ourLangParser.AddExprContext ctx) {
         return new ExpressionNode(
                 null,
-                visit(ctx.expression(0)),
+                (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
-                visit(ctx.expression(1)));
+                (ExpressionNode) visit(ctx.expression(1)));
     }
 
     @Override
     public ExpressionNode visitMulExpr(ourLangParser.MulExprContext ctx) {
         return new ExpressionNode(
                 null,
-                visit(ctx.expression(0)),
+                (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
-                visit(ctx.expression(1)));
+                (ExpressionNode) visit(ctx.expression(1)));
     }
 
     @Override
     public ExpressionNode visitParenExpr(ourLangParser.ParenExprContext ctx) {
-        return new ExpressionNode(null, visit(ctx.expression()), null, null);
+        return new ExpressionNode(null, (ExpressionNode) visit(ctx.expression()), null, null);
     }
 
     @Override
     public ExpressionNode visitPostIDExpr(ourLangParser.PostIDExprContext ctx) {
         return new ExpressionNode(
                 null,
-                new Variable(null, ctx.ID().getText()),
+                new VariableExpressionNode(null, new Variable(null, ctx.ID().getText())),
                 TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
                 null);
     }
@@ -509,9 +510,9 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     public AST visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx) {
         ConditionalExpressionNode tmp =  new ConditionalExpressionNode(
                 null,
-                visit(ctx.expression(0)),
+                (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
-                visit(ctx.expression(1)));
+                (ExpressionNode) visit(ctx.expression(1)));
 
         return tmp;
     }

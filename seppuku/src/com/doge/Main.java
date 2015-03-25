@@ -2,7 +2,7 @@ package com.doge;
 
 import com.antlr.*;
 import com.doge.AST.AST;
-import com.doge.AST.visitorAST;
+import com.doge.Visitors.visitorAST;
 import com.doge.Visitors.SymbolTableFillVisitor;
 import com.doge.checking.SymbolTable;
 import org.antlr.v4.runtime.*;
@@ -41,7 +41,8 @@ public class Main {
 
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
-        abstractSyntaxTree.accept(new SymbolTableFillVisitor(abstractSyntaxTree.getChild(0)));
+        abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable));
+        System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 
 
         //tree.accept(new visitorChecker(symbolTable));
