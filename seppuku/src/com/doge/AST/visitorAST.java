@@ -3,28 +3,40 @@ package com.doge.AST;
 import com.doge.types.AssignmentOperatorType;
 import com.doge.types.TypeParser;
 import com.antlr.*;
-import com.doge.AST.*;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.Vector;
 
 
 /**
- * Created by michno on 18/3/15.
+ * Implementation of the visitor pattern that generates an abstract syntax tree,
+ * from an ANTLR parse tree.
+ *
+ * @author michno
+ * @since 2015-03-19
  **/
 public class visitorAST extends ourLangBaseVisitor<AST> {
 
     private AST ast;
+    //Stack to keep track of parents when building the AST
     private Stack<AST> parentStack = new Stack<AST>();
+
+    //Constructor
     public visitorAST(AST ast){
         this.ast = ast;
     }
 
 
     /**
-     * TopLevel
+     * Generate a {@link com.doge.AST.TopNode} and link it to the {@link com.doge.AST.AST} tree.
+     * Then push said TopNode to the parent stack and visit children.
+     * Finally pop the TopNode from the parent stack,
+     * and check if the parent stack is balanced.
+     * No other nodes will be generated after the children are visited.
+     *
+     * @param ctx   the context which the visitor visits
+     * @return      a {@link com.doge.AST.TopNode}
      */
     @Override
     public AST visitTopLevel(ourLangParser.TopLevelContext ctx) {
@@ -39,11 +51,18 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         return top/*kek*/;
     }
 
-    /**
-     * Importing, functiondecls, and statements
-     *
-     */
 
+    /**
+     * Set ImportNode on TopNode and add filepaths,
+     * to all the files which should be included, given
+     * by the sourcecode.
+     * Note: only makes a new include node if TopNode
+     * does not already have one, otherwise it just uses
+     * the already excisting ImportNode
+     *
+     * @param ctx
+     * @return      {@link com.doge.AST.ImportNode} of the {@link com.doge.AST.TopNode}
+     */
     //TODO currently filepath is relative to compiler location... maybe it should be relative to sourcecode location
     @Override
     public AST visitImporting(ourLangParser.ImportingContext ctx) {
@@ -56,6 +75,15 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         return tmp.getImports();
     }
 
+    /**
+     * Generates a {@link com.doge.AST.FunctionDclNode} and links it to the TopNode,
+     * using the parent stack. Then utilises the parent stack, and visits the functiondeclaration's children.
+     * First the parameter list, then the function body.
+     * It also makes the {@link com.doge.AST.Variable} consisting of the functions return type and the function name.
+     *
+     * @param ctx
+     * @return      a {@link com.doge.AST.FunctionDclNode}
+     */
     @Override
     public AST visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
         Variable funcVariable = new Variable(TypeParser.parseValueType(ctx.functiondatatype().getText()), ctx.ID().getText());
@@ -69,9 +97,32 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         return functionDclNode;
     }
 
+    //TODO doc comment...
     @Override
     public AST visitStatement(ourLangParser.StatementContext ctx) {
-        if(parentStack.peek().getClass() == ForLoopNode.class){
+
+        //Visit through TopLevel
+        if (parentStack.peek().getClass() == TopNode.class) {
+            TopNode tmp = (TopNode)parentStack.peek();
+            if (tmp.getStatements() == null)
+                tmp.setStatements(new StatementNode(tmp));
+            parentStack.push(tmp.getStatements());
+            visitChildren(ctx);
+            parentStack.pop();
+            return tmp.getStatements();
+        }
+        //Visit through FunctionDeclaration
+        else if(parentStack.peek().getClass() == FunctionDclNode.class) {
+            FunctionDclNode tmp = (FunctionDclNode)parentStack.peek();
+            if (tmp.getFunctionBody() == null)
+                tmp.setFunctionBody(new StatementNode(tmp));
+            parentStack.push(tmp.getFunctionBody());
+            visitChildren(ctx);
+            parentStack.pop();
+            return tmp.getFunctionBody();
+        }
+        //Visit through ForLoop
+        else if(parentStack.peek().getClass() == ForLoopNode.class){
             ForLoopNode parent = (ForLoopNode) parentStack.peek();
             if(parent.getBody() == null){
                 parent.setBody(new StatementNode(null));
@@ -83,6 +134,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             parentStack.pop();
             return parent.getBody();
         }
+        //Visit through WhileLoop
         else if(parentStack.peek().getClass() == WhileLoopNode.class){
             WhileLoopNode parent = (WhileLoopNode) parentStack.peek();
             if(parent.getBody() == null){
@@ -95,23 +147,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             parentStack.pop();
             return parent.getBody();
         }
-        else if (parentStack.peek().getClass() == TopNode.class) {
-            TopNode tmp = (TopNode)parentStack.peek();
-            if (tmp.getStatements() == null)
-                tmp.setStatements(new StatementNode(tmp));
-            parentStack.push(tmp.getStatements());
-            visitChildren(ctx);
-            parentStack.pop();
-            return tmp.getStatements();
-        } else if(parentStack.peek().getClass() == FunctionDclNode.class) {
-            FunctionDclNode tmp = (FunctionDclNode)parentStack.peek();
-            if (tmp.getFunctionBody() == null)
-                tmp.setFunctionBody(new StatementNode(tmp));
-            parentStack.push(tmp.getFunctionBody());
-            visitChildren(ctx);
-            parentStack.pop();
-            return tmp.getFunctionBody();
-        }
+        //Visit through ConditionalBlock
         else if(parentStack.peek().getClass() == ConditionalNode.class ){
             ConditionalNode parent = (ConditionalNode) parentStack.peek();
 
@@ -127,7 +163,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
                 parent.setElseBody(tmp);
                 return tmp;
-        }
+            }
+
             if(parent.getBody() == null){
                 parent.setBody(new StatementNode(parent));
             }
@@ -136,21 +173,25 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             parentStack.push(tmp);
             visit(ctx.getChild(0));
             parentStack.pop();
-
             parent.setBody(tmp);
             return tmp;
         }
+        //If all else fails
         return null;
     }
 
     /**
-     * Related to functions
+     * Parses the parameters as {@link com.doge.AST.Variable}s and sets the on a {@link com.doge.AST.FunctionDclNode},
+     * using the parent stack.
      *
+     * @param ctx
+     * @return
      */
     @Override
     public AST visitParameterlist(ourLangParser.ParameterlistContext ctx) {
         FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
         for (int i = 0; i < ctx.getChildCount(); i++){
+            //Don't parse the commas separating the parameters
             if (!ctx.getChild(i).getText().equals(",")) {
                 tmp.setParameter(new Variable(
                         TypeParser.parseValueType(ctx.getChild(i).getChild(0).getText()),
@@ -160,11 +201,13 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         return super.visitParameterlist(ctx);
     }
 
-    @Override
-    public AST visitFunctionbody(ourLangParser.FunctionbodyContext ctx) {
-        return visitChildren(ctx);
-    }
-
+    /**
+     * Generate {@link com.doge.AST.FunctionReturnNode} and set it on the {@link com.doge.AST.FunctionDclNode}
+     * provided through the parent stack
+     *
+     * @param ctx
+     * @return
+     */
     @Override
     public AST visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
         FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
@@ -173,8 +216,11 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     /**
-     * Decls
+     * Generates a {@link com.doge.AST.DeclarationNode} containing a {@link com.doge.AST.Variable} representation
+     * of the declared variable, and an {@link com.doge.AST.ExpressionNode} as the value of the variable.
      *
+     * @param ctx
+     * @return
      */
     @Override
     public DeclarationNode visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
@@ -185,6 +231,13 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     }
 
+    /**
+     * Used for declaration of complex datatypes.
+     * @see com.doge.AST.visitorAST#visitPrimitiveDecl
+     *
+     * @param ctx
+     * @return
+     */
     @Override
     public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
         return new DeclarationNode(
@@ -193,6 +246,13 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 (ExpressionNode) visit(ctx.expression()));
     }
 
+    /**
+     * Generates a {@link com.doge.AST.CollectionCoordinateNode} with the coordinates to a complex datatype variable.
+     * The coordinates are represented as {@link com.doge.AST.ExpressionNode}s.
+     *
+     * @param ctx
+     * @return
+     */
     @Override
     public AST visitEntranceCoordinate(ourLangParser.EntranceCoordinateContext ctx) {
         return new CollectionCoordinateNode(null,
@@ -200,10 +260,6 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 (ExpressionNode) visit(ctx.value(1)));
     }
 
-    /**
-     * Assignment
-     *
-     */
 
     @Override
     public AST visitValassignment(ourLangParser.ValassignmentContext ctx) {
@@ -252,7 +308,14 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         return new ConstantExpressionNode(null, ctx.constant().getText());
     }
 
-    //This is bad and I should feel bad
+    /**
+     * Parses a value list in {@link com.doge.AST.VectorValNode}s,
+     * and if there exists more than one "row", it collects the {@link com.doge.AST.VectorValNode}s
+     * in a single {@link com.doge.AST.MatrixValNode}.
+     *
+     * @param ctx
+     * @return      Either a {@link com.doge.AST.MatrixValNode} or a {@link com.doge.AST.VectorValNode}
+     */
     @Override
     public AST visitValList(ourLangParser.ValListContext ctx) {
         MatrixValNode matrix = new MatrixValNode(null);
@@ -273,12 +336,6 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
         //Return vectorNode if only one row exists
         return matrix.getRows().get(0);
-    }
-
-    @Override
-    public AST visitValFuncCall(ourLangParser.ValFuncCallContext ctx) {
-
-        return visit(ctx.functioncall());
     }
 
     @Override
@@ -381,10 +438,10 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         //Makes sure the intilizations do not appear on the tree as children to the for loop.
         parentStack.push(null);
         if(ctx.assignment() == null && ctx.declaration() != null){
-            forLoopNode.setInitialize((DeclarationNode)visit(ctx.declaration()));
+            forLoopNode.setInitialize(visit(ctx.declaration()));
         }
         else if(ctx.declaration() == null && ctx.assignment() != null){
-            forLoopNode.setInitialize((AssignmentNode)visit(ctx.assignment()));
+            forLoopNode.setInitialize(visit(ctx.assignment()));
         }
         //Reestablishes the previous stack, hack is over.
         parentStack.pop();
