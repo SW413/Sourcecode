@@ -3,6 +3,7 @@ package com.doge;
 import com.antlr.*;
 import com.doge.AST.AST;
 import com.doge.AST.visitorAST;
+import com.doge.Visitors.SymbolTableFillVisitor;
 import com.doge.checking.SymbolTable;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
@@ -40,6 +41,7 @@ public class Main {
 
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
+        abstractSyntaxTree.accept(new SymbolTableFillVisitor(abstractSyntaxTree));
 
 
         //tree.accept(new visitorChecker(symbolTable));
