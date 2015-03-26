@@ -12,6 +12,14 @@ public class FunctionCallNode extends ExpressionNode {
         super(parent, lValue, operatorType, rValue);
     }
 
+    public ArrayList<ExpressionNode> getArgumentList() {
+        return argumentList;
+    }
+
+    public void setArgumentList(ArrayList<ExpressionNode> argumentList) {
+        this.argumentList = argumentList;
+    }
+
     public <T> T accept(IASTVisitor<? extends T> node) {
         if ( node instanceof IASTVisitor) return node.VisitFunctionCallNode(this);
         else return node.visitChildren(this);

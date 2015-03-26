@@ -14,6 +14,14 @@ public class CollectionCoordinateNode extends AST {
         this.coordinates[1] = coordinate2;
     }
 
+    public ExpressionNode[] getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(ExpressionNode[] coordinates) {
+        this.coordinates = coordinates;
+    }
+
     public <T> T accept(IASTVisitor<? extends T> node) {
         if ( node instanceof IASTVisitor) return node.VisitCollectionCoordinateNode(this);
         else return node.visitChildren(this);

@@ -26,8 +26,6 @@ public interface IASTVisitor<T>  {
 
     T VisitConstantExpressionNode(ConstantExpressionNode node);
 
-    T VisitControlBlockNode(ControlBlockNode node);
-
     T VisitDeclarationNode(DeclarationNode node);
 
     T VisitExpressionNode(ExpressionNode node);
