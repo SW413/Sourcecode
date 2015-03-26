@@ -1,10 +1,13 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
-import com.doge.Exceptions.ReDeclarationException;
+import com.doge.ErrorHandling.LanguageError;
+import com.doge.ErrorHandling.ReDeclarationError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
+
+import java.util.ArrayList;
 
 /**
  * Created by Søren on 25-03-2015.
@@ -12,8 +15,10 @@ import com.doge.types.ScopeType;
 public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     private SymbolTable symbolTable;
-    public SymbolTableFillVisitor(SymbolTable symbolTable) {
+    private ArrayList<LanguageError> errors;
+    public SymbolTableFillVisitor(SymbolTable symbolTable, ArrayList<LanguageError> errors) {
         this.symbolTable = symbolTable;
+        this.errors = errors;
     }
 
     @Override
@@ -93,8 +98,8 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitDeclarationNode(DeclarationNode node) {
         Symbol tmpSym = symbolTable.currentScope().resolve(node.getVariable().getId());
         if (tmpSym != null) {
-            System.out.println("Variable " + node.getVariable() + " in scope " + symbolTable.currentScope() +
-                    "\n   already declared as " + tmpSym + " in scope " + tmpSym.getScope());
+            errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope()));
+            // System.out.println("Variable " + node.getVariable() + " in scope " + symbolTable.currentScope() + "\n   already declared as " + tmpSym + " in scope " + tmpSym.getScope());
         } else {
             symbolTable.currentScope().define(node.getVariable());
             visit(node.getExpression());

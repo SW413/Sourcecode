@@ -5,12 +5,14 @@ import com.doge.AST.AST;
 import com.doge.Visitors.visitorAST;
 import com.doge.Visitors.SymbolTableFillVisitor;
 import com.doge.checking.SymbolTable;
+import com.doge.ErrorHandling.LanguageError;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -39,9 +41,10 @@ public class Main {
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
 
+        ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
-        abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable));
+        abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 
 
