@@ -52,5 +52,11 @@ public class Variable {
     public CollectionCoordinateNode getEntrance() {
         return entrance;
     }
+
+    @Override
+    public String toString() {
+        if (this.getDatatype() != null) return '<' + getId() + ":" + getDatatype() + '>';
+        return this.getId();
+    }
 }
 

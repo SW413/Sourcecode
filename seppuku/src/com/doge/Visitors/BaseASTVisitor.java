@@ -1,5 +1,6 @@
 package com.doge.Visitors;
 import com.doge.AST.*;
+import com.doge.Exceptions.ReDeclarationException;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;

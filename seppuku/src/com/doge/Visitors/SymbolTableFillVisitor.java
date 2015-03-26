@@ -1,6 +1,7 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
+import com.doge.Exceptions.ReDeclarationException;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
@@ -63,21 +64,19 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitConditionalNode(ConditionalNode node) {
         visit(node.getConditionalExpression());
         symbolTable.pushScope(ScopeType.CONDITIONAL);
-        symbolTable.pushScope(ScopeType.LOCAL);
         visit(node.getBody());
         symbolTable.popScope();
         for (ConditionalNode ifElse : node.getIfElses()) {
             visit(ifElse.getConditionalExpression());
-            symbolTable.pushScope(ScopeType.LOCAL);
+            symbolTable.pushScope(ScopeType.CONDITIONAL);
             visit(ifElse.getBody());
             symbolTable.popScope();
         }
         if(node.getElseBody() != null) {
-            symbolTable.pushScope(ScopeType.LOCAL);
+            symbolTable.pushScope(ScopeType.CONDITIONAL);
             visit(node.getElseBody());
             symbolTable.popScope();
         }
-        symbolTable.popScope();
         return null;
     }
 
@@ -92,8 +91,14 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitDeclarationNode(DeclarationNode node) {
-        symbolTable.currentScope().define(node.getVariable());
-        visit(node.getExpression());
+        Symbol tmpSym = symbolTable.currentScope().resolve(node.getVariable().getId());
+        if (tmpSym != null) {
+            System.out.println("Variable " + node.getVariable() + " in scope " + symbolTable.currentScope() +
+                    "\n   already declared as " + tmpSym + " in scope " + tmpSym.getScope());
+        } else {
+            symbolTable.currentScope().define(node.getVariable());
+            visit(node.getExpression());
+        }
         return null;
     }
 

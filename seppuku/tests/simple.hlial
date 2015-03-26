@@ -11,3 +11,7 @@ matrix<int> d = [1, 2, 4;
                  2, 3, 5];
 
 int res = a + 3;
+if(a == b) {
+ float a = 222.2;
+}
+
