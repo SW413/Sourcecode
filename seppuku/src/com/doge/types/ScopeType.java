@@ -5,5 +5,8 @@ package com.doge.types;
  */
 public enum ScopeType {
     GLOBAL,
-    LOCAL;
+    LOCAL,
+    LOOP,
+    CONDITIONAL,
+    FUNCDECL;
 }

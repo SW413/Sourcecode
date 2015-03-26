@@ -1,4 +1,13 @@
-int tmp = 2;
-float tmpF = 2.2;
+int foo(int aF, int bF) {
+    int iShouldNotBeGlobal = 1 + aF + bF;
+    return iShouldNotBeGlobal;
+}
 
-int16 res = tmp + 2;
+int a = 2;
+
+float b = 3.2;
+
+matrix<int> d = [1, 2, 4;
+                 2, 3, 5];
+
+int res = a + 3;

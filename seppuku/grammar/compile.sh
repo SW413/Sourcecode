@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-find . -type f -not -name '*.g4' -not -name '*.sh' | xargs rm
+#find . -type f -not -name '*.g4' -not -name '*.sh' | xargs rm
 echo "Babun? y/n"
 read ans
 if [[ $ans = 'y' ]]; then

@@ -23,8 +23,8 @@ controlblock
     ;
 
 loop
-    : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block
-    | FOR '(' (datatype? assignment)? ';' conditionalExpression? ';' expression? ')' forBlock=block
+    : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block      #whileLoop
+    | FOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' forBlock=block     #forLoop
     ;
 
 block
@@ -41,12 +41,21 @@ functiondeclaration
     ; 
     
 functionbody
-    : '{' ( statement )* ( 'return' expression ';' )? '}' 
+    : '{' ( statement )* functionreturn? '}'
     ;
 
+functionreturn
+    : 'return' expression ';'
+    ;
+
+
 parameterlist
-    : ((datatype ID | STRING | collectiontype '<' datatype '>' ID)( ',' (datatype ID | STRING | collectiontype '<' datatype '>' ID) )*)?
+    : (parameter( ',' parameter )*)?
     | 
+    ;
+
+parameter
+    : (datatype | complexdatatype ) ID
     ;
 
 functioncall
@@ -125,7 +134,7 @@ constantList
     ;
 
 entranceCoordinate
-    : (ID | INTNUM) ( ',' (ID | INTNUM) )?
+    : value ( ',' value )?
     ;
 
 collectiontype
@@ -175,13 +184,13 @@ VOID: 'void' ;
 
 STRING: '"' .*? '"' ;
 
-SIGN: '-' ;
+SIGN: '-' ;   
+
+PRINT: 'print' ; 
 
 ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
 
-LIBRARY: [a-zA-Z0-9_]+('.')?[a-zA-Z0-9_]*;
-
-PRINT: 'print' ; 
+LIBRARY: [a-zA-Z0-9_\/]+('.')?[a-zA-Z0-9_]*;
 
 //Whitespace and comments
 

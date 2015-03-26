@@ -1,5 +1,6 @@
 package com.doge.AST;
 
+import com.doge.Visitors.IASTVisitor;
 import com.doge.types.ValueType;
 
 
@@ -12,7 +13,8 @@ public class FunctionDclNode extends AST {
 
     private Variable variable;
     private ArrayList<Variable> parameters = new ArrayList<Variable>();
-    private ArrayList<StatementNode> functionBody = new ArrayList<StatementNode>();
+    private StatementNode functionBody;
+    private FunctionReturnNode functionReturn;
 
     public FunctionDclNode(AST parent, Variable variable) {
         super(parent);
@@ -31,7 +33,32 @@ public class FunctionDclNode extends AST {
         return this.parameters.get(i);
     }
 
+    public ArrayList<Variable> getParameters() {
+        return parameters;
+    }
+
     public int getParameterCount(){
         return this.parameters.size();
+    }
+
+    public StatementNode getFunctionBody() {
+        return functionBody;
+    }
+
+    public void setFunctionBody(StatementNode functionBody) {
+        this.functionBody = functionBody;
+    }
+
+    public FunctionReturnNode getFunctionReturn() {
+        return functionReturn;
+    }
+
+    public void setFunctionReturn(FunctionReturnNode functionReturn) {
+        this.functionReturn = functionReturn;
+    }
+
+    public <T> T accept(IASTVisitor<? extends T> node) {
+        if ( node instanceof IASTVisitor) return node.VisitFunctionDclNode(this);
+        else return node.visitChildren(this);
     }
 }

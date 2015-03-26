@@ -26,12 +26,14 @@ public class Scope {
      * This is the entry point for adding new variables
      */
     public void define(Variable variable) {
-        Symbol symbol = new Symbol(variable.getId(), variable.getDatatype());
+        Symbol symbol = new Symbol(variable);
         define(symbol);
     }
-    private void define(Symbol symbol) {
+    public void define(Symbol symbol) {
         symbol.setScope(this);
-        symbolMap.put(symbol.name, symbol);
+        // LOVE DEBUGING THE PRINTF WAY
+        // System.out.println("DEFINE: " + symbol.variable.getId() + " IN " + this);
+        symbolMap.put(symbol.variable.getId(), symbol);
     }
 
     /**
@@ -49,4 +51,8 @@ public class Scope {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return this.type + " " + this.scopeId;
+    }
 }
