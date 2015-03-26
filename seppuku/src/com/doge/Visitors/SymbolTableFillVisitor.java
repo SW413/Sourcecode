@@ -19,7 +19,9 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitTopNode(TopNode node) {
         for (FunctionDclNode FuncDecl : node.getFunctionDeclarations())
             visit(FuncDecl);
+        symbolTable.pushScope(ScopeType.LOCAL);
         visit(node.getStatements());
+        symbolTable.popScope();
         return null;
     }
 
@@ -30,7 +32,8 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         for (Variable variable : node.getParameters()) {
             symbolTable.currentScope().define(variable);
         }
-        visit(node.getFunctionBody());
+        if (node.getFunctionBody() != null)
+            visit(node.getFunctionBody());
         symbolTable.popScope();
         return null;
     }
@@ -38,8 +41,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitForLoopNode(ForLoopNode node) {
         symbolTable.pushScope(ScopeType.LOOP);
-        visit(node.getInitialize());
-        visit(node.getBody());
+        if (node.getInitialize() != null)
+            visit(node.getInitialize());
+        if(node.getBody() != null)
+            visit(node.getBody());
         symbolTable.popScope();
         return null;
     }
@@ -47,7 +52,8 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitWhileLoopNode(WhileLoopNode node) {
         symbolTable.pushScope(ScopeType.LOOP);
-        visit(node.getBody());
+        if(node.getBody() != null)
+            visit(node.getBody());
         symbolTable.popScope();
         return null;
     }
