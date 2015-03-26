@@ -11,14 +11,15 @@ public class ConditionalNode extends AST{
 
     private ConditionalExpressionNode conditionalExpression;
     private StatementNode body;
-    private ArrayList<ConditionalNode> IfElses = new ArrayList<ConditionalNode>();
+    private ArrayList<ConditionalNode> ElseIfs = new ArrayList<ConditionalNode>();
     private StatementNode elseBody;
     private boolean DoneWithIf = false;
 
     public void AddIfElse(ConditionalNode node){
 
-        IfElses.add(node);
+        ElseIfs.add(node);
     }
+
 
     public boolean IsDoneWithIf() {
         return DoneWithIf;
@@ -28,8 +29,8 @@ public class ConditionalNode extends AST{
         this.DoneWithIf = DoneWithIf;
     }
 
-    public ArrayList<ConditionalNode> getIfElses() {
-        return IfElses;
+    public ArrayList<ConditionalNode> getElseIfs() {
+        return ElseIfs;
     }
 
     public ConditionalExpressionNode getConditionalExpression() {

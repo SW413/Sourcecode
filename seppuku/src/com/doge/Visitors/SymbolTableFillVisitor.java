@@ -66,7 +66,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         symbolTable.pushScope(ScopeType.CONDITIONAL);
         visit(node.getBody());
         symbolTable.popScope();
-        for (ConditionalNode ifElse : node.getIfElses()) {
+        for (ConditionalNode ifElse : node.getElseIfs()) {
             visit(ifElse.getConditionalExpression());
             symbolTable.pushScope(ScopeType.CONDITIONAL);
             visit(ifElse.getBody());
