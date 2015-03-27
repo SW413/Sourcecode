@@ -383,7 +383,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitValBool(ourLangParser.ValBoolContext ctx) {
-        return new ConstantExpressionNode(null, ctx.BOOLVAL().getText());
+        return new ConstantExpressionNode(null, Boolean.parseBoolean(ctx.BOOLVAL().getText()));
     }
 
     /**

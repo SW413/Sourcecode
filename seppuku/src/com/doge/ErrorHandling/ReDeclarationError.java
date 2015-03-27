@@ -9,15 +9,16 @@ public class ReDeclarationError extends LanguageError {
     private Symbol symbolExisting;
     private Scope scope;
 
-    public ReDeclarationError(Variable variableReDecl, Symbol symbolExisting, Scope scope) {
+    public ReDeclarationError(Variable variableReDecl, Symbol symbolExisting, Scope scope, int lineNum) {
         this.variableReDecl = variableReDecl;
         this.symbolExisting = symbolExisting;
         this.scope = scope;
-        this.Error = ErrorType.ReDeclaration; // Dobbelt konfekt både at bruge enum ting og klasse type ??
+        this.errorType = ErrorType.ReDeclaration; // Dobbelt konfekt både at bruge enum ting og klasse type ??
+        this.lineNum = lineNum;
     }
 
     @Override
-    public String PrettyErrorPrint() {
-        return "Variable " + variableReDecl + " in scope " + scope + "\n   already declared as " + symbolExisting; // + " in scope " + "TODO";
+    public String toString() {
+        return super.toString() + "Variable " + variableReDecl + " in scope " + scope + "\n\talready declared as " + symbolExisting + " in scope " + symbolExisting.getScope();
     }
 }

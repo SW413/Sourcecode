@@ -3,6 +3,7 @@ package com.doge.Visitors;
 import com.doge.AST.*;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.ErrorHandling.ReDeclarationError;
+import com.doge.ErrorHandling.UnDeclaredError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
@@ -98,8 +99,8 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitDeclarationNode(DeclarationNode node) {
         Symbol tmpSym = symbolTable.currentScope().resolve(node.getVariable().getId());
         if (tmpSym != null) {
-            errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope()));
-            // System.out.println("Variable " + node.getVariable() + " in scope " + symbolTable.currentScope() + "\n   already declared as " + tmpSym + " in scope " + tmpSym.getScope());
+            //TODO linenum
+            errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope(), 666));
         } else {
             symbolTable.currentScope().define(node.getVariable());
             visit(node.getExpression());
@@ -120,10 +121,13 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
         Variable tmpVariable = node.getVariable();
         Symbol tmpSymbol = symbolTable.currentScope().resolve(tmpVariable.getId());
-        if (tmpSymbol != null)
+        if (tmpSymbol != null) {
             symbolTable.currentScope().define(tmpSymbol);
-        else
+        } else {
+            //TODO linenum
+            errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), 666));
             symbolTable.currentScope().define(tmpVariable);
+        }
         return null;
     }
 }

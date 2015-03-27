@@ -116,4 +116,22 @@ public class TypeParser {
         }
         return null;
     }
+
+    public static ValueType ConstantType(Object constant) {
+        if (constant.getClass() == Boolean.class){
+            return ValueType.BOOLEAN;
+        }
+
+        if (constant.getClass() == String.class && ((String) constant).contains(".")) {
+            Double tmp = Double.parseDouble((String) constant);
+            if (tmp != null)
+                return ValueType.FLOAT;
+        } else {
+            Long tmp = Long.parseLong((String) constant);
+            if (tmp != null)
+                return ValueType.INT;
+        }
+
+        return null;
+    }
 }
