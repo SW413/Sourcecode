@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Mathias on 21-03-2015.
  */
 public class TopNode extends AST {
-    private AST imports;
+    private ImportNode imports;
     private ArrayList<FunctionDclNode> functionDeclarations = new ArrayList<FunctionDclNode>();
     private AST statements;
 
@@ -16,11 +16,11 @@ public class TopNode extends AST {
         super(parent);
     }
 
-    public AST getImports() {
+    public ImportNode getImports() {
         return imports;
     }
 
-    public void setImports(AST imports) {
+    public void setImports(ImportNode imports) {
         this.imports = imports;
         //this.addChild(imports);
     }

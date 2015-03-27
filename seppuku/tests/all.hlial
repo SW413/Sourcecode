@@ -34,7 +34,7 @@ while(c < tmpf) {
     c = addIntAndFloat(tmp, tmpF);
 }
 
-if( c == addIntAndFloat(tmp, tmpF)) {
+if( c == addIntAndFloat(tmp, tmpF) && tmp == 2 || tmpF == 2.2) {
     print("Success!");
     exit();
 } else if (c != tmp) {

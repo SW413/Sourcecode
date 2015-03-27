@@ -10,19 +10,14 @@ import java.util.ArrayList;
  * Created by Mathias on 21-03-2015.
  */
 public class ImportNode extends AST {
-    private ArrayList<FileReader> inputFiles = new ArrayList<FileReader>();
+    private ArrayList<ImportFile> inputFiles = new ArrayList<ImportFile>();
 
     public ImportNode(AST parent) {
         super(parent);
     }
 
     public Void addFile(String path) {
-        try {
-            inputFiles.add(new FileReader(path));
-        } catch (FileNotFoundException e) {
-            //TODO generate compile error to user
-            e.printStackTrace();
-        }
+        inputFiles.add(new ImportFile(path));
         return null;
     }
 
@@ -31,7 +26,7 @@ public class ImportNode extends AST {
         else return node.visitChildren(this);
     }
 
-    public ArrayList<FileReader> getInputFiles() {
+    public ArrayList<ImportFile> getInputFiles() {
         return inputFiles;
     }
 }

@@ -73,6 +73,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         parentStack.push(tmp.getImports());
         ((ImportNode) parentStack.peek()).addFile(ctx.LIBRARY().getText());
         parentStack.pop();
+        tmp.getImports().getInputFiles().get(tmp.getImports().getInputFiles().size()-1).setLineNumber(ctx.start.getLine());
         return tmp.getImports();
     }
 
@@ -95,6 +96,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         parentStack.pop();
         TopNode tmp = (TopNode) parentStack.peek();
         tmp.addFunctionDeclaration(functionDclNode);
+        functionDclNode.setLineNumber(ctx.start.getLine());
         return functionDclNode;
     }
 
@@ -213,6 +215,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     public AST visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
         FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
         tmp.setFunctionReturn(new FunctionReturnNode(tmp, (ExpressionNode) visit(ctx.expression())));
+        tmp.getFunctionReturn().setLineNumber(ctx.start.getLine());
         return tmp.getFunctionReturn();
     }
 
@@ -225,11 +228,13 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public DeclarationNode visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
-        return new DeclarationNode(
+        DeclarationNode dcl = new DeclarationNode(
                 parentStack.peek(),
                 new Variable(TypeParser.parseValueType(ctx.datatype().getText()), ctx.ID().getText()),
                 (ExpressionNode) visit(ctx.expression()));
+        dcl.setLineNumber(ctx.start.getLine());
 
+        return  dcl;
     }
 
     /**
@@ -241,10 +246,12 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
-        return new DeclarationNode(
+        DeclarationNode dcl = new DeclarationNode(
                 parentStack.peek(),
                 new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText()),
                 (ExpressionNode) visit(ctx.expression()));
+        dcl.setLineNumber(ctx.start.getLine());
+        return dcl;
     }
 
     /**
@@ -264,20 +271,28 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitValassignment(ourLangParser.ValassignmentContext ctx) {
-        return new AssignmentNode(
-                parentStack.peek(),
+        AST parent = parentStack.peek();
+        parentStack.push(null);
+        AssignmentNode assNode = new AssignmentNode(
+                parent,
                 new Variable(null, ctx.ID().getText()),
                 TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
                 (ExpressionNode) visit(ctx.expression()));
+
+        parentStack.pop();
+        assNode.setLineNumber(ctx.start.getLine());
+        return assNode;
     }
 
     @Override
     public AST visitEntireCollectionAssignment(ourLangParser.EntireCollectionAssignmentContext ctx) {
-        return new AssignmentNode(
+        AssignmentNode assNode = new AssignmentNode(
                 parentStack.peek(),
                 new Variable(null, ctx.ID().getText()),
                 AssignmentOperatorType.BASIC,
                 (ExpressionNode) visit(ctx.expression()));
+        ast.setLineNumber(ctx.start.getLine());
+        return assNode;
     }
 
     @Override
@@ -291,6 +306,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                         (CollectionCoordinateNode) visit(ctx.collectionEntrance().entranceCoordinate())),
                 TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
                 (ExpressionNode) visit(ctx.expression()));
+        assignment.setLineNumber(ctx.start.getLine());
         parentStack.pop();
         return assignment;
     }
@@ -301,12 +317,18 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public AST visitValID(ourLangParser.ValIDContext ctx) {
-        return new VariableExpressionNode(null, new Variable(null, ctx.ID().getText()));
+        VariableExpressionNode varexp = new VariableExpressionNode(null, new Variable(null, ctx.ID().getText()));
+
+        varexp.setLineNumber(ctx.start.getLine());
+        return varexp;
     }
 
     @Override
     public AST visitValConstant(ourLangParser.ValConstantContext ctx) {
-        return new ConstantExpressionNode(null, ctx.constant().getText());
+        ConstantExpressionNode ConstNode = new ConstantExpressionNode(null, ctx.constant().getText());
+        ConstNode.setLineNumber(ctx.start.getLine());
+
+        return ConstNode;
     }
 
     /**
@@ -330,7 +352,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             }
             matrix.addRow(row);
         }
-
+        matrix.setLineNumber(ctx.start.getLine());
         //Return matrixNode if more than 1 row exists
         if (matrix.getRows().size()>1)
             return matrix;
@@ -348,14 +370,17 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
             }
         }
-        return new VariableExpressionNode(parentStack.peek(), new Variable(null, ctx.ID().getText(), arguments));
+        VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, ctx.ID().getText(), arguments));
+        Varexp.setLineNumber(ctx.start.getLine());
+        return Varexp;
     }
 
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
         if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class)){
         VariableExpressionNode tmp = new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", ctx.argumentlist().getText()));
-        return tmp;
+            tmp.setLineNumber(ctx.start.getLine());
+            return tmp;
         }
         ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
         for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
@@ -363,7 +388,9 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
             }
         }
-        return new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", arguments));
+        VariableExpressionNode varExp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", arguments));
+        varExp.setLineNumber(ctx.start.getLine());
+        return varExp;
     }
 
 
@@ -429,6 +456,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         parentStack.push(whileLoopNode);
         visitChildren(ctx.whileBlock);
         parentStack.pop();
+        whileLoopNode.setLineNumber(ctx.start.getLine());
         return whileLoopNode;
     }
 
@@ -452,6 +480,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         parentStack.push(forLoopNode);
         visitChildren(ctx.forBlock);
         parentStack.pop();
+        forLoopNode.setLineNumber(ctx.start.getLine());
 
         return forLoopNode;
     }
@@ -466,11 +495,12 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
         //Makes sure the intilizations do not appear on the tree as children to the for loop.
         parentStack.push(null);
-
         ConditionalNode conditionalNode = new ConditionalNode(parent, (ConditionalExpressionNode) visit(ctx.conditionalExpression(0)));
+
         parentStack.pop();
         //Reestablishes the previous stack, hack is over.
 
+        conditionalNode.setLineNumber(ctx.start.getLine());
         parentStack.push(conditionalNode);
         for(int i = 0; i < ctx.ifBlock.getChildCount();i++)
         visit(ctx.ifBlock.getChild(i));
@@ -514,7 +544,19 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.expression(1)));
 
+        tmp.setLineNumber(ctx.start.getLine());
         return tmp;
     }
 
+    @Override
+    public AST visitMultiCondExpr(ourLangParser.MultiCondExprContext ctx) {
+
+        ConditionalNode node = new ConditionalNode(parentStack.peek(), null);
+        ConditionalExpressionNode node2 = new ConditionalExpressionNode(parentStack.peek(),
+                (ExpressionNode) visit(ctx.getChild(0)), TypeParser.parseOperator(ctx.getChild(1).getText()),
+                (ExpressionNode) visit( ctx.getChild(2)));
+        node.setConditionalExpression(node2);
+        node.setLineNumber(ctx.start.getLine());
+        return node2;
+    }
 }

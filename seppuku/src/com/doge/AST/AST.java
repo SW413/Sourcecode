@@ -12,8 +12,17 @@ import java.util.ArrayList;
  */
 public class AST {
 
+    private int LineNumber;
     private AST parent;
     private ArrayList<AST> children = new ArrayList<AST>();
+
+    public int getLineNumber() {
+        return LineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        LineNumber = lineNumber;
+    }
 
     public AST(AST parent) {
         if (parent != null)

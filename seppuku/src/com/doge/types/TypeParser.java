@@ -47,6 +47,12 @@ public class TypeParser {
             case ">":
                 oppType = OperatorType.BIGGERTHAN;
                 break;
+            case "&&":
+                oppType = OperatorType.AND;
+                break;
+            case "||":
+                oppType = OperatorType.OR;
+                break;
 
             default:
                 //TODO make error handler

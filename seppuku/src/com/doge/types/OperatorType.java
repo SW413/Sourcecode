@@ -16,5 +16,7 @@ public enum OperatorType {
     BIGGERTHAN,
     LESSTHAN,
     BIGGEROREQUAL,
-    LESSOREQUAL;
+    LESSOREQUAL,
+    AND,
+    OR;
 }

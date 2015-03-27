@@ -726,7 +726,7 @@ public class ourLangParser extends Parser {
 					_localctx = new MultiCondExprContext(new ConditionalExpressionContext(_parentctx, _parentState));
 					pushNewRecursionContext(_localctx, _startState, RULE_conditionalExpression);
 					setState(160);
-					if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
+					if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 					setState(161);
 					_la = _input.LA(1);
 					if ( !(_la==T__7 || _la==T__8) ) {
@@ -735,7 +735,7 @@ public class ourLangParser extends Parser {
 						consume();
 					}
 					setState(162);
-					conditionalExpression(2);
+					conditionalExpression(3);
 					}
 					} 
 				}
@@ -2517,7 +2517,7 @@ public class ourLangParser extends Parser {
 	private boolean conditionalExpression_sempred(ConditionalExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 1);
+			return precpred(_ctx, 2);
 		}
 		return true;
 	}
@@ -2590,7 +2590,7 @@ public class ourLangParser extends Parser {
 		"\2\2\u0098\u0096\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009b\3\2\2\2\u009a"+
 		"\u0098\3\2\2\2\u009b\u009c\7\t\2\2\u009c\r\3\2\2\2\u009d\u009e\b\b\1\2"+
 		"\u009e\u009f\5\36\20\2\u009f\u00a0\5> \2\u00a0\u00a1\5\36\20\2\u00a1\u00a7"+
-		"\3\2\2\2\u00a2\u00a3\f\3\2\2\u00a3\u00a4\t\2\2\2\u00a4\u00a6\5\16\b\4"+
+		"\3\2\2\2\u00a2\u00a3\f\4\2\2\u00a3\u00a4\t\2\2\2\u00a4\u00a6\5\16\b\5"+
 		"\u00a5\u00a2\3\2\2\2\u00a6\u00a9\3\2\2\2\u00a7\u00a5\3\2\2\2\u00a7\u00a8"+
 		"\3\2\2\2\u00a8\17\3\2\2\2\u00a9\u00a7\3\2\2\2\u00aa\u00ab\5,\27\2\u00ab"+
 		"\u00ac\7\61\2\2\u00ac\u00ad\7\6\2\2\u00ad\u00ae\5\26\f\2\u00ae\u00af\7"+
