@@ -99,8 +99,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitDeclarationNode(DeclarationNode node) {
         Symbol tmpSym = symbolTable.currentScope().resolve(node.getVariable().getId());
         if (tmpSym != null) {
-            //TODO linenum
-            errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope(), 666));
+            errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope(), node.getLineNumber()));
         } else {
             symbolTable.currentScope().define(node.getVariable());
             visit(node.getExpression());
@@ -124,8 +123,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         if (tmpSymbol != null) {
             symbolTable.currentScope().define(tmpSymbol);
         } else {
-            //TODO linenum
-            errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), 666));
+            errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), node.getLineNumber()));
             symbolTable.currentScope().define(tmpVariable);
         }
         return null;
