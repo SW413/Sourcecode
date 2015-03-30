@@ -43,9 +43,10 @@ public class Main {
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
 
-        System.out.println("PRETTY PRINT:");
+        System.out.println("PRETTY PRINT:\n");
         abstractSyntaxTree.accept(new PrettyPrint());
-        /*
+        System.out.println("\n");
+
         ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
@@ -53,7 +54,7 @@ public class Main {
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
         LanguageError.PrintAllErrors(errors);
-        System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");*/
+        System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 
 
         //tree.accept(new visitorChecker(symbolTable));
