@@ -28,7 +28,7 @@ loop
     ;
 
 block
-    : '{' statement* '}'
+    : '{' statement* '}'Skal vi
     ;
     
 conditionalExpression

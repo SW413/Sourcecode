@@ -1,4 +1,5 @@
 int foo(int aF, int bF) {
+    exit();
     int iShouldNotBeGlobal = 1 + aF + bF * bar(aF);
     return iShouldNotBeGlobal;
 }
@@ -18,5 +19,13 @@ matrix<int> d = [1, 2, 4;
 int res = a + 3;
 if(a == b) {
  float a = 222.2;
+}
+else if(a != b){
+    float b = 3.333;
+}
+
+while(a == b){
+    int a = 5;
+
 }
 

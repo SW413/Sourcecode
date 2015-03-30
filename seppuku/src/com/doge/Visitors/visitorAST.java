@@ -345,7 +345,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
         //Visit all rows
         for (ourLangParser.ValueListContext valueListContext : ctx.valueList()) {
-            VectorValNode row = new VectorValNode(null);
+            VectorValNode row = new VectorValNode(matrix);
             //Visit all values
             for(ourLangParser.ValueContext valueContext : valueListContext.value()) {
                 row.addValue((ExpressionNode) visit(valueContext));

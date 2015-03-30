@@ -3,6 +3,7 @@ package com.doge;
 import com.antlr.*;
 import com.doge.AST.AST;
 import com.doge.Visitors.ASTTypeCheckVisitor;
+import com.doge.Visitors.PrettyPrint;
 import com.doge.Visitors.visitorAST;
 import com.doge.Visitors.SymbolTableFillVisitor;
 import com.doge.checking.SymbolTable;
@@ -42,6 +43,9 @@ public class Main {
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
 
+        System.out.println("PRETTY PRINT:");
+        abstractSyntaxTree.accept(new PrettyPrint());
+        /*
         ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
@@ -49,7 +53,7 @@ public class Main {
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
         LanguageError.PrintAllErrors(errors);
-        System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
+        System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");*/
 
 
         //tree.accept(new visitorChecker(symbolTable));

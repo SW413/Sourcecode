@@ -136,11 +136,11 @@ public class BaseASTVisitor<T> implements IASTVisitor<T> {
     }
 
     @Override public T VisitFunctionDclNode(FunctionDclNode node) {
+        if(node.getFunctionBody() != null){
+        visit(node.getFunctionBody());
+        }
         if(node.getFunctionReturn() != null){
             visit(node.getFunctionReturn());
-        }
-        if(node.getFunctionBody() != null){
-        return visit(node.getFunctionBody());
         }
         return null;
     }

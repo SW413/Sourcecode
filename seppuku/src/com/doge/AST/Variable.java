@@ -64,6 +64,10 @@ public class Variable {
         return entrance;
     }
 
+    public String getPrintArgument() {
+        return printArgument;
+    }
+
     @Override
     public String toString() {
         if (this.getDatatype() != null) return '<' + getId() + ":" + getDatatype() + '>';
