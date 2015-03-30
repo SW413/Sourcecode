@@ -42,6 +42,12 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
             System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
             visit(node.getRValue());
         }
+        else if(node.getLValue() != null){
+            visit(node.getLValue());
+            if(node.getOperatorType() != null){
+                System.out.print(TypeParser.parseStringFromOperator(node.getOperatorType()));
+            }
+        }
         return null;
     }
 
@@ -58,8 +64,9 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
             if(node.getVariable().getId() != "PRINT") {
                 System.out.print(node.getVariable().getId() + "(");
             }
-            if(node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0){
-                int i;
+            if(node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0 && node.getVariable().getId() != "PRINT"){
+                int i = 0;
+
                 for(i = 0; i < node.getVariable().getArguments().size()-1; i++){
                     visit(node.getVariable().getArguments().get(i));
                     System.out.print(",");
@@ -70,16 +77,55 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
             else if(node.getVariable().getPrintArgument() != null){
                 System.out.print("print(" + node.getVariable().getPrintArgument() + ")");
             }
+            else if(node.getVariable().getId() == "PRINT" && node.getVariable().getArguments() != null){
+                System.out.print("print(");
+                int i;
+                for(i = 0; i < node.getVariable().getArguments().size()-1; i++){
+                    if(((VariableExpressionNode)node.getVariable().getArguments().get(i)).getVariable() != null){
+                        visit(((VariableExpressionNode)node.getVariable().getArguments().get(i)).getVariable().getEntrance());
+                    }
+                    else {
+                        visit(node.getVariable().getArguments().get(i));
+                        System.out.print(",");
+                    }
+                }
+                if(((VariableExpressionNode)node.getVariable().getArguments().get(i)).getVariable() != null){
+                    visit(((VariableExpressionNode)node.getVariable().getArguments().get(i)).getVariable().getEntrance());
+                }else {
+                    visit(node.getVariable().getArguments().get(i));
+                }
+                System.out.print(")");
+            }
             else{
                 System.out.print(")");
             }
-
         }
         else {
             System.out.print(var.getId());
         }
     return null;
     }
+
+    @Override
+    public Void VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
+        System.out.print("[" + ((ConstantExpressionNode)node.getCoordinates()[0]).getValue() + "," +((ConstantExpressionNode)node.getCoordinates()[1]).getValue() + "]" );
+        return null;
+    }
+
+    @Override
+    public Void VisitForLoopNode(ForLoopNode node) {
+        System.out.print("for(");
+        visit(node.getInitialize());
+        System.out.print("; ");
+        visit(node.getCondition());
+        System.out.print("; ");
+        visit(node.getUpdate());
+        System.out.print("){\n");
+        visit(node.getBody());
+        System.out.println("}");
+        return null;
+    }
+
 
     @Override
     public Void VisitStatementNode(StatementNode node) {
