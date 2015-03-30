@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by michno on 25-03-2015.
  */
-public class ASTTypeCheckVisitor extends BaseASTVisitor<ValueType> {
+public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     private SymbolTable symbolTable;
     private ArrayList<LanguageError> errors;
@@ -28,25 +28,34 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<ValueType> {
     }
 
     @Override
-    public ValueType VisitExpressionNode(ExpressionNode node) {
-        ValueType valueType;
-        valueType = TypeChecker.CombineValueTypes(
+    public Variable VisitExpressionNode(ExpressionNode node) {
+        ValueType valueType = TypeChecker.CombineValueTypes(
                 node.getLValue() != null ? visit(node.getLValue()) : null,
                 node.getRValue() != null ? visit(node.getRValue()) : null,
                 errors,
                 node.getLineNumber()
         );
         node.setValueType(valueType);
-        return valueType;
+
+        return new Variable(valueType, "Expression->" + node.toString());
     }
 
     @Override
-    public ValueType VisitVariableExpressionNode(VariableExpressionNode node) {
-        return node.getValueType();
+    public Variable VisitVariableExpressionNode(VariableExpressionNode node) {
+        //TODO check if declared functions parameters match...
+        if (node.getVariable().getIsFunction()){
+            for (ExpressionNode arg : node.getVariable().getArguments()){
+                visit(arg);
+            }
+        }
+        return node.getVariable();
     }
 
     @Override
-    public ValueType VisitConstantExpressionNode(ConstantExpressionNode node) {
-        return node.getValueType();
+    public Variable VisitConstantExpressionNode(ConstantExpressionNode node) {
+        return new Variable(
+                node.getValueType(),
+                node.getValue().toString()
+                );
     }
 }

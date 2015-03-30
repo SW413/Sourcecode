@@ -21,4 +21,9 @@ public class ConstantExpressionNode extends ExpressionNode {
         if ( node instanceof IASTVisitor) return node.VisitConstantExpressionNode(this);
         else return node.visitChildren(this);
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

@@ -268,9 +268,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 (ExpressionNode) visit(ctx.value(1)));
     }
 
-
     @Override
-    public AST visitValassignment(ourLangParser.ValassignmentContext ctx) {
+    public AST visitStdAssignment(ourLangParser.StdAssignmentContext ctx) {
         AST parent = parentStack.peek();
         parentStack.push(null);
         AssignmentNode assNode = new AssignmentNode(
@@ -279,6 +278,20 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
                 (ExpressionNode) visit(ctx.expression()));
 
+        parentStack.pop();
+        assNode.setLineNumber(ctx.start.getLine());
+        return assNode;
+    }
+
+    @Override
+    public AST visitPostUnaryAssignment(ourLangParser.PostUnaryAssignmentContext ctx) {
+        AST parent = parentStack.peek();
+        parentStack.push(null);
+        AssignmentNode assNode = new AssignmentNode(
+                parent,
+                new Variable(null, ctx.ID().getText()),
+                TypeParser.parseAssignmentOperator(ctx.postUnaryOperator().getText()),
+                null);
         parentStack.pop();
         assNode.setLineNumber(ctx.start.getLine());
         return assNode;

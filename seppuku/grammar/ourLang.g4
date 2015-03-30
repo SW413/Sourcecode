@@ -83,7 +83,8 @@ assignment
     ;
 
 valassignment
-	: ID assignmentOperator ( expression | BOOLVAL )
+	: ID assignmentOperator ( expression | BOOLVAL ) #stdAssignment
+    | ID postUnaryOperator                           #postUnaryAssignment
 	;
 
 collectionassignment
@@ -138,9 +139,8 @@ entranceCoordinate
     ;
 
 collectiontype
-    : MATRIX       #collectionMatrix
-    | ROWVECTOR    #collectionRVector
-    | COLVECTOR    #collectionCVector
+    : MATRIX    #collectionMatrix
+    | VECTOR    #collectionVector
     ;
 
 postUnaryOperator 
@@ -168,8 +168,8 @@ WHILE: 'while' ;
 FOR: 'for' ;
 
 MATRIX: 'matrix' ;
-ROWVECTOR: 'rowvector' | 'rvec' ;
-COLVECTOR: 'colvector' | 'cvec' ;  
+VECTOR: 'vector' ;
+
 
 INT: 'int' | 'int16' | 'int32' | 'int64' ;
 INTNUM: '0' | SIGN? [1-9][0-9]* ;

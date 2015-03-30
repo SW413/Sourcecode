@@ -24,4 +24,9 @@ public class VariableExpressionNode extends ExpressionNode {
         if ( node instanceof IASTVisitor) return node.VisitVariableExpressionNode(this);
         else return node.visitChildren(this);
     }
+
+    @Override
+    public String toString() {
+        return variable.toString();
+    }
 }

@@ -80,6 +80,12 @@ public class TypeParser {
             case "/=":
                 oppType = AssignmentOperatorType.DIV;
                 break;
+            case "++":
+                oppType = AssignmentOperatorType.INCREMENT;
+                break;
+            case "--":
+                oppType = AssignmentOperatorType.DECREMENT;
+                break;
 
             default:
                 //TODO make error handler
