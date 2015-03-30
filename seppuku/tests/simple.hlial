@@ -7,7 +7,7 @@ int bar(int aB){
     return aB + 3;
 }
 
-int a = 2;
+int a = 2 + 3.3;
 
 float b = 3.2;
 
