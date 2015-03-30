@@ -430,12 +430,14 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public ExpressionNode visitMulExpr(ourLangParser.MulExprContext ctx) {
+        parentStack.push(null);
         ExpressionNode tmp = new ExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.expression(1)));
         tmp.setLineNumber(ctx.start.getLine());
+        parentStack.pop();
         return tmp;
     }
 

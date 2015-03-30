@@ -15,7 +15,7 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
         System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + " = " );
 
         visit(node.getExpression());
-        System.out.print(";\n");
+        System.out.print("");
         return null;
     }
 
@@ -55,7 +55,9 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
         Variable var = node.getVariable();
         if(var.getIsFunction()){
-            System.out.print(node.getVariable().getId() +"(");
+            if(node.getVariable().getId() != "PRINT") {
+                System.out.print(node.getVariable().getId() + "(");
+            }
             if(node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0){
                 int i;
                 for(i = 0; i < node.getVariable().getArguments().size()-1; i++){
@@ -66,7 +68,7 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
                 System.out.print(")");
             }
             else if(node.getVariable().getPrintArgument() != null){
-                System.out.print("" + node.getVariable().getPrintArgument() + ");\n");
+                System.out.print("print(" + node.getVariable().getPrintArgument() + ")");
             }
             else{
                 System.out.print(")");
@@ -80,11 +82,27 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     }
 
     @Override
+    public Void VisitStatementNode(StatementNode node) {
+        for(int i = 0; i < node.getChildCount(); i++){
+            visit(node.getChild(i));
+            if(node.getChild(i).getClass() != ForLoopNode.class && node.getChild(i).getClass() != WhileLoopNode.class && node.getChild(i).getClass() != ConditionalNode.class)
+            System.out.print(";\n");
+        }
+        return null;
+    }
+
+    @Override
+    public Void VisitAssignmentNode(AssignmentNode node) {
+        System.out.print(node.getVariable().getId() + " = ");
+
+        return super.VisitAssignmentNode(node);
+    }
+
+    @Override
     public Void VisitFunctionReturnNode(FunctionReturnNode node) {
         System.out.print("return ");
         visit(node.getExpression());
-        System.out.print(";");
-        System.out.println();
+        System.out.println(";");
         return null;
     }
 
