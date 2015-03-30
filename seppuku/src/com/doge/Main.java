@@ -2,6 +2,7 @@ package com.doge;
 
 import com.antlr.*;
 import com.doge.AST.AST;
+import com.doge.Visitors.ASTDecoratorVisitor;
 import com.doge.Visitors.visitorAST;
 import com.doge.Visitors.SymbolTableFillVisitor;
 import com.doge.checking.SymbolTable;
@@ -47,6 +48,7 @@ public class Main {
         abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
         LanguageError.PrintAllErrors(errors);
+        abstractSyntaxTree.accept(new ASTDecoratorVisitor(symbolTable, errors));
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 
 

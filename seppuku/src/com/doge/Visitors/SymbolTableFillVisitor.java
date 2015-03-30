@@ -7,6 +7,7 @@ import com.doge.ErrorHandling.UnDeclaredError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
+import com.doge.types.TypeParser;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,8 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         }
         if (node.getFunctionBody() != null)
             visit(node.getFunctionBody());
+        if (node.getFunctionReturn() != null)
+            visit(node.getFunctionReturn());
         symbolTable.popScope();
         return null;
     }
@@ -104,6 +107,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         if (tmpSym != null) {
             errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope(), node.getLineNumber()));
         } else {
+            node.setScope(symbolTable.currentScope());
             symbolTable.currentScope().define(node.getVariable());
             visit(node.getExpression());
         }
@@ -125,11 +129,19 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         Symbol tmpSymbol = symbolTable.currentScope().resolve(tmpVariable.getId());
         if (tmpSymbol != null) {
             tmpSymbol.setUsed(true);
+            node.setScope(symbolTable.currentScope());
+            node.setValueType(tmpSymbol.getType());
             symbolTable.currentScope().define(tmpSymbol);
         } else {
             errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), node.getLineNumber()));
             symbolTable.currentScope().define(tmpVariable);
         }
+        return null;
+    }
+
+    @Override
+    public Void VisitConstantExpressionNode(ConstantExpressionNode node) {
+        node.setValueType(TypeParser.ConstantType(node.getValue()));
         return null;
     }
 }

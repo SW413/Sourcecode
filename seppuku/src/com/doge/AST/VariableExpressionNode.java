@@ -1,6 +1,7 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
+import com.doge.checking.Scope;
 
 /**
  * Created by michno on 24/3/15.
