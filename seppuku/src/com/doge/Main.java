@@ -47,6 +47,7 @@ public class Main {
         SymbolTable symbolTable = new SymbolTable();
         abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
+        errors.addAll(symbolTable.getUnusedVariables());
         LanguageError.PrintAllErrors(errors);
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 

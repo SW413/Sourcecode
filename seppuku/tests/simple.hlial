@@ -10,6 +10,7 @@ int bar(int aB){
 int a = 2 + 3.3;
 
 float b = 3.2;
+a = foo(1,2);
 
 matrix<int> d = [1, 2, 4;
                  2, 3, 5];

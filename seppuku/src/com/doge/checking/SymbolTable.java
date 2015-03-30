@@ -1,8 +1,14 @@
 package com.doge.checking;
 
+import com.doge.ErrorHandling.LanguageError;
+import com.doge.ErrorHandling.UnusedVariableError;
+import com.doge.types.ScopeType;
+
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Stack;
-import com.doge.types.*;
+
+
 
 /**
  * Created by Mathias on 18-03-2015.
@@ -65,5 +71,25 @@ public class SymbolTable {
             sb.append(scope.toString());
         }
         return sb.toString();
+    }
+
+    // Gets all unused variables and returns them as Errors
+    public ArrayList<LanguageError> getUnusedVariables(){
+        ArrayList<LanguageError> errors = new ArrayList<>();
+
+        // Iterate through all scopes (each have a symbolmap)
+        for (int i = 0; i < allScopes.size(); i++) {
+            // Iterate through each entry of the symboltable
+            for (Map.Entry<String, Symbol> entry : allScopes.get(i).symbolMap.entrySet()) {
+                // Get the symbol as a value
+                Symbol tempSymbol = entry.getValue();
+                // If the symbol is NOT used then add an error to the list.
+                //TODO: Add line numbers.
+                if(!tempSymbol.used)
+                    errors.add(new UnusedVariableError(tempSymbol.variable, allScopes.get(i), 666));
+            }
+        }
+
+        return errors;
     }
 }
