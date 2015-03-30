@@ -15,31 +15,42 @@ public class Variable {
     private ArrayList<ExpressionNode> arguments;
     private String printArgument;
     private CollectionCoordinateNode entrance;
+    private boolean isFunction;
 
     public Variable(ValueType datatype, String id, ArrayList<ExpressionNode> arguments){
         this.datatype = datatype;
         this.id = id;
         this.arguments = arguments;
+        this.isFunction = true;
     }
 
     public Variable(ValueType datatype, String id, String arguments) {
         this.datatype = datatype;
         this.id = id;
         this.printArgument = arguments;
+        this.isFunction = true;
     }
 
     public Variable(ValueType datatype, String id, CollectionCoordinateNode entrance) {
         this.datatype = datatype;
         this.id = id;
         this.entrance = entrance;
+        this.isFunction = false;
     }
 
     public Variable(ValueType datatype, String id) {
         this.datatype = datatype;
         this.id = id;
+        this.isFunction = false;
     }
 
+    public Variable(ValueType datatype, String id, boolean isFunction) {
+        this.datatype = datatype;
+        this.id = id;
+        this.isFunction = isFunction;
+    }
 
+    public boolean getIsFunction() {return this.isFunction; }
 
     public ValueType getDatatype(){ return this.datatype; }
 

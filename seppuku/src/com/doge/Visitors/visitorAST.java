@@ -88,7 +88,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public AST visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
-        Variable funcVariable = new Variable(TypeParser.parseValueType(ctx.functiondatatype().getText()), ctx.ID().getText());
+        Variable funcVariable = new Variable(TypeParser.parseValueType(ctx.functiondatatype().getText()), ctx.ID().getText(), true);
         FunctionDclNode functionDclNode = new FunctionDclNode(parentStack.peek(), funcVariable);
         parentStack.push(functionDclNode);
         visit(ctx.parameterlist());
