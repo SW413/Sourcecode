@@ -419,34 +419,42 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public ExpressionNode visitAddExpr(ourLangParser.AddExprContext ctx) {
-        return new ExpressionNode(
+        ExpressionNode tmp = new ExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.expression(1)));
+        tmp.setLineNumber(ctx.start.getLine());
+        return tmp;
     }
 
     @Override
     public ExpressionNode visitMulExpr(ourLangParser.MulExprContext ctx) {
-        return new ExpressionNode(
+        ExpressionNode tmp = new ExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.expression(1)));
+        tmp.setLineNumber(ctx.start.getLine());
+        return tmp;
     }
 
     @Override
     public ExpressionNode visitParenExpr(ourLangParser.ParenExprContext ctx) {
-        return new ExpressionNode(null, (ExpressionNode) visit(ctx.expression()), null, null);
+        ExpressionNode tmp = new ExpressionNode(null, (ExpressionNode) visit(ctx.expression()), null, null);
+        tmp.setLineNumber(ctx.start.getLine());
+        return tmp;
     }
 
     @Override
     public ExpressionNode visitPostIDExpr(ourLangParser.PostIDExprContext ctx) {
-        return new ExpressionNode(
+        ExpressionNode tmp = new ExpressionNode(
                 null,
                 new VariableExpressionNode(null, new Variable(null, ctx.ID().getText())),
                 TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
                 null);
+        tmp.setLineNumber(ctx.start.getLine());
+        return tmp;
     }
 
     @Override
