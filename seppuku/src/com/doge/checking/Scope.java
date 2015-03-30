@@ -2,6 +2,8 @@ package com.doge.checking;
 
 import com.doge.AST.Variable;
 import com.doge.types.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;

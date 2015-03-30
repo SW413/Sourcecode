@@ -1,6 +1,10 @@
 int foo(int aF, int bF) {
-    int iShouldNotBeGlobal = 1 + aF + bF;
+    int iShouldNotBeGlobal = 1 + aF + bF * bar(aF);
     return iShouldNotBeGlobal;
+}
+
+int bar(int aB){
+    return aB + 3;
 }
 
 int a = 2;

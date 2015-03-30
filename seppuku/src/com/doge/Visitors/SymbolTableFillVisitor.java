@@ -24,6 +24,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitTopNode(TopNode node) {
+        //Add all function declarations to the symbol table in global scope
+        for (FunctionDclNode FuncDecl : node.getFunctionDeclarations())
+            symbolTable.currentScope().define(FuncDecl.getVariable());
+        //Visit all function declarations
         for (FunctionDclNode FuncDecl : node.getFunctionDeclarations())
             visit(FuncDecl);
         symbolTable.pushScope(ScopeType.LOCAL);
@@ -34,7 +38,6 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitFunctionDclNode(FunctionDclNode node) {
-        symbolTable.currentScope().define(node.getVariable());
         symbolTable.pushScope(ScopeType.FUNCDECL);
         for (Variable variable : node.getParameters()) {
             symbolTable.currentScope().define(variable);
@@ -121,6 +124,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         Variable tmpVariable = node.getVariable();
         Symbol tmpSymbol = symbolTable.currentScope().resolve(tmpVariable.getId());
         if (tmpSymbol != null) {
+            tmpSymbol.setUsed(true);
             symbolTable.currentScope().define(tmpSymbol);
         } else {
             errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), node.getLineNumber()));

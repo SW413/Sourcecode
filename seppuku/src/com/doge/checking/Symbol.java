@@ -10,9 +10,11 @@ public class Symbol {
 
     protected Scope scope; // the owning scope
     protected Variable variable;
+    protected boolean used;
 
     public Symbol(Variable variable) {
         this.variable = variable;
+        this.used = false;
     }
 
     public String getName() {
@@ -26,6 +28,8 @@ public class Symbol {
     public void setScope(Scope scope) {
         this.scope = scope;
     }
+
+    public void setUsed(boolean used) { this.used = used; }
 
     public Scope getScope() {
         return scope;
