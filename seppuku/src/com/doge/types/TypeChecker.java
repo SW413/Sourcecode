@@ -1,5 +1,6 @@
 package com.doge.types;
 
+import com.doge.AST.Variable;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.ErrorHandling.TypeMismatchError;
 
@@ -11,14 +12,15 @@ import java.util.ArrayList;
 public class TypeChecker {
 
     //Can be modified to support implicit type conversion
-    public static ValueType CombineValueTypes(ValueType lValueType, ValueType rValueType, ArrayList<LanguageError> errors, int lineNum){
-        if (rValueType == null){
-            return lValueType;
-        }
-        if (lValueType.equals(rValueType)){
-            return lValueType;
+    public static ValueType CombineValueTypes(Variable lValue, Variable rValue, ArrayList<LanguageError> errors, int lineNum){
+        if (lValue == null) {
+            return null;
+        } else if (rValue == null){
+            return lValue.getDatatype();
+        } else if (lValue.getDatatype() == rValue.getDatatype()){
+            return lValue.getDatatype();
         } else {
-            errors.add(new TypeMismatchError("pik", lValueType, "fisse", rValueType, lineNum));
+            errors.add(new TypeMismatchError(lValue, rValue, lineNum));
             return null;
         }
     }

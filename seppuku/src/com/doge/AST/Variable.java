@@ -54,6 +54,10 @@ public class Variable {
 
     public ValueType getDatatype(){ return this.datatype; }
 
+    public void setDatatype(ValueType datatype) {
+        this.datatype = datatype;
+    }
+
     public String getId() { return this.id; }
 
     public ArrayList<ExpressionNode> getArguments() {

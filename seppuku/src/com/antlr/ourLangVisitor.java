@@ -161,11 +161,19 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(ourLangParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ourLangParser#valassignment}.
+	 * Visit a parse tree produced by the {@code stdAssignment}
+	 * labeled alternative in {@link ourLangParser#valassignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitValassignment(ourLangParser.ValassignmentContext ctx);
+	T visitStdAssignment(ourLangParser.StdAssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code postUnaryAssignment}
+	 * labeled alternative in {@link ourLangParser#valassignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostUnaryAssignment(ourLangParser.PostUnaryAssignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code entireCollectionAssignment}
 	 * labeled alternative in {@link ourLangParser#collectionassignment}.
@@ -301,19 +309,12 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCollectionMatrix(ourLangParser.CollectionMatrixContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code collectionRVector}
+	 * Visit a parse tree produced by the {@code collectionVector}
 	 * labeled alternative in {@link ourLangParser#collectiontype}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCollectionRVector(ourLangParser.CollectionRVectorContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code collectionCVector}
-	 * labeled alternative in {@link ourLangParser#collectiontype}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCollectionCVector(ourLangParser.CollectionCVectorContext ctx);
+	T visitCollectionVector(ourLangParser.CollectionVectorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ourLangParser#postUnaryOperator}.
 	 * @param ctx the parse tree

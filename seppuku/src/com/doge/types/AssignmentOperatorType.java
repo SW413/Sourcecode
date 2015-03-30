@@ -8,5 +8,7 @@ public enum AssignmentOperatorType {
     ADD,
     SUB,
     MUL,
-    DIV;
+    DIV,
+    INCREMENT,
+    DECREMENT;
 }

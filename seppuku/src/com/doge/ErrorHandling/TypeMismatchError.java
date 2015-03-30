@@ -5,21 +5,20 @@ import com.doge.checking.Scope;
 import com.doge.checking.Symbol;
 import com.doge.types.ValueType;
 
-public class TypeMismatchError extends LanguageError {
-    private String valueA, valueB;
-    private ValueType valueTypeA, valueTypeB;
+import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RED;
+import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
 
-    public TypeMismatchError(String valueA, ValueType valueTypeA, String valueB, ValueType valueTypeB, int lineNum) {
+public class TypeMismatchError extends LanguageError {
+    private Variable valueA, valueB;
+
+    public TypeMismatchError(Variable valueA, Variable valueB, int lineNum) {
         this.valueA = valueA;
         this.valueB = valueB;
-        this.valueTypeA = valueTypeA;
-        this.valueTypeB = valueTypeB;
         this.lineNum = lineNum;
-
     }
 
     @Override
     public String toString() {
-        return super.toString() + "Type mismatch between <" + valueA + ":" + valueTypeA + "> and <" + valueB + ":" + valueTypeB + ">";
+        return super.toString() + "Type mismatch between " + ANSI_RED + valueA + ANSI_RESET + " and "+ ANSI_RED + valueB + ANSI_RESET;
     }
 }

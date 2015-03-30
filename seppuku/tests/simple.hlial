@@ -1,22 +1,21 @@
-int foo(int aF, int bF) {
-    int iShouldNotBeGlobal = 1 + aF + bF * bar(aF);
-    return iShouldNotBeGlobal;
-}
-
 int bar(int aB){
-    return aB + 3;
+    return aB + 3 * foo(2.2, aB);
 }
 
-int a = 2 + 3.3;
+int foo(int a, int b){
+    return a + b;
+}
+int a = 2 + 1.2 * 3.3;
+
+a++;
 
 float b = 3.2;
-a = foo(1,2);
 
 matrix<int> d = [1, 2, 4;
                  2, 3, 5];
 
 int res = a + 3;
+
 if(a == b) {
  float a = 222.2;
 }
-

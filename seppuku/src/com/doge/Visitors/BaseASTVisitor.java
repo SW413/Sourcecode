@@ -11,7 +11,11 @@ import org.antlr.v4.runtime.tree.RuleNode;
  */
 public class BaseASTVisitor<T> implements IASTVisitor<T> {
 
-    @Override public T VisitAssignmentNode(AssignmentNode node) { return visit(node.getExpression()); }
+    @Override public T VisitAssignmentNode(AssignmentNode node) {
+        if (node.getExpression() != null)
+            return visit(node.getExpression());
+        return null;
+    }
 
     @Override public T VisitAST(AST node) { return visitChildren(node); }
 

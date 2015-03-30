@@ -40,4 +40,9 @@ public class ExpressionNode extends StatementNode {
         if ( node instanceof IASTVisitor) return node.VisitExpressionNode(this);
         else return node.visitChildren(this);
     }
+
+    @Override
+    public String toString() {
+        return (lValue != null ? " " + lValue.toString() : "") + " " + operatorType.toString()+ " " + (rValue != null ? rValue.toString() + " " : "") ;
+    }
 }

@@ -55,6 +55,6 @@ public class Scope {
 
     @Override
     public String toString() {
-        return this.type + " " + this.scopeId;
+        return this.scopeId + ":" + this.type;
     }
 }

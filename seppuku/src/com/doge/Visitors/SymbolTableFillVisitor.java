@@ -32,7 +32,8 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         for (FunctionDclNode FuncDecl : node.getFunctionDeclarations())
             visit(FuncDecl);
         symbolTable.pushScope(ScopeType.LOCAL);
-        visit(node.getStatements());
+        if (node.getStatements() != null)
+            visit(node.getStatements());
         symbolTable.popScope();
         return null;
     }
@@ -128,10 +129,17 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         Variable tmpVariable = node.getVariable();
         Symbol tmpSymbol = symbolTable.currentScope().resolve(tmpVariable.getId());
         if (tmpSymbol != null) {
+            if (tmpVariable.getDatatype() == null)
+                tmpVariable.setDatatype(tmpSymbol.getType());
             tmpSymbol.setUsed(true);
             node.setScope(symbolTable.currentScope());
             node.setValueType(tmpSymbol.getType());
             symbolTable.currentScope().define(tmpSymbol);
+            if (tmpVariable.getIsFunction()){
+                for(ExpressionNode arg : tmpVariable.getArguments()){
+                    visit(arg);
+                }
+            }
         } else {
             errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), node.getLineNumber()));
             symbolTable.currentScope().define(tmpVariable);
