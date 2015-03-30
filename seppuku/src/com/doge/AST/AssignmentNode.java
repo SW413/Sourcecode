@@ -1,6 +1,7 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
+import com.doge.Visitors.PrettyPrint;
 import com.doge.types.AssignmentOperatorType;
 
 /**
@@ -26,12 +27,33 @@ public class AssignmentNode extends StatementNode {
         return assignmentOperator;
     }
 
+    public String PrettyPrint() {
+        switch (assignmentOperator) {
+            case BASIC:
+                return "=";
+            case ADD:
+                return "+=";
+            case SUB:
+                return "-=";
+            case MUL:
+                return "*=";
+            case DIV:
+                return "/=";
+            case INCREMENT:
+                return "++";
+            case DECREMENT:
+                return "++";
+            default:
+                return "ERROR";
+        }
+    }
+
     public ExpressionNode getExpression() {
         return expression;
     }
 
     public <T> T accept(IASTVisitor<? extends T> node) {
-        if ( node instanceof IASTVisitor) return node.VisitAssignmentNode(this);
+        if (node instanceof IASTVisitor) return node.VisitAssignmentNode(this);
         else return node.visitChildren(this);
     }
 }
