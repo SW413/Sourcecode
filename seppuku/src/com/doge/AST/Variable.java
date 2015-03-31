@@ -74,7 +74,7 @@ public class Variable {
 
     @Override
     public String toString() {
-        if (this.getDatatype() != null) return '<' + getId() + ":" + getDatatype() + '>';
+        if (this.getDatatype() != null) return getId() + ":" + getDatatype();
         return this.getId();
     }
 }

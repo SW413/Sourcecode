@@ -40,7 +40,7 @@ public class Symbol {
     }
 
     public String toString() {
-        if (variable.getDatatype() != null) return '<' + getName() + ":" + getType() + '>';
+        if (variable.getDatatype() != null) return getName() + ":" + getType();
         return getName();
     }
 }
