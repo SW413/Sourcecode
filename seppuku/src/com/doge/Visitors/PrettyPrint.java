@@ -1,11 +1,10 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
-import com.doge.checking.Scope;
 import com.doge.types.*;
 
 /**
- * Created by Søren on 30-03-2015.
+Pretty printing which prints the AST out as the code it was before parsing.
  */
 public class PrettyPrint extends BaseASTVisitor<Void> {
 
@@ -61,11 +60,11 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
         Variable var = node.getVariable();
         if (var.getIsFunction()) {
-            if (node.getVariable().getId() != "PRINT") {
+            if (!node.getVariable().getId().equals("PRINT")) {
                 System.out.print(node.getVariable().getId() + "(");
             }
-            if (node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0 && node.getVariable().getId() != "PRINT") {
-                int i = 0;
+            if (node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0 && !node.getVariable().getId().equals("PRINT")) {
+                int i;
 
                 for (i = 0; i < node.getVariable().getArguments().size() - 1; i++) {
                     visit(node.getVariable().getArguments().get(i));
@@ -75,7 +74,7 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
                 System.out.print(")");
             } else if (node.getVariable().getPrintArgument() != null) {
                 System.out.print("print(" + node.getVariable().getPrintArgument() + ")");
-            } else if (node.getVariable().getId() == "PRINT" && node.getVariable().getArguments() != null) {
+            } else if (node.getVariable().getId().equals("PRINT") && node.getVariable().getArguments() != null) {
                 System.out.print("print(");
                 int i;
                 for (i = 0; i < node.getVariable().getArguments().size() - 1; i++) {
