@@ -30,4 +30,9 @@ public class MatrixValNode extends ExpressionNode {
         if ( node instanceof IASTVisitor) return node.VisitMatrixValNode(this);
         else return node.visitChildren(this);
     }
+
+    @Override
+    public String toString() {
+        return rows.toString();
+    }
 }

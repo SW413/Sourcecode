@@ -54,7 +54,7 @@ public class Main {
         System.out.println();
         LanguageError.PrintAllErrors(errors);
         System.out.println();
-        System.out.println("PRETTY PRINT:\n");
+        System.out.println("PWETTY PWINT:\n");
         abstractSyntaxTree.accept(new PrettyPrint());
         System.out.println();
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");

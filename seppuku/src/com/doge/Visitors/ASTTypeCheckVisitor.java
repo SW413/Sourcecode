@@ -43,6 +43,25 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     @Override
+    public Variable VisitVectorValNode(VectorValNode node) {
+        ValueType tmpValueType = null;
+        for (ExpressionNode val : node.getValues().subList(1, node.getValues().size())){
+            tmpValueType = TypeChecker.CombineValueTypes(visit(node.getValues().get(0)), visit(val), errors, node.getLineNumber());
+        }
+        node.setValueType(tmpValueType);
+        return null;
+    }
+
+    @Override
+    public Variable VisitDeclarationNode(DeclarationNode node) {
+        TypeChecker.CombineValueTypes(
+                node.getVariable(),
+                visit(node.getExpression()),
+                errors, node.getLineNumber());
+        return null;
+    }
+
+    @Override
     public Variable VisitExpressionNode(ExpressionNode node) {
         ValueType valueType = TypeChecker.CombineValueTypes(
                 node.getLValue() != null ? visit(node.getLValue()) : null,
@@ -59,9 +78,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     public Variable VisitVariableExpressionNode(VariableExpressionNode node) {
         //TODO check if declared functions parameters match...
         if (node.getVariable().getIsFunction()){
-            for (ExpressionNode arg : node.getVariable().getArguments()){
-                visit(arg);
-            }
+            CheckFuncArgsMatch(node.getVariable());
         }
         return node.getVariable();
     }
@@ -72,5 +89,17 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
                 node.getValueType(),
                 node.getValue().toString()
                 );
+    }
+
+    private Void CheckFuncArgsMatch(Variable func){
+        Variable funcDecl = symbolTable.getScope(1).resolve(func.getId()).getVariable();
+        System.out.println("LOOOOOOL " +
+                funcDecl);
+        for (ExpressionNode arg : func.getArguments()){
+            visit(arg);
+
+        }
+
+        return null;
     }
 }

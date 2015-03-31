@@ -15,6 +15,7 @@ public class Variable {
     private ArrayList<ExpressionNode> arguments;
     private String printArgument;
     private CollectionCoordinateNode entrance;
+    private int[] size;
     private boolean isFunction;
 
     public Variable(ValueType datatype, String id, ArrayList<ExpressionNode> arguments){
@@ -70,6 +71,14 @@ public class Variable {
 
     public String getPrintArgument() {
         return printArgument;
+    }
+
+    public int[] getSize() {
+        return size;
+    }
+
+    public void setSize(int[] size) {
+        this.size = size;
     }
 
     @Override

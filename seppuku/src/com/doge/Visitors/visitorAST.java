@@ -359,6 +359,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         //Visit all rows
         for (ourLangParser.ValueListContext valueListContext : ctx.valueList()) {
             VectorValNode row = new VectorValNode(matrix);
+            row.setLineNumber(valueListContext.start.getLine());
             //Visit all values
             for(ourLangParser.ValueContext valueContext : valueListContext.value()) {
                 row.addValue((ExpressionNode) visit(valueContext));
@@ -366,6 +367,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             matrix.addRow(row);
         }
         matrix.setLineNumber(ctx.start.getLine());
+
         //Return matrixNode if more than 1 row exists
         if (matrix.getRows().size()>1)
             return matrix;

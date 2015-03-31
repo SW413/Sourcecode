@@ -183,22 +183,22 @@ public class TypeParser {
                 return ValueType.MATRIX_FLOAT64;
             case "matrix<bool>":
                 return ValueType.MATRIX_BOOLEAN;
-            case "rvec<int16>":
+            case "vector<int16>":
                 return ValueType.VECTOR_INT16;
-            case "rvec<int>":
+            case "vector<int>":
                 return ValueType.VECTOR_INT;
-            case "rvec<int64>":
+            case "vector<int64>":
                 return ValueType.VECTOR_INT64;
-            case "rvec<float16>":
+            case "vector<float16>":
                 return ValueType.VECTOR_FLOAT16;
-            case "rvec<float>":
+            case "vector<float>":
                 return ValueType.VECTOR_FLOAT;
-            case "rvec<float64>":
+            case "vector<float64>":
                 return ValueType.VECTOR_FLOAT64;
-            case "rvec<bool>":
+            case "vector<bool>":
                 return ValueType.VECTOR_BOOLEAN;
         }
-        return null;
+        return ValueType.INVALID;
     }
     public static String parseStringFromValue(ValueType datatype){
         switch (datatype) {
@@ -265,6 +265,6 @@ public class TypeParser {
                 return ValueType.INT;
         }
 
-        return null;
+        return ValueType.INVALID;
     }
 }

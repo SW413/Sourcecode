@@ -36,4 +36,9 @@ public class VectorValNode extends ExpressionNode {
     public void addValue(ExpressionNode value) {
         this.values.add(value);
     }
+
+    @Override
+    public String toString() {
+        return values.toString();
+    }
 }

@@ -26,6 +26,10 @@ public class Symbol {
         return variable.getDatatype();
     }
 
+    public Variable getVariable() {
+        return variable;
+    }
+
     public void setScope(Scope scope) {
         this.scope = scope;
     }

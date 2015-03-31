@@ -4,7 +4,7 @@ import com.doge.AST.*;
 import com.doge.types.*;
 
 /**
-Pretty printing which prints the AST out as the code it was before parsing.
+ * Pretty printing which prints the AST out as the code it was before parsing.
  */
 public class PrettyPrint extends BaseASTVisitor<Void> {
 
@@ -12,7 +12,8 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitDeclarationNode(DeclarationNode node) {
         Variable var = node.getVariable();
 
-        System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + " = ");
+        System.out.print(String.format("%s %s = ", var.getDatatype(), var.getId()));
+        //System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + " = ");
 
         visit(node.getExpression());
         System.out.print("");
@@ -23,7 +24,8 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitFunctionDclNode(FunctionDclNode node) {
         Variable var = node.getVariable();
         if (var.getIsFunction()) {
-            System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + "(");
+            System.out.print(String.format("%s %s (", var.getDatatype(), var.getId()));
+            //System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + "(");
             for (int i = 0; i < node.getParameterCount() - 1; i++) {
                 System.out.print(TypeParser.parseStringFromValue(node.getParameter(i).getDatatype()) + " " + node.getParameter(i).getId() + ",");
             }

@@ -12,16 +12,16 @@ import java.util.ArrayList;
 public class TypeChecker {
 
     //Can be modified to support implicit type conversion
-    public static ValueType CombineValueTypes(Variable lValue, Variable rValue, ArrayList<LanguageError> errors, int lineNum){
-        if (lValue == null) {
-            return null;
-        } else if (rValue == null){
+    public static ValueType CombineValueTypes(Variable lValue, Variable rValue, ArrayList<LanguageError> errors, int lineNum) {
+        if (lValue == null && lValue.getDatatype() == ValueType.INVALID) {
+            return ValueType.INVALID;
+        } else if (rValue == null) {
             return lValue.getDatatype();
-        } else if (lValue.getDatatype() == rValue.getDatatype()){
+        } else if (lValue.getDatatype() == rValue.getDatatype()) {
             return lValue.getDatatype();
         } else {
             errors.add(new TypeMismatchError(lValue, rValue, lineNum));
-            return null;
+            return ValueType.INVALID;
         }
     }
 }

@@ -19,6 +19,7 @@ public class TypeMismatchError extends LanguageError {
 
     @Override
     public String toString() {
-        return super.toString() + "Type mismatch between " + ANSI_RED + valueA + ANSI_RESET + " and "+ ANSI_RED + valueB + ANSI_RESET;
+        return super.toString() +
+                String.format("Type mismatch between %1$s%3$s%2$s and %1$s%4$s%2$s", ANSI_RED, ANSI_RESET, valueA, valueB);
     }
 }

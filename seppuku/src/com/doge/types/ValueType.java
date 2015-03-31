@@ -25,7 +25,8 @@ public enum ValueType {
     VECTOR_FLOAT16("vector<float16>"),
     VECTOR_FLOAT("vector<float>"),
     VECTOR_FLOAT64("vector<float64>"),
-    VECTOR_BOOLEAN("vector<bool>");
+    VECTOR_BOOLEAN("vector<bool>"),
+    INVALID("invalid");
 
     private String valType;
     private ValueType(String valType) {

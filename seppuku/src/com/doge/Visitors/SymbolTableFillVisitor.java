@@ -7,7 +7,6 @@ import com.doge.ErrorHandling.UnDeclaredError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
-import com.doge.types.TypeChecker;
 import com.doge.types.TypeParser;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     private SymbolTable symbolTable;
     private ArrayList<LanguageError> errors;
+
     public SymbolTableFillVisitor(SymbolTable symbolTable, ArrayList<LanguageError> errors) {
         this.symbolTable = symbolTable;
         this.errors = errors;
@@ -60,7 +60,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         symbolTable.pushScope(ScopeType.LOOP);
         if (node.getInitialize() != null)
             visit(node.getInitialize());
-        if(node.getBody() != null)
+        if (node.getBody() != null)
             visit(node.getBody());
         symbolTable.popScope();
         return null;
@@ -69,7 +69,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitWhileLoopNode(WhileLoopNode node) {
         symbolTable.pushScope(ScopeType.LOOP);
-        if(node.getBody() != null)
+        if (node.getBody() != null)
             visit(node.getBody());
         symbolTable.popScope();
         return null;
@@ -88,7 +88,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
             visit(ifElse.getBody());
             symbolTable.popScope();
         }
-        if(node.getElseBody() != null) {
+        if (node.getElseBody() != null) {
             symbolTable.pushScope(ScopeType.CONDITIONAL);
             visit(node.getElseBody());
             symbolTable.popScope();
@@ -113,9 +113,23 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         } else {
             node.setScope(symbolTable.currentScope());
             symbolTable.currentScope().define(node.getVariable(), node.getLineNumber());
-            visit(node.getExpression());
+            //Set size if matrix decl
+            if (node.getExpression().getClass() == MatrixValNode.class) {
+                int[] tmpSize = {((MatrixValNode) node.getExpression()).getRows().size(),
+                        ((MatrixValNode) node.getExpression()).getRows().get(0).getValues().size()};
+                node.getVariable().setSize(tmpSize);
+            } else if (node.getExpression().getClass() == VectorValNode.class) {
+                int[] tmpSize = {((VectorValNode) node.getExpression()).getValues().size()};
+                node.getVariable().setSize(tmpSize);
+            }
         }
-        return null;
+        return super.VisitDeclarationNode(node);
+    }
+
+    @Override
+    public Void VisitAssignmentNode(AssignmentNode node) {
+        CheckIfUndeclared(node.getVariable(), node);
+        return node.getExpression() != null ? visit(node.getExpression()) : null;
     }
 
     @Override
@@ -127,32 +141,38 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         return null;
     }
 
+
     @Override
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
-        Variable tmpVariable = node.getVariable();
-        Symbol tmpSymbol = symbolTable.currentScope().resolve(tmpVariable.getId());
-        if (tmpSymbol != null) {
-            if (tmpVariable.getDatatype() == null)
-                tmpVariable.setDatatype(tmpSymbol.getType());
-            tmpSymbol.setUsed(true);
-            node.setScope(symbolTable.currentScope());
-            node.setValueType(tmpSymbol.getType());
-            symbolTable.currentScope().define(tmpSymbol);
-            if (tmpVariable.getIsFunction()){
-                for(ExpressionNode arg : tmpVariable.getArguments()){
-                    visit(arg);
-                }
-            }
-        } else {
-            errors.add(new UnDeclaredError(tmpVariable, symbolTable.currentScope(), node.getLineNumber()));
-            symbolTable.currentScope().define(tmpVariable);
-        }
+        CheckIfUndeclared(node.getVariable(), node);
         return null;
     }
 
     @Override
     public Void VisitConstantExpressionNode(ConstantExpressionNode node) {
         node.setValueType(TypeParser.ConstantType(node.getValue()));
+        return null;
+    }
+
+    public Void CheckIfUndeclared(Variable variable, StatementNode node) {
+        Symbol tmpSymbol = symbolTable.currentScope().resolve(variable.getId());
+        if (tmpSymbol != null) {
+            if (variable.getDatatype() == null)
+                variable.setDatatype(tmpSymbol.getType());
+            tmpSymbol.setUsed(true);
+            node.setScope(symbolTable.currentScope());
+            node.setValueType(tmpSymbol.getType());
+            symbolTable.currentScope().define(tmpSymbol);
+            if (variable.getIsFunction()) {
+                for (ExpressionNode arg : variable.getArguments()) {
+                    visit(arg);
+                }
+            }
+        } else {
+            errors.add(new UnDeclaredError(variable, symbolTable.currentScope(), node.getLineNumber()));
+            symbolTable.currentScope().define(variable);
+        }
+
         return null;
     }
 }

@@ -11,7 +11,7 @@ public class ExpressionNode extends StatementNode {
     private ExpressionNode lValue;
     private OperatorType operatorType;
     private ExpressionNode rValue;
-    private ValueType valueType;
+
 
     public ExpressionNode getLValue(){
         return this.lValue;
@@ -32,9 +32,6 @@ public class ExpressionNode extends StatementNode {
         return valueType;
     }
 
-    public void setValueType(ValueType valueType) {
-        this.valueType = valueType;
-    }
 
     public <T> T accept(IASTVisitor<? extends T> node) {
         if ( node instanceof IASTVisitor) return node.VisitExpressionNode(this);
