@@ -18,5 +18,5 @@ matrix<int> d = [1, 2, 4;
 int res = a + 3;
 
 if(a == b) {
- float a = 222.2;
+    float a = 222.2;
 }

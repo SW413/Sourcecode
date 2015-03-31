@@ -51,10 +51,12 @@ public class Main {
         abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
+        System.out.println();
         LanguageError.PrintAllErrors(errors);
+        System.out.println();
         System.out.println("PRETTY PRINT:\n");
         abstractSyntaxTree.accept(new PrettyPrint());
-        System.out.println("\n");
+        System.out.println();
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 
 

@@ -86,7 +86,7 @@ public class SymbolTable {
                 // If the symbol is NOT used then add an error to the list.
                 //TODO: Add line numbers.
                 if(!tempSymbol.used)
-                    errors.add(new UnusedVariableError(tempSymbol.variable, allScopes.get(i), 666));
+                    errors.add(new UnusedVariableError(tempSymbol.variable, allScopes.get(i), tempSymbol.declLine));
             }
         }
 

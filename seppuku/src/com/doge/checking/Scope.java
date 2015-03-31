@@ -31,6 +31,11 @@ public class Scope {
         Symbol symbol = new Symbol(variable);
         define(symbol);
     }
+    public void define(Variable variable, int declLine) {
+        Symbol symbol = new Symbol(variable);
+        symbol.setDeclLine(declLine);
+        define(symbol);
+    }
     public void define(Symbol symbol) {
         symbol.setScope(this);
         // LOVE DEBUGING THE PRINTF WAY

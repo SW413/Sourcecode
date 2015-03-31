@@ -7,6 +7,7 @@ import com.doge.ErrorHandling.UnDeclaredError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
+import com.doge.types.TypeChecker;
 import com.doge.types.TypeParser;
 
 import java.util.ArrayList;
@@ -26,11 +27,12 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitTopNode(TopNode node) {
         //Add all function declarations to the symbol table in global scope
-        for (FunctionDclNode FuncDecl : node.getFunctionDeclarations())
-            symbolTable.currentScope().define(FuncDecl.getVariable());
+        for (FunctionDclNode FuncDecl : node.getFunctionDeclarations()) {
+            symbolTable.currentScope().define(FuncDecl.getVariable(), FuncDecl.getLineNumber());
+        }
         //Visit all function declarations
-        for (FunctionDclNode FuncDecl : node.getFunctionDeclarations())
-            visit(FuncDecl);
+        for (FunctionDclNode funcDecl : node.getFunctionDeclarations())
+            visit(funcDecl);
         symbolTable.pushScope(ScopeType.LOCAL);
         if (node.getStatements() != null)
             visit(node.getStatements());
@@ -42,12 +44,13 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitFunctionDclNode(FunctionDclNode node) {
         symbolTable.pushScope(ScopeType.FUNCDECL);
         for (Variable variable : node.getParameters()) {
-            symbolTable.currentScope().define(variable);
+            symbolTable.currentScope().define(variable, node.getLineNumber());
         }
         if (node.getFunctionBody() != null)
             visit(node.getFunctionBody());
-        if (node.getFunctionReturn() != null)
+        if (node.getFunctionReturn() != null) {
             visit(node.getFunctionReturn());
+        }
         symbolTable.popScope();
         return null;
     }
@@ -109,7 +112,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
             errors.add(new ReDeclarationError(node.getVariable(), tmpSym, symbolTable.currentScope(), node.getLineNumber()));
         } else {
             node.setScope(symbolTable.currentScope());
-            symbolTable.currentScope().define(node.getVariable());
+            symbolTable.currentScope().define(node.getVariable(), node.getLineNumber());
             visit(node.getExpression());
         }
         return null;

@@ -27,6 +27,21 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         this.errors = errors;
     }
 
+    //TODO Complex datatype type checking
+    //TODO Conditional expression type checking
+    //TODO Function args matching declaration
+
+    @Override
+    public Variable VisitFunctionDclNode(FunctionDclNode node) {
+        super.VisitFunctionDclNode(node);
+        if (node.getFunctionBody() != null){
+            TypeChecker.CombineValueTypes(
+                    new Variable(node.getFunctionReturn().getExpression().getValueType(), "Return statement"),
+                    node.getVariable(), errors, node.getLineNumber());
+        }
+        return null;
+    }
+
     @Override
     public Variable VisitExpressionNode(ExpressionNode node) {
         ValueType valueType = TypeChecker.CombineValueTypes(

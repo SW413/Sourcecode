@@ -15,6 +15,7 @@ public class FunctionDclNode extends AST {
     private ArrayList<Variable> parameters = new ArrayList<Variable>();
     private StatementNode functionBody;
     private FunctionReturnNode functionReturn;
+    private ValueType valueType;
 
     public FunctionDclNode(AST parent, Variable variable) {
         super(parent);
@@ -55,6 +56,14 @@ public class FunctionDclNode extends AST {
 
     public void setFunctionReturn(FunctionReturnNode functionReturn) {
         this.functionReturn = functionReturn;
+    }
+
+    public ValueType getValueType() {
+        return valueType;
+    }
+
+    public void setValueType(ValueType valueType) {
+        this.valueType = valueType;
     }
 
     public <T> T accept(IASTVisitor<? extends T> node) {

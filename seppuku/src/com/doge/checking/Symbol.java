@@ -11,6 +11,7 @@ public class Symbol {
     protected Scope scope; // the owning scope
     protected Variable variable;
     protected boolean used;
+    protected int declLine;
 
     public Symbol(Variable variable) {
         this.variable = variable;
@@ -30,6 +31,10 @@ public class Symbol {
     }
 
     public void setUsed(boolean used) { this.used = used; }
+
+    public void setDeclLine(int declLine) {
+        this.declLine = declLine;
+    }
 
     public Scope getScope() {
         return scope;

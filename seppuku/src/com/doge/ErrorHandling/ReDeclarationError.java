@@ -3,8 +3,8 @@ package com.doge.ErrorHandling;
 import com.doge.AST.Variable;
 import com.doge.checking.Scope;
 import com.doge.checking.Symbol;
-import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RED;
-import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
+
+import static com.doge.ErrorHandling.ANSIEscapeCodes.*;
 
 public class ReDeclarationError extends LanguageError {
     private Variable variableReDecl;
@@ -21,6 +21,6 @@ public class ReDeclarationError extends LanguageError {
 
     @Override
     public String toString() {
-        return super.toString() + "Variable " + ANSI_RED + variableReDecl + ANSI_RESET + " in scope " + scope + " already declared as " + ANSI_RED + symbolExisting + ANSI_RESET + " in scope " + symbolExisting.getScope();
+        return super.toString() + "Variable " + ANSI_RED + variableReDecl + ANSI_RESET + " in scope " + ANSI_BLUE + scope + ANSI_RESET + " already declared as " + ANSI_RED + symbolExisting + ANSI_RESET + " in scope " + ANSI_BLUE + symbolExisting.getScope() + ANSI_RESET;
     }
 }

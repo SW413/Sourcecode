@@ -3,6 +3,10 @@ package com.doge.ErrorHandling;
 import com.doge.AST.Variable;
 import com.doge.checking.Scope;
 
+import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_BLUE;
+import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_CYAN;
+import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
+
 /**
  * Created by michno on 27/3/15.
  */
@@ -18,6 +22,6 @@ public class UnDeclaredError extends LanguageError {
 
     @Override
     public String toString() {
-        return super.toString() + "Undeclared variable " + unDeclaredVariable + " in scope " + scope ;
+        return super.toString() + "Undeclared variable " + unDeclaredVariable + " in scope " + ANSI_BLUE + scope + ANSI_RESET ;
     }
 }
