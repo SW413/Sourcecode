@@ -218,9 +218,8 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitImportNode(ImportNode node) {
-        for (int i = 0; i < node.getInputFiles().size(); i++) {
-            System.out.println("import <" + node.getInputFiles().get(i).getName() + ">");
-        }
+        for (ImportFile files: node.getInputFiles())
+            System.out.println("import<" + files.getName() + ">");
         System.out.println();
         return null;
     }
