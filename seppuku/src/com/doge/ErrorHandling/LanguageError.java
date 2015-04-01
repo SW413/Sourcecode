@@ -14,7 +14,7 @@ public abstract class LanguageError implements Comparable<LanguageError> {
 
     @Override
     public String toString(){
-        return ANSI_RED + "Error[line " + String.format("%4d", lineNum) + "]-> " + ANSI_RESET;
+        return ANSI_RED + "  Error[line " + String.format("%4d", lineNum) + "]-> " + ANSI_RESET;
     }
 
     public ErrorType getErrorType() {

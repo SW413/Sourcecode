@@ -23,6 +23,5 @@ public class UnDeclaredError extends LanguageError {
         return super.toString() + String.format("Undeclared variable %1$s%4$s%3$s in scope %2$s%5$s%3$s",
                 ANSI_RED, ANSI_BLUE, ANSI_RESET,
                 unDeclaredVariable, scope);
-               // "Undeclared variable " + unDeclaredVariable + " in scope " + ANSI_BLUE + scope + ANSI_RESET ;
     }
 }

@@ -60,6 +60,6 @@ public class Scope {
 
     @Override
     public String toString() {
-        return this.scopeId + ":" + this.type;
+        return this.type.toString();
     }
 }
