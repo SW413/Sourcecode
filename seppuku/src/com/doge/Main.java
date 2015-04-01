@@ -43,14 +43,12 @@ public class Main {
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
 
-
-
         ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
         //System.out.println(abstractSyntaxTree.getChild);
-        SymbolTable symbolTable = new SymbolTable();
+       /* SymbolTable symbolTable = new SymbolTable();
         abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
-        errors.addAll(symbolTable.getUnusedVariables());
+        errors.addAll(symbolTable.getUnusedVariables());*/
         System.out.println();
         LanguageError.PrintAllErrors(errors);
         System.out.println();
