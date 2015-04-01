@@ -43,8 +43,6 @@ public class Main {
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
 
-
-
         ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();

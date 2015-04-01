@@ -9,14 +9,20 @@ import java.io.FileReader;
 public class ImportFile {
     private FileReader fileReader;
     private int lineNumber;
+    private String name;
 
     public ImportFile(String path) {
+        this.name = path;
         try {
         fileReader = new FileReader(path);
     } catch (FileNotFoundException e) {
             //TODO generate compile error to user
             e.printStackTrace();
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public FileReader getFileReader() {
