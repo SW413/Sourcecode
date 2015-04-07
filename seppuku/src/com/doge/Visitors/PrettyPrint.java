@@ -27,10 +27,12 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
             System.out.print(String.format("%s %s (", var.getDatatype(), var.getId()));
             //System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + "(");
             for (int i = 0; i < node.getParameterCount() - 1; i++) {
-                System.out.print(TypeParser.parseStringFromValue(node.getParameter(i).getDatatype()) + " " + node.getParameter(i).getId() + ",");
+                System.out.print(String.format("%s %s", var.getDatatype(), var.getId()));
+                //System.out.print(TypeParser.parseStringFromValue(node.getParameter(i).getDatatype()) + " " + node.getParameter(i).getId() + ",");
             }
-            System.out.print(TypeParser.parseStringFromValue(node.getParameter(node.getParameterCount() - 1).getDatatype()) +
-                    " " + node.getParameter(node.getParameterCount() - 1).getId() + ") { \n");
+            System.out.print(String.format("%s %s ) \n", node.getParameter(node.getParameterCount() - 1).getDatatype(), node.getParameter(node.getParameterCount() - 1).getId()));
+            //System.out.print(TypeParser.parseStringFromValue(node.getParameter(node.getParameterCount() - 1).getDatatype()) +
+            //      " " + node.getParameter(node.getParameterCount() - 1).getId() + ") { \n");
         }
         super.VisitFunctionDclNode(node);
         System.out.println("}\n");
@@ -41,12 +43,14 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitExpressionNode(ExpressionNode node) {
         if (node.getLValue() != null && node.getRValue() != null) {
             visit(node.getLValue());
-            System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
+            System.out.print(String.format(" %s ", node.getOperatorType()));
+            //System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
             visit(node.getRValue());
         } else if (node.getLValue() != null) {
             visit(node.getLValue());
             if (node.getOperatorType() != null) {
-                System.out.print(TypeParser.parseStringFromOperator(node.getOperatorType()));
+                System.out.print(String.format("%s", node.getOperatorType()));
+                //System.out.print(TypeParser.parseStringFromOperator(node.getOperatorType()));
             }
         }
         return null;
@@ -187,7 +191,8 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitConditionalExpressionNode(ConditionalExpressionNode node) {
         if (node.getLValue() != null && node.getRValue() != null) {
             visit(node.getLValue());
-            System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
+            System.out.print(String.format(" %s ", node.getOperatorType()));
+            //System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
             visit(node.getRValue());
         }
         return null;
@@ -213,14 +218,6 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
             System.out.println("}\n");
 
         }
-        return null;
-    }
-
-    @Override
-    public Void VisitImportNode(ImportNode node) {
-        for (ImportFile files: node.getInputFiles())
-            System.out.println("import<" + files.getName() + ">");
-        System.out.println();
         return null;
     }
 
