@@ -113,15 +113,6 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         } else {
             node.setScope(symbolTable.currentScope());
             symbolTable.currentScope().define(node.getVariable(), node.getLineNumber());
-/*            //Set size if matrix decl
-            if (node.getExpression().getClass() == MatrixValNode.class) {
-                int[] tmpSize = {((MatrixValNode) node.getExpression()).getRows().size(),
-                        ((MatrixValNode) node.getExpression()).getRows().get(0).getValues().size()};
-                node.getVariable().setSize(tmpSize);
-            } else if (node.getExpression().getClass() == VectorValNode.class) {
-                int[] tmpSize = {((VectorValNode) node.getExpression()).getValues().size()};
-                node.getVariable().setSize(tmpSize);
-            }*/
         }
         return super.VisitDeclarationNode(node);
     }
