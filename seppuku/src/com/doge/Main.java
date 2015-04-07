@@ -39,7 +39,7 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ourLangParser parser = new ourLangParser(tokens);
         ParseTree tree = parser.topLevel(); // parse
-        System.out.println(tree.toStringTree(parser)); // print tree as text
+        //Systlem.out.println(tree.toStringTree(parser)); // print tree as text
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
 
@@ -49,10 +49,10 @@ public class Main {
         abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
-        System.out.println();
+        System.out.println("\t(╯°□°）╯︵ ┻━┻ ");
         LanguageError.PrintAllErrors(errors);
-        System.out.println();
-        System.out.println("PWETTY PWINT:\n");
+        System.out.println("\t┬─┬ノ( º _ ºノ)\n");
+        System.out.println("PWETTY PWINT ಠ_ಠ :\n");
         abstractSyntaxTree.accept(new PrettyPrint());
         System.out.println();
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");

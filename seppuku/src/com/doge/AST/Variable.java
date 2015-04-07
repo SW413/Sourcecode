@@ -64,6 +64,9 @@ public class Variable {
     public ArrayList<ExpressionNode> getArguments() {
         return arguments;
     }
+    public ExpressionNode getArgument(int i) {
+        return arguments.get(i);
+    }
 
     public CollectionCoordinateNode getEntrance() {
         return entrance;

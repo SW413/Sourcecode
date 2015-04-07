@@ -113,7 +113,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         } else {
             node.setScope(symbolTable.currentScope());
             symbolTable.currentScope().define(node.getVariable(), node.getLineNumber());
-            //Set size if matrix decl
+/*            //Set size if matrix decl
             if (node.getExpression().getClass() == MatrixValNode.class) {
                 int[] tmpSize = {((MatrixValNode) node.getExpression()).getRows().size(),
                         ((MatrixValNode) node.getExpression()).getRows().get(0).getValues().size()};
@@ -121,7 +121,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
             } else if (node.getExpression().getClass() == VectorValNode.class) {
                 int[] tmpSize = {((VectorValNode) node.getExpression()).getValues().size()};
                 node.getVariable().setSize(tmpSize);
-            }
+            }*/
         }
         return super.VisitDeclarationNode(node);
     }
@@ -150,6 +150,21 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitConstantExpressionNode(ConstantExpressionNode node) {
+
+        //Change value to constant if rows or cols function call... bitch
+        if (node.getValue().getClass() == Variable.class){
+            Variable tmp = (Variable) node.getValue();
+            Variable complexVar = symbolTable.currentScope().resolve(((VariableExpressionNode) tmp.getArgument(0)).getVariable().getId()).getVariable();
+            switch (tmp.getId()){
+                case "rows":
+                    node.setValue(Integer.toString(complexVar.getSize()[0]));
+                    break;
+                case "cols":
+                    node.setValue(Integer.toString(complexVar.getSize()[1]));
+                    break;
+            }
+        }
+
         node.setValueType(TypeParser.ConstantType(node.getValue()));
         return null;
     }

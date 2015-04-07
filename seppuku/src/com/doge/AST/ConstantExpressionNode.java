@@ -17,6 +17,10 @@ public class ConstantExpressionNode extends ExpressionNode {
         return this.value;
     }
 
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
     public <T> T accept(IASTVisitor<? extends T> node) {
         if ( node instanceof IASTVisitor) return node.VisitConstantExpressionNode(this);
         else return node.visitChildren(this);

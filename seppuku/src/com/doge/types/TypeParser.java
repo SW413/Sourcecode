@@ -1,5 +1,7 @@
 package com.doge.types;
 
+import com.doge.AST.Variable;
+
 /**
  * Created by michno on 20/3/15.
  */
@@ -251,6 +253,10 @@ public class TypeParser {
     }
 
     public static ValueType ConstantType(Object constant) {
+        if (constant.getClass() == null || constant.getClass() == Variable.class){
+            return ValueType.INVALID;
+        }
+
         if (constant.getClass() == Boolean.class){
             return ValueType.BOOLEAN;
         }

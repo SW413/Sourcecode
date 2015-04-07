@@ -19,6 +19,8 @@ float b = 3.2;
 matrix<int> d = [1, 2, 4;
                  2, 3, 5];
 
+int a = rows(d);
+
 vector<float>  vf = [1.2, 4.2, 0.0];
 
 int res = a + 3;

@@ -4,6 +4,7 @@ import com.doge.AST.*;
 import com.doge.types.AssignmentOperatorType;
 import com.doge.types.TypeParser;
 import com.antlr.*;
+import com.doge.types.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 import java.util.ArrayList;
@@ -246,10 +247,20 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
-        DeclarationNode dcl = new DeclarationNode(
-                parentStack.peek(),
-                new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText()),
-                (ExpressionNode) visit(ctx.expression()));
+        ExpressionNode expr = (ExpressionNode) visit(ctx.expression());
+        Variable var =  new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
+
+        //Set size if matrix decl
+        if (expr.getClass() == MatrixValNode.class) {
+            int[] tmpSize = {((MatrixValNode) expr).getRows().size(),
+                    ((MatrixValNode) expr).getRows().get(0).getValues().size()};
+            var.setSize(tmpSize);
+        } else if (expr.getClass() == VectorValNode.class) {
+            int[] tmpSize = {((VectorValNode) expr).getValues().size()};
+            var.setSize(tmpSize);
+        }
+
+        DeclarationNode dcl = new DeclarationNode(parentStack.peek(), var, expr);
         dcl.setLineNumber(ctx.start.getLine());
         return dcl;
     }
@@ -331,7 +342,6 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     @Override
     public AST visitValID(ourLangParser.ValIDContext ctx) {
         VariableExpressionNode varexp = new VariableExpressionNode(null, new Variable(null, ctx.ID().getText()));
-
         varexp.setLineNumber(ctx.start.getLine());
         return varexp;
     }
@@ -385,6 +395,13 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
             }
         }
+
+        if(ctx.ID().getText().equals("rows")){
+            return new ConstantExpressionNode(null, new Variable(ValueType.INT, ctx.ID().getText(), arguments));
+        }else if (ctx.ID().getText().equals("cols")){
+            return new ConstantExpressionNode(null, new Variable(ValueType.INT, ctx.ID().getText(), arguments));
+        }
+
         VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, ctx.ID().getText(), arguments));
         Varexp.setLineNumber(ctx.start.getLine());
         return Varexp;
