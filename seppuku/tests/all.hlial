@@ -40,16 +40,16 @@ c = c + 1;
 
 if( c == addIntAndFloat(tmp, tmpF) && tmp == 2 || tmpF == 2.2) {
     print("Success!");
-    exit();
+   // exit();
 } else if (c != tmp) {
     //"Trying the old manual way..."
     float res = tmp + tmpF;
     if(c == res) {
         print("YAY!!");
-        exit();
+        //exit();
     } else {
         print("fubar");
-        exit();
+        //exit();
     }
 } else {
     print("Goodbye");

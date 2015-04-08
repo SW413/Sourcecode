@@ -20,8 +20,9 @@ public class UnDeclaredError extends LanguageError {
 
     @Override
     public String toString() {
-        return super.toString() + String.format("Undeclared variable %1$s%4$s%3$s in scope %2$s%5$s%3$s",
+        String type = unDeclaredVariable.getIsFunction() ? "function " : "variable ";
+        return super.toString() + String.format("Undeclared %6$s %1$s%4$s%3$s in scope %2$s%5$s%3$s",
                 ANSI_RED, ANSI_BLUE, ANSI_RESET,
-                unDeclaredVariable, scope);
+                unDeclaredVariable, scope, type);
     }
 }

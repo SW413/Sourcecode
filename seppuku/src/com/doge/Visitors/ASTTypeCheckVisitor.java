@@ -2,16 +2,12 @@ package com.doge.Visitors;
 
 import com.doge.AST.*;
 import com.doge.ErrorHandling.LanguageError;
-import com.doge.ErrorHandling.ReDeclarationError;
-import com.doge.ErrorHandling.UnDeclaredError;
+import com.doge.ErrorHandling.MissingArgumentError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
-import com.doge.types.ScopeType;
 import com.doge.types.TypeChecker;
-import com.doge.types.TypeParser;
 import com.doge.types.ValueType;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -27,15 +23,15 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         this.errors = errors;
     }
 
-    //TODO Complex datatype type checking
     //TODO Conditional expression type checking
     //TODO Function args matching declaration
 
     @Override
     public Variable VisitFunctionDclNode(FunctionDclNode node) {
         super.VisitFunctionDclNode(node);
-        if (node.getFunctionBody() != null){
-            TypeChecker.CombineValueTypes(
+        if (node.getFunctionBody() != null) {
+            if (node.getVariable().getDatatype() != ValueType.VOID)
+                TypeChecker.CombineValueTypes(
                     new Variable(node.getFunctionReturn().getExpression().getValueType(), "Return statement"),
                     node.getVariable(), errors, node.getLineNumber());
         }
@@ -45,7 +41,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     @Override
     public Variable VisitVectorValNode(VectorValNode node) {
         ValueType tmpValueType = null;
-        for (ExpressionNode val : node.getValues().subList(1, node.getValues().size())){
+        for (ExpressionNode val : node.getValues().subList(1, node.getValues().size())) {
             tmpValueType = TypeChecker.CombineValueTypes(visit(node.getValues().get(0)), visit(val), errors, node.getLineNumber());
         }
         node.setValueType(tmpValueType);
@@ -77,8 +73,8 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     @Override
     public Variable VisitVariableExpressionNode(VariableExpressionNode node) {
         //TODO check if declared functions parameters match...
-        if (node.getVariable().getIsFunction()){
-            CheckFuncArgsMatch(node.getVariable());
+        if (node.getVariable().getIsFunction() && !node.getVariable().getId().equals("print")) {
+            CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
         }
         return node.getVariable();
     }
@@ -88,18 +84,27 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         return new Variable(
                 node.getValueType(),
                 node.getValue().toString()
-                );
+        );
     }
 
-    private Void CheckFuncArgsMatch(Variable func){
-        Variable funcDecl = symbolTable.getScope(1).resolve(func.getId()).getVariable();
-        System.out.println("LOOOOOOL " +
-                funcDecl);
-        for (ExpressionNode arg : func.getArguments()){
-            visit(arg);
-
+    private Void CheckFuncArgsMatch(Variable func, int lineNum) {
+        System.out.println(func);
+        Symbol funcDeclSym = symbolTable.getScope(1).resolve(func.getId());
+        if (funcDeclSym != null) {
+            Variable funcDecl = funcDeclSym.getVariable();
+            System.out.println("LOOOOOOL " +
+                    funcDecl);
+            if (funcDecl.getArguments().size() != func.getArguments().size()) {
+                //TODO too many arguments
+                errors.add(new MissingArgumentError(func, lineNum));
+            } else {
+                int i = 0;
+                for (ExpressionNode arg : func.getArguments()) {
+                    //TODO maybe expected fejl istedet
+                    TypeChecker.CombineValueTypes(visit(funcDecl.getArgument(i)), visit(arg), errors, lineNum);
+                }
+            }
         }
-
         return null;
     }
 }

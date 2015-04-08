@@ -2,12 +2,14 @@ package com.doge.Visitors;
 
 import com.doge.AST.*;
 import com.doge.ErrorHandling.LanguageError;
+import com.doge.ErrorHandling.MissingArgumentError;
 import com.doge.ErrorHandling.ReDeclarationError;
 import com.doge.ErrorHandling.UnDeclaredError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
 import com.doge.types.TypeParser;
+import com.doge.types.ValueType;
 
 import java.util.ArrayList;
 
@@ -30,6 +32,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         for (FunctionDclNode FuncDecl : node.getFunctionDeclarations()) {
             symbolTable.currentScope().define(FuncDecl.getVariable(), FuncDecl.getLineNumber());
         }
+        //symbolTable.currentScope().define(new Variable(ValueType.VOID, "print", true));
         //Visit all function declarations
         for (FunctionDclNode funcDecl : node.getFunctionDeclarations())
             visit(funcDecl);
@@ -43,9 +46,13 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitFunctionDclNode(FunctionDclNode node) {
         symbolTable.pushScope(ScopeType.FUNCDECL);
+        Variable func = symbolTable.currentScope().resolve(node.getVariable().getId()).getVariable();
+        ArrayList<ExpressionNode> args = new ArrayList<ExpressionNode>();
         for (Variable variable : node.getParameters()) {
+            args.add(new VariableExpressionNode(null, variable));
             symbolTable.currentScope().define(variable, node.getLineNumber());
         }
+        func.setArguments(args);
         if (node.getFunctionBody() != null)
             visit(node.getFunctionBody());
         if (node.getFunctionReturn() != null) {
@@ -135,24 +142,31 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
-        CheckIfUndeclared(node.getVariable(), node);
+        if (node.getVariable().getId() != "print")
+            CheckIfUndeclared(node.getVariable(), node);
         return null;
     }
 
     @Override
     public Void VisitConstantExpressionNode(ConstantExpressionNode node) {
-
         //Change value to constant if rows or cols function call... bitch
         if (node.getValue().getClass() == Variable.class){
             Variable tmp = (Variable) node.getValue();
-            Variable complexVar = symbolTable.currentScope().resolve(((VariableExpressionNode) tmp.getArgument(0)).getVariable().getId()).getVariable();
-            switch (tmp.getId()){
-                case "rows":
-                    node.setValue(Integer.toString(complexVar.getSize()[0]));
-                    break;
-                case "cols":
-                    node.setValue(Integer.toString(complexVar.getSize()[1]));
-                    break;
+            if (tmp.getArguments() == null || tmp.getArguments().size() != 1){
+                errors.add(new MissingArgumentError(tmp, node.getLineNumber()));
+            }else {
+                Variable complexVar = symbolTable.currentScope()
+                        .resolve(((VariableExpressionNode) tmp.getArgument(0)).getVariable().getId()).getVariable();
+                switch (tmp.getId()) {
+                    case "rows":
+                        if (complexVar.getSize() != null && complexVar.getSize().length > 0)
+                            node.setValue(Integer.toString(complexVar.getSize()[0]));
+                        break;
+                    case "cols":
+                        if (complexVar.getSize() != null && complexVar.getSize().length > 1)
+                            node.setValue(Integer.toString(complexVar.getSize()[1]));
+                        break;
+                }
             }
         }
 

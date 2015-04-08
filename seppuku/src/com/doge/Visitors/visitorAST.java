@@ -229,12 +229,14 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public DeclarationNode visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
+        AST parent = parentStack.peek();
+        parentStack.push(null);
         DeclarationNode dcl = new DeclarationNode(
-                parentStack.peek(),
+                parent,
                 new Variable(TypeParser.parseValueType(ctx.datatype().getText()), ctx.ID().getText()),
                 (ExpressionNode) visit(ctx.expression()));
         dcl.setLineNumber(ctx.start.getLine());
-
+        parentStack.pop();
         return  dcl;
     }
 
@@ -256,7 +258,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                     ((MatrixValNode) expr).getRows().get(0).getValues().size()};
             var.setSize(tmpSize);
         } else if (expr.getClass() == VectorValNode.class) {
-            int[] tmpSize = {((VectorValNode) expr).getValues().size()};
+            int[] tmpSize = {((VectorValNode) expr).getValues().size(), ((VectorValNode) expr).getValues().size()};
             var.setSize(tmpSize);
         }
 
@@ -396,10 +398,10 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             }
         }
 
-        if(ctx.ID().getText().equals("rows")){
-            return new ConstantExpressionNode(null, new Variable(ValueType.INT, ctx.ID().getText(), arguments));
-        }else if (ctx.ID().getText().equals("cols")){
-            return new ConstantExpressionNode(null, new Variable(ValueType.INT, ctx.ID().getText(), arguments));
+        if(ctx.ID().getText().equals("rows") || ctx.ID().getText().equals("cols")){
+            ConstantExpressionNode rowsOrColsFunc = new ConstantExpressionNode(null, new Variable(ValueType.INT, ctx.ID().getText(), arguments));
+            rowsOrColsFunc.setLineNumber(ctx.start.getLine());
+            return rowsOrColsFunc;
         }
 
         VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, ctx.ID().getText(), arguments));
@@ -410,7 +412,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
         if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class)){
-        VariableExpressionNode tmp = new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", ctx.argumentlist().getText()));
+        VariableExpressionNode tmp = new VariableExpressionNode(parentStack.peek(), new Variable(null, "print", ctx.argumentlist().getText()));
             tmp.setLineNumber(ctx.start.getLine());
             return tmp;
         }
@@ -420,7 +422,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
             }
         }
-        VariableExpressionNode varExp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, "PRINT", arguments));
+        VariableExpressionNode varExp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, "print", arguments));
         varExp.setLineNumber(ctx.start.getLine());
         return varExp;
     }

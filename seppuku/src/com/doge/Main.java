@@ -49,13 +49,16 @@ public class Main {
         abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
-        System.out.println("\t(╯°□°）╯︵ ┻━┻ ");
+        System.out.println("\t(╯° □ ° ）╯︵ ┻━┻ ");
         LanguageError.PrintAllErrors(errors);
         System.out.println("\t┬─┬ノ( º _ ºノ)\n");
         System.out.println("PWETTY PWINT ಠ_ಠ :\n");
         abstractSyntaxTree.accept(new PrettyPrint());
         System.out.println();
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
+
+        //TODO check print func!
+
 
 
         //tree.accept(new visitorChecker(symbolTable));

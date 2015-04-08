@@ -17,6 +17,7 @@ public class Variable {
     private CollectionCoordinateNode entrance;
     private int[] size;
     private boolean isFunction;
+    //private int funcDeclScope;
 
     public Variable(ValueType datatype, String id, ArrayList<ExpressionNode> arguments){
         this.datatype = datatype;
@@ -66,6 +67,10 @@ public class Variable {
     }
     public ExpressionNode getArgument(int i) {
         return arguments.get(i);
+    }
+
+    public void setArguments(ArrayList<ExpressionNode> arguments) {
+        this.arguments = arguments;
     }
 
     public CollectionCoordinateNode getEntrance() {
