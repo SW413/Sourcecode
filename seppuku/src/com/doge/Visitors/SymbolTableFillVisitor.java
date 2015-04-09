@@ -2,14 +2,13 @@ package com.doge.Visitors;
 
 import com.doge.AST.*;
 import com.doge.ErrorHandling.LanguageError;
-import com.doge.ErrorHandling.MissingArgumentError;
+import com.doge.ErrorHandling.ArgumentsError;
 import com.doge.ErrorHandling.ReDeclarationError;
 import com.doge.ErrorHandling.UnDeclaredError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
 import com.doge.types.TypeParser;
-import com.doge.types.ValueType;
 
 import java.util.ArrayList;
 
@@ -153,7 +152,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         if (node.getValue().getClass() == Variable.class){
             Variable tmp = (Variable) node.getValue();
             if (tmp.getArguments() == null || tmp.getArguments().size() != 1){
-                errors.add(new MissingArgumentError(tmp, node.getLineNumber()));
+                errors.add(new ArgumentsError(tmp, 1, 0, node.getLineNumber()));
             }else {
                 Variable complexVar = symbolTable.currentScope()
                         .resolve(((VariableExpressionNode) tmp.getArgument(0)).getVariable().getId()).getVariable();

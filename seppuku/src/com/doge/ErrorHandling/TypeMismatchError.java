@@ -15,6 +15,7 @@ public class TypeMismatchError extends LanguageError {
         this.valueA = valueA;
         this.valueB = valueB;
         this.lineNum = lineNum;
+        this.errorType = ErrorType.ERROR;
     }
 
     @Override

@@ -16,6 +16,7 @@ public class UnDeclaredError extends LanguageError {
         this.unDeclaredVariable = unDeclaredVariable;
         this.scope = scope;
         this.lineNum = lineNum;
+        this.errorType = ErrorType.ERROR;
     }
 
     @Override

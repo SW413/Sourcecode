@@ -84,7 +84,6 @@ public class SymbolTable {
                 // Get the symbol as a value
                 Symbol tempSymbol = entry.getValue();
                 // If the symbol is NOT used then add an error to the list.
-                //TODO: Add line numbers.
                 if(!tempSymbol.used)
                     errors.add(new UnusedVariableError(tempSymbol.variable, allScopes.get(i), tempSymbol.declLine));
             }

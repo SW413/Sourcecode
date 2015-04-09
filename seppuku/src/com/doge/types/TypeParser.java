@@ -55,12 +55,7 @@ public class TypeParser {
             case "||":
                 oppType = OperatorType.OR;
                 break;
-
-            default:
-                //TODO make error handler
-                System.out.println("Parse error");
         }
-
         return oppType;
     }
 
@@ -99,8 +94,6 @@ public class TypeParser {
             case OR:
                 return "||";
         }
-
-
         return null;
     }
 
@@ -128,12 +121,7 @@ public class TypeParser {
             case "--":
                 oppType = AssignmentOperatorType.DECREMENT;
                 break;
-
-            default:
-                //TODO make error handler
-                System.out.println("Parse error");
         }
-
         return oppType;
     }
 

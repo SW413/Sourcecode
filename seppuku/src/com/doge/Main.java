@@ -2,6 +2,7 @@ package com.doge;
 
 import com.antlr.*;
 import com.doge.AST.AST;
+import com.doge.ErrorHandling.ErrorType;
 import com.doge.Visitors.ASTTypeCheckVisitor;
 import com.doge.Visitors.PrettyPrint;
 import com.doge.Visitors.visitorAST;
@@ -39,10 +40,9 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ourLangParser parser = new ourLangParser(tokens);
         ParseTree tree = parser.topLevel(); // parse
-        //Systlem.out.println(tree.toStringTree(parser)); // print tree as text
+        //System.out.println(tree.toStringTree(parser)); // print tree as text
         AST abstractSyntaxTree = new AST(null);
         tree.accept(new visitorAST(abstractSyntaxTree));
-
         ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
         //System.out.println(abstractSyntaxTree.getChild);
         SymbolTable symbolTable = new SymbolTable();
@@ -50,17 +50,14 @@ public class Main {
         abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
         errors.addAll(symbolTable.getUnusedVariables());
         System.out.println("\t(╯° □ ° ）╯︵ ┻━┻ ");
-        LanguageError.PrintAllErrors(errors);
-        System.out.println("\t┬─┬ノ( º _ ºノ)\n");
+        LanguageError.PrintAllErrors(errors, ErrorType.ERROR);
+        System.out.println("\t┬─┬ノ( º _ ºノ)");
+        LanguageError.PrintAllErrors(errors, ErrorType.WARNING);
         System.out.println("PWETTY PWINT ಠ_ಠ :\n");
         abstractSyntaxTree.accept(new PrettyPrint());
         System.out.println();
         System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
 
         //TODO check print func!
-
-
-
-        //tree.accept(new visitorChecker(symbolTable));
     }
 }

@@ -47,8 +47,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         visitChildren(ctx);
         parentStack.pop();
         if (!parentStack.empty()) {
-            //TODO Error handle
-            System.out.println("Unbalanced parent stack!");
+            System.out.println("MAJOR ERROR! - Unbalanced parent stack!");
         }
         return top/*kek*/;
     }

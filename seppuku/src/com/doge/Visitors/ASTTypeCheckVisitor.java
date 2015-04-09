@@ -2,7 +2,7 @@ package com.doge.Visitors;
 
 import com.doge.AST.*;
 import com.doge.ErrorHandling.LanguageError;
-import com.doge.ErrorHandling.MissingArgumentError;
+import com.doge.ErrorHandling.ArgumentsError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.TypeChecker;
@@ -24,7 +24,6 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     //TODO Conditional expression type checking
-    //TODO Function args matching declaration
 
     @Override
     public Variable VisitFunctionDclNode(FunctionDclNode node) {
@@ -72,7 +71,6 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitVariableExpressionNode(VariableExpressionNode node) {
-        //TODO check if declared functions parameters match...
         if (node.getVariable().getIsFunction() && !node.getVariable().getId().equals("print")) {
             CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
         }
@@ -88,20 +86,16 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     private Void CheckFuncArgsMatch(Variable func, int lineNum) {
-        System.out.println(func);
         Symbol funcDeclSym = symbolTable.getScope(1).resolve(func.getId());
         if (funcDeclSym != null) {
             Variable funcDecl = funcDeclSym.getVariable();
-            System.out.println("LOOOOOOL " +
-                    funcDecl);
             if (funcDecl.getArguments().size() != func.getArguments().size()) {
-                //TODO too many arguments
-                errors.add(new MissingArgumentError(func, lineNum));
+                errors.add(new ArgumentsError(func, funcDecl.getArguments().size(), func.getArguments().size(), lineNum));
             } else {
                 int i = 0;
                 for (ExpressionNode arg : func.getArguments()) {
                     //TODO maybe expected fejl istedet
-                    TypeChecker.CombineValueTypes(visit(funcDecl.getArgument(i)), visit(arg), errors, lineNum);
+                    TypeChecker.CombineValueTypes(visit(funcDecl.getArgument(i++)), visit(arg), errors, lineNum);
                 }
             }
         }

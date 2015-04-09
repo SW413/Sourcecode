@@ -15,7 +15,7 @@ public class ReDeclarationError extends LanguageError {
         this.variableReDecl = variableReDecl;
         this.symbolExisting = symbolExisting;
         this.scope = scope;
-        this.errorType = ErrorType.ReDeclaration;
+        this.errorType = ErrorType.ERROR;
         this.lineNum = lineNum;
     }
 
