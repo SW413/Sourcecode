@@ -32,8 +32,9 @@ block
     ;
     
 conditionalExpression
-    : conditionalExpression ('&&' | '||') conditionalExpression  #multiCondExpr
-    | expression conditionalOperator expression                  #singleCondExpr
+    : conditionalExpression '&&' conditionalExpression  #multiAndCondExpr
+    | conditionalExpression '||' conditionalExpression  #multiOrCondExpr
+    | expression conditionalOperator expression         #singleCondExpr
     ;
 
 functiondeclaration

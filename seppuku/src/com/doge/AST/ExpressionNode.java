@@ -28,6 +28,11 @@ public class ExpressionNode extends StatementNode {
         this.rValue = rValue;
     }
 
+    public ExpressionNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue, int lineNum) {
+        this(parent, lValue, operatorType, rValue);
+        this.setLineNumber(lineNum);
+    }
+
     public ValueType getValueType() {
         return valueType;
     }

@@ -81,7 +81,6 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         return null;
     }
 
-    //TODO scope pr. if, else if, og else, right??
     @Override
     public Void VisitConditionalNode(ConditionalNode node) {
         visit(node.getConditionalExpression());

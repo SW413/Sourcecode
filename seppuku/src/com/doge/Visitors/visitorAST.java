@@ -443,7 +443,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitValBool(ourLangParser.ValBoolContext ctx) {
-        return new ConstantExpressionNode(null, Boolean.parseBoolean(ctx.BOOLVAL().getText()));
+        return new ConstantExpressionNode(null, Boolean.parseBoolean(ctx.BOOLVAL().getText()), ctx.start.getLine());
     }
 
     /**
@@ -452,13 +452,12 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public ExpressionNode visitAddExpr(ourLangParser.AddExprContext ctx) {
-        ExpressionNode tmp = new ExpressionNode(
+        return new ExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
-                (ExpressionNode) visit(ctx.expression(1)));
-        tmp.setLineNumber(ctx.start.getLine());
-        return tmp;
+                (ExpressionNode) visit(ctx.expression(1)),
+                ctx.start.getLine());
     }
 
     @Override
@@ -468,28 +467,25 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
-                (ExpressionNode) visit(ctx.expression(1)));
-        tmp.setLineNumber(ctx.start.getLine());
+                (ExpressionNode) visit(ctx.expression(1)),
+                ctx.start.getLine());
         parentStack.pop();
         return tmp;
     }
 
     @Override
     public ExpressionNode visitParenExpr(ourLangParser.ParenExprContext ctx) {
-        ExpressionNode tmp = new ExpressionNode(null, (ExpressionNode) visit(ctx.expression()), null, null);
-        tmp.setLineNumber(ctx.start.getLine());
-        return tmp;
+        return new ExpressionNode(null, (ExpressionNode) visit(ctx.expression()), null, null, ctx.start.getLine());
     }
 
     @Override
     public ExpressionNode visitPostIDExpr(ourLangParser.PostIDExprContext ctx) {
-        ExpressionNode tmp = new ExpressionNode(
+        return new ExpressionNode(
                 null,
                 new VariableExpressionNode(null, new Variable(null, ctx.ID().getText())),
                 TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
-                null);
-        tmp.setLineNumber(ctx.start.getLine());
-        return tmp;
+                null,
+                ctx.start.getLine());
     }
 
     @Override
@@ -581,25 +577,30 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx) {
-        ConditionalExpressionNode tmp =  new ConditionalExpressionNode(
+        return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
-                TypeParser.parseOperator(ctx.getChild(1).getText()),
-                (ExpressionNode) visit(ctx.expression(1)));
-
-        tmp.setLineNumber(ctx.start.getLine());
-        return tmp;
+                TypeParser.parseOperator(ctx.conditionalOperator().getText()),
+                (ExpressionNode) visit(ctx.expression(1)),
+                ctx.start.getLine());
     }
 
     @Override
-    public AST visitMultiCondExpr(ourLangParser.MultiCondExprContext ctx) {
-
-        ConditionalNode node = new ConditionalNode(parentStack.peek(), null);
-        ConditionalExpressionNode node2 = new ConditionalExpressionNode(parentStack.peek(),
-                (ExpressionNode) visit(ctx.getChild(0)), TypeParser.parseOperator(ctx.getChild(1).getText()),
-                (ExpressionNode) visit( ctx.getChild(2)));
-        node.setConditionalExpression(node2);
-        node.setLineNumber(ctx.start.getLine());
-        return node2;
+    public AST visitMultiAndCondExpr(ourLangParser.MultiAndCondExprContext ctx) {
+        return new ConditionalExpressionNode(
+                null,
+                (ExpressionNode) visit(ctx.conditionalExpression(0)),
+                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                (ExpressionNode) visit(ctx.conditionalExpression(1)),
+                ctx.start.getLine());
+    }
+    @Override
+    public AST visitMultiOrCondExpr(ourLangParser.MultiOrCondExprContext ctx) {
+        return new ConditionalExpressionNode(
+                null,
+                (ExpressionNode) visit(ctx.conditionalExpression(0)),
+                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                (ExpressionNode) visit(ctx.conditionalExpression(1)),
+                ctx.start.getLine());
     }
 }

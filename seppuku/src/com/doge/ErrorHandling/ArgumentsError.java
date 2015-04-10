@@ -20,7 +20,7 @@ public class ArgumentsError extends LanguageError {
 
     @Override
     public String toString() {
-        return super.toString() + String.format("Function call to %1$s%3$s%2$s needs %4$d arguments only %5$d provided",
+        return super.toString() + String.format("Function call to %1$s%3$s%2$s needs %4$d arguments, %5$d provided",
                 ANSI_YELLOW, ANSI_RESET,
                 function, needed, provided);
     }

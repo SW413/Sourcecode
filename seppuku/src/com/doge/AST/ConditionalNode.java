@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by michno on 19/3/15.
  */
-public class ConditionalNode extends AST{
+public class ConditionalNode extends AST {
 
     private ConditionalExpressionNode conditionalExpression;
     private StatementNode body;
@@ -15,11 +15,14 @@ public class ConditionalNode extends AST{
     private StatementNode elseBody;
     private boolean DoneWithIf = false;
 
-    public void AddIfElse(ConditionalNode node){
-
-        ElseIfs.add(node);
+    public ConditionalNode(AST parent, ConditionalExpressionNode conditionalExpression) {
+        super(parent);
+        this.conditionalExpression = conditionalExpression;
     }
 
+    public void AddIfElse(ConditionalNode node) {
+        ElseIfs.add(node);
+    }
 
     public boolean IsDoneWithIf() {
         return DoneWithIf;
@@ -41,11 +44,6 @@ public class ConditionalNode extends AST{
         this.conditionalExpression = conditionalExpression;
     }
 
-    public ConditionalNode(AST parent, ConditionalExpressionNode conditionalExpression) {
-        super(parent);
-        this.conditionalExpression = conditionalExpression;
-    }
-
     public StatementNode getElseBody() {
         return elseBody;
     }
@@ -63,7 +61,7 @@ public class ConditionalNode extends AST{
     }
 
     public <T> T accept(IASTVisitor<? extends T> node) {
-        if ( node instanceof IASTVisitor) return node.VisitConditionalNode(this);
+        if (node instanceof IASTVisitor) return node.VisitConditionalNode(this);
         else return node.visitChildren(this);
     }
 }

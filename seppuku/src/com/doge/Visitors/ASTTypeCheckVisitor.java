@@ -57,6 +57,22 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     @Override
+    public Variable VisitConditionalExpressionNode(ConditionalExpressionNode node) {
+        ValueType valueType = TypeChecker.CombineValueTypes(
+                node.getLValue() != null ? visit(node.getLValue()) : null,
+                node.getRValue() != null ? visit(node.getRValue()) : null,
+                errors,
+                node.getLineNumber()
+        );
+        if (valueType != ValueType.INVALID)
+            node.setValueType(ValueType.BOOLEAN);
+        else
+            node.setValueType(valueType);
+
+        return new Variable(valueType, "LogicExpr->" + node.toString());
+    }
+
+    @Override
     public Variable VisitExpressionNode(ExpressionNode node) {
         ValueType valueType = TypeChecker.CombineValueTypes(
                 node.getLValue() != null ? visit(node.getLValue()) : null,
@@ -66,7 +82,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         );
         node.setValueType(valueType);
 
-        return new Variable(valueType, "Expression->" + node.toString());
+        return new Variable(valueType, "Expr->" + node.toString());
     }
 
     @Override

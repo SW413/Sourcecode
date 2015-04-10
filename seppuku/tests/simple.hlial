@@ -13,13 +13,13 @@ void baz(bool a){
     }
 }
 
-int a = foo(2, 2.2);
+int a = foo(2, 2);
 
-baz(2);
+baz(true, 2);
 
 
 
-/*int a = 2 + 1.2 * 3.3;
+int a = 2 + 1.2 * 3.3;
 
 a++;
 
@@ -35,7 +35,6 @@ float c2 = cols(d);
 
 int res = a + 3;
 
-if(a == b) {
+if(true == true || a == true && a < b) {
     float a = 222.2 ;
 }
-*/

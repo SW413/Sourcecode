@@ -56,6 +56,13 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(ourLangParser.BlockContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code multiAndCondExpr}
+	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiAndCondExpr(ourLangParser.MultiAndCondExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code singleCondExpr}
 	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
 	 * @param ctx the parse tree
@@ -63,12 +70,12 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code multiCondExpr}
+	 * Visit a parse tree produced by the {@code multiOrCondExpr}
 	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMultiCondExpr(ourLangParser.MultiCondExprContext ctx);
+	T visitMultiOrCondExpr(ourLangParser.MultiOrCondExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ourLangParser#functiondeclaration}.
 	 * @param ctx the parse tree
