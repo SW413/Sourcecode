@@ -23,8 +23,6 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         this.errors = errors;
     }
 
-    //TODO Conditional expression type checking
-
     @Override
     public Variable VisitFunctionDclNode(FunctionDclNode node) {
         super.VisitFunctionDclNode(node);
@@ -39,7 +37,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitVectorValNode(VectorValNode node) {
-        ValueType tmpValueType = null;
+        ValueType tmpValueType = ValueType.INVALID;
         for (ExpressionNode val : node.getValues().subList(1, node.getValues().size())) {
             tmpValueType = TypeChecker.CombineValueTypes(visit(node.getValues().get(0)), visit(val), errors, node.getLineNumber());
         }
@@ -69,7 +67,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         else
             node.setValueType(valueType);
 
-        return new Variable(valueType, "LogicExpr->" + node.toString());
+        return new Variable(valueType, "LogicExpr:<" + node.toString() + ">");
     }
 
     @Override
@@ -82,7 +80,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
         );
         node.setValueType(valueType);
 
-        return new Variable(valueType, "Expr->" + node.toString());
+        return new Variable(valueType, "Expr:<" + node.toString() + ">");
     }
 
     @Override
@@ -110,7 +108,6 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
             } else {
                 int i = 0;
                 for (ExpressionNode arg : func.getArguments()) {
-                    //TODO maybe expected fejl istedet
                     TypeChecker.CombineValueTypes(visit(funcDecl.getArgument(i++)), visit(arg), errors, lineNum);
                 }
             }

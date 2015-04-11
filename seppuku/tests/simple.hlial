@@ -17,6 +17,9 @@ int a = foo(2, 2);
 
 baz(true, 2);
 
+float16 tt = 2.2;
+
+float64 ff = tt;
 
 
 int a = 2 + 1.2 * 3.3;
@@ -34,6 +37,7 @@ vector<float>  vf = [1.2, 4.2, 0.0];
 float c2 = cols(d);
 
 int res = a + 3;
+int b = 2;
 
 if(true == true || a == true && a < b) {
     float a = 222.2 ;
