@@ -12,8 +12,8 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     public Void VisitDeclarationNode(DeclarationNode node) {
         Variable var = node.getVariable();
 
-        System.out.print(String.format("%s %s = ", var.getDatatype(), var.getId()));
-        //System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + " = ");
+        System.out.print(String.format("%s %s = ", var.getValueType(), var.getId()));
+        //System.out.print(TypeParser.parseStringFromValue(var.getValueType()) + " " + var.getId() + " = ");
 
         visit(node.getExpression());
         System.out.print("");
@@ -23,15 +23,15 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     @Override
     public Void VisitFunctionDclNode(FunctionDclNode node) {
         Variable var = node.getVariable();
-        if (var.getIsFunction()) {
-            System.out.print(String.format("%s %s (", var.getDatatype(), var.getId()));
-            //System.out.print(TypeParser.parseStringFromValue(var.getDatatype()) + " " + var.getId() + "(");
+        if (var.isFunction()) {
+            System.out.print(String.format("%s %s (", var.getValueType(), var.getId()));
+            //System.out.print(TypeParser.parseStringFromValue(var.getValueType()) + " " + var.getId() + "(");
             for (int i = 0; i < node.getParameterCount() - 1; i++) {
-                System.out.print(String.format("%s %s", var.getDatatype(), var.getId()));
-                //System.out.print(TypeParser.parseStringFromValue(node.getParameter(i).getDatatype()) + " " + node.getParameter(i).getId() + ",");
+                System.out.print(String.format("%s %s", var.getValueType(), var.getId()));
+                //System.out.print(TypeParser.parseStringFromValue(node.getParameter(i).getValueType()) + " " + node.getParameter(i).getId() + ",");
             }
-            System.out.print(String.format("%s %s ) \n", node.getParameter(node.getParameterCount() - 1).getDatatype(), node.getParameter(node.getParameterCount() - 1).getId()));
-            //System.out.print(TypeParser.parseStringFromValue(node.getParameter(node.getParameterCount() - 1).getDatatype()) +
+            System.out.print(String.format("%s %s ) \n", node.getParameter(node.getParameterCount() - 1).getValueType(), node.getParameter(node.getParameterCount() - 1).getId()));
+            //System.out.print(TypeParser.parseStringFromValue(node.getParameter(node.getParameterCount() - 1).getValueType()) +
             //      " " + node.getParameter(node.getParameterCount() - 1).getId() + ") { \n");
         }
         super.VisitFunctionDclNode(node);
@@ -65,7 +65,7 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
     @Override
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
         Variable var = node.getVariable();
-        if (var.getIsFunction()) {
+        if (var.isFunction()) {
             if (!node.getVariable().getId().equals("PRINT")) {
                 System.out.print(node.getVariable().getId() + "(");
             }

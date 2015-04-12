@@ -5,10 +5,10 @@ package com.doge.types;
  */
 public enum AssignmentOperatorType {
     BASIC("="),
-    ADD("+"),
-    SUB("-"),
-    MUL("*"),
-    DIV("/"),
+    ADD("+="),
+    SUB("-="),
+    MUL("*="),
+    DIV("/="),
     INCREMENT("++"),
     DECREMENT("--");
 

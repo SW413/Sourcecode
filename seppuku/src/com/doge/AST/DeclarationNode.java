@@ -11,11 +11,14 @@ public class DeclarationNode extends StatementNode {
     private Variable variable;
     private ExpressionNode expression;
 
-    public DeclarationNode(AST parent, Variable variable, ExpressionNode expression) {
+    public DeclarationNode(AST parent, Variable variable, ExpressionNode expression, int lineNum) {
         super(parent);
         this.variable = variable;
         this.expression = expression;
+        this.setLineNumber(lineNum);
     }
+
+
 
     public Variable getVariable(){
         return this.variable;

@@ -233,8 +233,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         DeclarationNode dcl = new DeclarationNode(
                 parent,
                 new Variable(TypeParser.parseValueType(ctx.datatype().getText()), ctx.ID().getText()),
-                (ExpressionNode) visit(ctx.expression()));
-        dcl.setLineNumber(ctx.start.getLine());
+                (ExpressionNode) visit(ctx.expression()),
+                ctx.start.getLine());
         parentStack.pop();
         return  dcl;
     }
@@ -250,6 +250,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
         ExpressionNode expr = (ExpressionNode) visit(ctx.expression());
         Variable var =  new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
+        var.setComplex(true);
 
         //Set size if matrix decl
         if (expr.getClass() == MatrixValNode.class) {
@@ -260,10 +261,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             int[] tmpSize = {((VectorValNode) expr).getValues().size(), ((VectorValNode) expr).getValues().size()};
             var.setSize(tmpSize);
         }
-
-        DeclarationNode dcl = new DeclarationNode(parentStack.peek(), var, expr);
-        dcl.setLineNumber(ctx.start.getLine());
-        return dcl;
+        return new DeclarationNode(parentStack.peek(), var, expr, ctx.start.getLine());
     }
 
     /**

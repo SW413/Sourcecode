@@ -23,7 +23,7 @@ public class Symbol {
     }
 
     public ValueType getType() {
-        return variable.getDatatype();
+        return variable.getValueType();
     }
 
     public Variable getVariable() {
@@ -49,7 +49,7 @@ public class Symbol {
     }
 
     public String toString() {
-        if (variable.getDatatype() != null) return getName() + ":" + getType();
+        if (variable.getValueType() != null) return getName() + ":" + getType();
         return getName();
     }
 }

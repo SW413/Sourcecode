@@ -5,5 +5,5 @@ package com.doge.types;
  */
 public enum LoopType {
     FOR,
-    WHILE;
+    WHILE
 }

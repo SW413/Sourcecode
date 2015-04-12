@@ -21,7 +21,7 @@ public class UnusedVariableError extends LanguageError {
 
     @Override
     public String toString() {
-        String type = unDeclaredVariable.getIsFunction() ? "function " : "variable ";
+        String type = unDeclaredVariable.isFunction() ? "function " : "variable ";
         return  String.format("%1$sWarning[line %3$4d]->%2$s ", ANSI_YELLOW, ANSI_RESET, lineNum) +
                 String.format("Unused %4$s %1$s%5$s%3$s in scope %2$s%6$s%3$s",
                         ANSI_YELLOW, ANSI_BLUE, ANSI_RESET,

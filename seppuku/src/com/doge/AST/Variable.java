@@ -1,63 +1,70 @@
 package com.doge.AST;
 
+import com.doge.types.TypeParser;
 import com.doge.types.ValueType;
-import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by michno on 19/3/15.
  */
 public class Variable {
-    private ValueType datatype;
+    private ValueType valueType;
     private String id;
     private ArrayList<ExpressionNode> arguments;
     private String printArgument;
     private CollectionCoordinateNode entrance;
     private int[] size;
     private boolean isFunction;
+    private boolean isComplex;
     //private int funcDeclScope;
 
-    public Variable(ValueType datatype, String id, ArrayList<ExpressionNode> arguments){
-        this.datatype = datatype;
+    public Variable(ValueType valueType, String id, ArrayList<ExpressionNode> arguments){
+        this.valueType = valueType;
         this.id = id;
         this.arguments = arguments;
         this.isFunction = true;
     }
 
-    public Variable(ValueType datatype, String id, String arguments) {
-        this.datatype = datatype;
+    public Variable(ValueType valueType, String id, String arguments) {
+        this.valueType = valueType;
         this.id = id;
         this.printArgument = arguments;
         this.isFunction = true;
     }
 
-    public Variable(ValueType datatype, String id, CollectionCoordinateNode entrance) {
-        this.datatype = datatype;
+    public Variable(ValueType valueType, String id, CollectionCoordinateNode entrance) {
+        this.valueType = valueType;
         this.id = id;
         this.entrance = entrance;
         this.isFunction = false;
+        this.isComplex = true;
     }
 
-    public Variable(ValueType datatype, String id) {
-        this.datatype = datatype;
+    public Variable(ValueType valueType, String id) {
+        this.valueType = valueType;
         this.id = id;
         this.isFunction = false;
     }
 
-    public Variable(ValueType datatype, String id, boolean isFunction) {
-        this.datatype = datatype;
+    public Variable(ValueType valueType, String id, boolean isFunction) {
+        this.valueType = valueType;
         this.id = id;
-        this.isFunction = isFunction;
+        this.isFunction = true;
     }
 
-    public boolean getIsFunction() {return this.isFunction; }
+    public boolean isFunction() {return this.isFunction; }
 
-    public ValueType getDatatype(){ return this.datatype; }
+    public boolean isComplex() {return this.isComplex; }
 
-    public void setDatatype(ValueType datatype) {
-        this.datatype = datatype;
+    public void setComplex(boolean isComplex) {
+        this.isComplex = isComplex;
+    }
+
+    public ValueType getValueType(){ return this.valueType; }
+
+    public void setValueType(ValueType valueType) {
+        this.valueType = valueType;
     }
 
     public String getId() { return this.id; }
@@ -91,8 +98,12 @@ public class Variable {
 
     @Override
     public String toString() {
-        if (this.getDatatype() != null) return getId() + ":" + getDatatype();
+        if (this.getValueType() != null) return getId() + ":" + getValueType();
         return this.getId();
+    }
+
+    public String toCcode(){
+        return String.format("%s %s", TypeParser.cTypeFromValueType(getValueType()), getId());
     }
 }
 

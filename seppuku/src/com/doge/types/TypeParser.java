@@ -9,7 +9,7 @@ public class TypeParser {
 
     public static OperatorType parseOperator(String opp) {
         OperatorType oppType = null;
-        switch (opp){
+        switch (opp) {
             case "+":
                 oppType = OperatorType.ADD;
                 break;
@@ -59,47 +59,9 @@ public class TypeParser {
         return oppType;
     }
 
-    public static String parseStringFromOperator(OperatorType op){
-        switch (op){
-
-            case ADD:
-                return "+";
-
-            case SUB:
-                return "-";
-            case MUL:
-                return "*";
-            case DIV:
-                return "/";
-            case MOD:
-                return "%";
-            case INCREMENT:
-                return "++";
-            case DECREMENT:
-                return "--";
-            case EQUAL:
-                return "==";
-            case NOTEQUAL:
-                return "!=";
-            case LESSOREQUAL:
-                return "<=";
-            case BIGGEROREQUAL:
-                return ">=";
-            case LESSTHAN:
-                return "<";
-            case BIGGERTHAN:
-                return ">";
-            case AND:
-                return "&&";
-            case OR:
-                return "||";
-        }
-        return null;
-    }
-
     public static AssignmentOperatorType parseAssignmentOperator(String opp) {
         AssignmentOperatorType oppType = null;
-        switch (opp){
+        switch (opp) {
             case "=":
                 oppType = AssignmentOperatorType.BASIC;
                 break;
@@ -123,22 +85,6 @@ public class TypeParser {
                 break;
         }
         return oppType;
-    }
-
-    public static String parseStringFromAssignmentOperator(AssignmentOperatorType opp){
-        switch(opp){
-            case BASIC:
-                return "=";
-            case ADD:
-                return "+=";
-            case SUB:
-                return "-=";
-            case MUL:
-                return "*=";
-            case DIV:
-                return "/=";
-        }
-        return null;
     }
 
     public static ValueType parseValueType(String datatype) {
@@ -190,62 +136,50 @@ public class TypeParser {
         }
         return ValueType.INVALID;
     }
-    public static String parseStringFromValue(ValueType datatype){
+
+    public static String cTypeFromValueType(ValueType datatype) {
         switch (datatype) {
             case VOID:
                 return "void";
             case INT:
-                return "int" ;
+            case MATRIX_INT:
+            case VECTOR_INT:
+                return "int32_t";
             case INT16:
-                return "int16";
+            case MATRIX_INT16:
+            case VECTOR_INT16:
+                return "int16_t";
             case INT64:
-                return "int64";
+            case MATRIX_INT64:
+            case VECTOR_INT64:
+                return "int64_t";
             case FLOAT:
+            case MATRIX_FLOAT:
+            case VECTOR_FLOAT:
                 return "float";
             case FLOAT16:
-                return "float16";
-            case FLOAT64:
-                return "float64";
-            case BOOLEAN:
-                return "bool";
-            case MATRIX_INT:
-                return "matrix<int>";
-            case MATRIX_INT16:
-                return "matrix<int16>";
-            case MATRIX_INT64:
-                return "matrix<int64>";
-            case MATRIX_FLOAT:
-                return "matrix<float>";
             case MATRIX_FLOAT16:
-                return "matrix<float16>";
-            case MATRIX_FLOAT64:
-                return "matrix<float64>";
-            case MATRIX_BOOLEAN:
-                return "matrix<bool>";
-            case VECTOR_INT16:
-                return "rvec<int16>";
-            case VECTOR_INT:
-                return "rvec<int>";
-            case VECTOR_INT64:
-                return "rvec<int64>";
             case VECTOR_FLOAT16:
-                return "rvec<float16>";
-            case VECTOR_FLOAT:
-                return "rvec<float>";
+                //There exists no such thing as 16-bit real numbers in C...
+                return "float";
+            case FLOAT64:
+            case MATRIX_FLOAT64:
             case VECTOR_FLOAT64:
-                return "rvec<float64>";
+                return "double";
+            case BOOLEAN:
+            case MATRIX_BOOLEAN:
             case VECTOR_BOOLEAN:
-                return "rvec<bool>";
+                return "bool";
         }
         return null;
     }
 
     public static ValueType ConstantType(Object constant) {
-        if (constant.getClass() == null || constant.getClass() == Variable.class){
+        if (constant.getClass() == null || constant.getClass() == Variable.class) {
             return ValueType.INVALID;
         }
 
-        if (constant.getClass() == Boolean.class){
+        if (constant.getClass() == Boolean.class) {
             return ValueType.BOOLEAN;
         }
 

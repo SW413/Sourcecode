@@ -142,6 +142,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
         if (node.getVariable().getId() != "print")
             CheckIfUndeclared(node.getVariable(), node);
+        else if (node.getVariable().getId() == "print")
+            for(ExpressionNode arg : node.getVariable().getArguments()) {
+                visit(arg);
+            }
         return null;
     }
 
@@ -175,13 +179,13 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     public Void CheckIfUndeclared(Variable variable, StatementNode node) {
         Symbol tmpSymbol = symbolTable.currentScope().resolve(variable.getId());
         if (tmpSymbol != null) {
-            if (variable.getDatatype() == null)
-                variable.setDatatype(tmpSymbol.getType());
+            if (variable.getValueType() == null)
+                variable.setValueType(tmpSymbol.getType());
             tmpSymbol.setUsed(true);
             node.setScope(symbolTable.currentScope());
             node.setValueType(tmpSymbol.getType());
             symbolTable.currentScope().define(tmpSymbol);
-            if (variable.getIsFunction()) {
+            if (variable.isFunction()) {
                 for (ExpressionNode arg : variable.getArguments()) {
                     visit(arg);
                 }
