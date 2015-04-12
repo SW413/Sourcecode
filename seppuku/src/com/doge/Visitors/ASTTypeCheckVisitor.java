@@ -92,6 +92,14 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     @Override
+    public Variable VisitFunctionCallNode(FunctionCallNode node) {
+        if (node.getVariable().isFunction() && !node.getVariable().getId().equals("print")) {
+            CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
+        }
+        return node.getVariable();
+    }
+
+    @Override
     public Variable VisitConstantExpressionNode(ConstantExpressionNode node) {
         return new Variable(
                 node.getValueType(),

@@ -62,6 +62,18 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     }
 
     @Override
+    public Void VisitFunctionCallNode(FunctionCallNode node) {
+        if (node.getVariable().getId() != "print")
+            CheckIfUndeclared(node.getVariable(), node);
+        else if (node.getVariable().getId() == "print")
+            if (node.getVariable().getArguments() != null)
+                for(ExpressionNode arg : node.getVariable().getArguments()) {
+                    visit(arg);
+                }
+        return null;
+    }
+
+    @Override
     public Void VisitForLoopNode(ForLoopNode node) {
         symbolTable.pushScope(ScopeType.LOOP);
         if (node.getInitialize() != null)
@@ -143,9 +155,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         if (node.getVariable().getId() != "print")
             CheckIfUndeclared(node.getVariable(), node);
         else if (node.getVariable().getId() == "print")
-            for(ExpressionNode arg : node.getVariable().getArguments()) {
-                visit(arg);
-            }
+            if (node.getVariable().getArguments() != null)
+                for(ExpressionNode arg : node.getVariable().getArguments()) {
+                    visit(arg);
+                }
         return null;
     }
 

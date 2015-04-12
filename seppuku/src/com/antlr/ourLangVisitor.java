@@ -211,21 +211,21 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	T visitComplexDecl(ourLangParser.ComplexDeclContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code integer}
-	 * labeled alternative in {@link ourLangParser#datatype}.
+	 * labeled alternative in {@link ourLangParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitInteger(ourLangParser.IntegerContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code floatingpoint}
-	 * labeled alternative in {@link ourLangParser#datatype}.
+	 * labeled alternative in {@link ourLangParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFloatingpoint(ourLangParser.FloatingpointContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code boolean}
-	 * labeled alternative in {@link ourLangParser#datatype}.
+	 * labeled alternative in {@link ourLangParser#valueType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */

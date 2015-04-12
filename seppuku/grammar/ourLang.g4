@@ -94,7 +94,7 @@ collectionassignment
 	;
 	
 declaration
-    : valueType ID '=' expression                        #primitiveDecl
+    : valueType ID '=' expression                       #primitiveDecl
     | complexdatatype ID '=' expression                 #complexDecl
     ; 
     

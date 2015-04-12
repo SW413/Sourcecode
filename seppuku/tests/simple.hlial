@@ -3,6 +3,9 @@ int bar(int aB){
     return aB + 3 * foo(2, aB);
 }
 
+void baz(){
+    print(2);
+}
 
 int foo(int a, int b){
     int c = a + b;
@@ -11,15 +14,22 @@ int foo(int a, int b){
 
 int a = foo(2, 2) - bar(55);
 
-matrix<int> neo = [1, 1, 1;
+/*matrix<int> neo = [1, 1, 1;
                    2, 2, 2;
                    3, 3, 3];
 
-vector<float> trinity = [1.1, 1.2, 1.3];
+*/
+
+if(true == true){
+    baz();
+    a = 2;
+}
+
+
+//vector<float> trinity = [1.1, 1.2, 1.3];
 
 print(a);
-print(neo);
-print(trinity);
+
 /*
 void baz(bool a){
     if(a == true) {
