@@ -1,0 +1,14 @@
+int64 fibR(int64 n) {
+    int64 tmp = 0;
+    if (n == 0){
+        tmp = 0;
+    } else if( n == 1 ){
+        tmp = 1;
+    } else {
+        tmp = fibR(n - 1) + fibR(n - 2);
+    }
+
+    return tmp;
+}
+
+print(fibR(10));

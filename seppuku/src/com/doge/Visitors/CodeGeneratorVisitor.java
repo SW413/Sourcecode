@@ -18,13 +18,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitTopNode(TopNode node) {
-        outputCode.append("#include<stdio.h>\n");
-        outputCode.append("#include<stdint.h>\n");
+        outputCode.append("#include <stdio.h>\n");
+        outputCode.append("#include <stdint.h>\n");
 
-        /*
-        Not needed when funcDecls come before main...
         //make prototypes
-        outputCode.append("//--= PROTOTYPES =--\n");
+        outputCode.append("\n\n//--= PROTOTYPES =--\n");
         for (FunctionDclNode funcDecl : node.getFunctionDeclarations()) {
             outputCode.append(funcDecl.getVariable().toCcode() + "(");
             int i = 1;
@@ -34,12 +32,22 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     outputCode.append(", ");
             }
             outputCode.append(");\n");
-        }*/
+        }
+
+        //main method
+        outputCode.append("\n\n/*--= MAIN METHOD =--*/\n");
+        outputCode.append("int main(){\n");
+        indentationLevel++;
+        for (AST stmt : node.getStatements().getChildren()) {
+            outputCode.append(indent(visit(stmt) + "\n"));
+        }
+        outputCode.append(indent("return 0;\n}\n"));
+        indentationLevel--;
 
         //functions
-        outputCode.append("\n\n/*--= CUSTOM FUNCTIONS/METHODS =--*/\n");
+        outputCode.append("\n\n/*--= CUSTOM FUNCTIONS =--*/\n");
         for (FunctionDclNode func : node.getFunctionDeclarations()) {
-            outputCode.append("\n" + func.getVariable().toCcode() + "(");
+            outputCode.append(func.getVariable().toCcode() + "(");
             int i = 1;
             for (Variable arg : func.getParameters()) {
                 outputCode.append(arg.toCcode());
@@ -58,16 +66,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             outputCode.append("}\n");
         }
 
-        //main method
-        outputCode.append("\n\n/*--= MAIN METHOD =--*/\n");
-        outputCode.append("int main(){\n");
-        indentationLevel++;
-        for (AST stmt : node.getStatements().getChildren()) {
-            outputCode.append(indent(visit(stmt) + "\n"));
-        }
-        outputCode.append(indent("return 0;\n}\n"));
-        indentationLevel--;
-
         return null;
     }
 
@@ -75,7 +73,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     public String VisitDeclarationNode(DeclarationNode node) {
         if (node.getVariable().isComplex()) {
             StringBuilder complexDecl = new StringBuilder();
-            complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()));
+            complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()) + " " + node.getVariable().getId());
             switch (node.getVariable().getValueType()) {
                 case MATRIX_INT16:
                 case MATRIX_INT:
@@ -97,7 +95,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
                     break;
             }
-            complexDecl.append(node.getVariable().getId());
             return complexDecl.toString() + " = " + visit(node.getExpression()) + ";";
         }
         return node.getVariable().toCcode() + " = " + visit(node.getExpression()) + ";";
@@ -111,13 +108,26 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     @Override
     public String VisitConditionalNode(ConditionalNode node) {
         StringBuilder conditional = new StringBuilder();
-        conditional.append("if(" + visit(node.getConditionalExpression()) + "){\n");
+        conditional.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
         indentationLevel++;
         for (AST stmt : node.getBody().getChildren()){
             conditional.append(indent(visit(stmt) + "\n"));
         }
         indentationLevel--;
         conditional.append(indent("}"));
+        if (node.getElseIfs() != null){
+            for(ConditionalNode elif : node.getElseIfs()) {
+                conditional.append(" else if(" + visit(elif.getConditionalExpression()) + ") {\n");
+                conditional.append(statementBody(elif.getBody().getChildren()));
+                conditional.append(indent("}"));
+                //TODO nester else ifs ??? not twerking i think...
+            }
+        }
+        if (node.getElseBody() != null) {
+            conditional.append(" else {\n");
+            conditional.append(statementBody(node.getElseBody().getChildren()));
+            conditional.append(indent("}"));
+        }
         return conditional.toString();
     }
 
@@ -205,6 +215,17 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return list.toString();
     }
 
+    private String statementBody(ArrayList<AST> statements){
+        StringBuilder body = new StringBuilder();
+        indentationLevel++;
+        for(AST stmt : statements){
+            body.append(indent(visit(stmt) + "\n"));
+        }
+        indentationLevel--;
+
+        return body.toString();
+    }
+
     private String printFunction(Variable func){
         StringBuilder formatString = new StringBuilder();
         StringBuilder printArgs = new StringBuilder();
@@ -217,8 +238,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                         break;
                     case INT16:
                     case INT:
-                    case INT64:
                         formatString.append("%d ");
+                        printArgs.append(visit(arg) + ", ");
+                        break;
+                    case INT64:
+                        formatString.append("%lld ");
                         printArgs.append(visit(arg) + ", ");
                         break;
                     case FLOAT16:

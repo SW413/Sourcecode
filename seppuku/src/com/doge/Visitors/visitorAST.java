@@ -411,7 +411,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         Variable func = new Variable(null, ctx.ID().getText(), arguments);
         if (parentStack.peek().getClass() == VariableExpressionNode.class){
             parentStack.pop();
-            VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), func);
+            //TODO check if setting parent to null ruins eveeeerything
+            VariableExpressionNode Varexp =  new VariableExpressionNode(null, func);
             Varexp.setLineNumber(ctx.start.getLine());
             return Varexp;
         }
@@ -420,11 +421,6 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
-        if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class)){
-        VariableExpressionNode tmp = new VariableExpressionNode(parentStack.peek(), new Variable(null, "print", ctx.argumentlist().getText()));
-            tmp.setLineNumber(ctx.start.getLine());
-            return tmp;
-        }
         ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
         for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
             if(!ctx.argumentlist().getChild(i).getText().equals(",")) {
