@@ -26,10 +26,10 @@ public class Variable {
         this.isFunction = true;
     }
 
-    public Variable(ValueType valueType, String id, String arguments) {
+    public Variable(ValueType valueType, String id, String argument) {
         this.valueType = valueType;
         this.id = id;
-        this.printArgument = arguments;
+        this.printArgument = argument;
         this.isFunction = true;
     }
 

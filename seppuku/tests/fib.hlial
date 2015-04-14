@@ -12,5 +12,6 @@ int64 fibR(int64 n) {
 }
 
 if(true == true){
-print(fibR(10));
+    print("hello");
+    print(fibR(10));
 }

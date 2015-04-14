@@ -143,8 +143,16 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     @Override
     public String VisitForLoopNode(ForLoopNode node) {
         StringBuilder forLoop = new StringBuilder();
-        //TODO Null check init cond and update!
-        forLoop.append("for(" + visit(node.getInitialize()) + ";" + visit(node.getCondition()) + ";" + visit(node.getUpdate()) + ") {\n");
+        forLoop.append("for(");
+        if (node.getInitialize() != null)
+            forLoop.append(visit(node.getInitialize()));
+        forLoop.append(";");
+        if (node.getCondition() != null)
+            forLoop.append(visit(node.getCondition()));
+        forLoop.append(";");
+        if (node.getUpdate() != null)
+            forLoop.append(visit(node.getUpdate()));
+        forLoop.append(") {\n");
         forLoop.append(statementBody(node.getBody().getChildren()));
         forLoop.append("}\n");
 
@@ -189,8 +197,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitFunctionCallNode(FunctionCallNode node) {
-        if (node.getVariable().getId() == "print")
+        if (node.getVariable().getId() == "print") {
             return printFunction(node.getVariable()) + ";";
+        }
         return functionWithArgs(node.getVariable()) + ";";
     }
 
@@ -275,6 +284,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                         break;
                 }
             }
+        } else if (func.getPrintArgument() != null){
+            formatString.append("%s");
+            printArgs.append(func.getPrintArgument() + ", ");
         }
 
         formatString.append("%s");

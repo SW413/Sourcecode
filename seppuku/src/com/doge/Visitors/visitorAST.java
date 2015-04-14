@@ -422,11 +422,12 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
         ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
-        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
-            if(!ctx.argumentlist().getChild(i).getText().equals(",")) {
+        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++)
+            if(!ctx.argumentlist().getChild(i).getText().equals(","))
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
-            }
-        }
+
+        if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class))
+            return new FunctionCallNode(parentStack.peek(), new Variable(null, "print", ctx.argumentlist().getText()), ctx.start.getLine());
 
         Variable func = new Variable(null, "print", arguments);
         if (parentStack.peek().getClass() == VariableExpressionNode.class){
