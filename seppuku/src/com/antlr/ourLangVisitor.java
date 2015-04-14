@@ -50,6 +50,13 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForLoop(ourLangParser.ForLoopContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code pforLoop}
+	 * labeled alternative in {@link ourLangParser#loop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPforLoop(ourLangParser.PforLoopContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ourLangParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
