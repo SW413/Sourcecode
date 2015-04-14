@@ -145,16 +145,17 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         StringBuilder forLoop = new StringBuilder();
         forLoop.append("for(");
         if (node.getInitialize() != null)
-            forLoop.append(visit(node.getInitialize()));
-        forLoop.append(";");
+            forLoop.append(visit(node.getInitialize()) + " ");
+        else
+            forLoop.append("; ");
         if (node.getCondition() != null)
             forLoop.append(visit(node.getCondition()));
-        forLoop.append(";");
+        forLoop.append("; ");
         if (node.getUpdate() != null)
             forLoop.append(visit(node.getUpdate()));
         forLoop.append(") {\n");
         forLoop.append(statementBody(node.getBody().getChildren()));
-        forLoop.append("}\n");
+        forLoop.append(indent("}\n"));
 
         return forLoop.toString();
     }
