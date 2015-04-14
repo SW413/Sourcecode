@@ -25,7 +25,15 @@ int64 fibI(int64 n)
     return tmp1;
 }
 
-if(true == true){
-    print("hello");
-    print(fibR(10));
+// Code
+
+print("FibR");
+for(int i = 0; i < 12; i ++){
+    print(fibR(i));
+}
+
+print("\n");
+print("FibI");
+for(int i = 0; i < 12; i ++){
+    print(fibI(i));
 }

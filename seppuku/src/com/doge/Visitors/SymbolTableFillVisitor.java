@@ -78,6 +78,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         symbolTable.pushScope(ScopeType.LOOP);
         if (node.getInitialize() != null)
             visit(node.getInitialize());
+        if (node.getCondition() != null)
+            visit(node.getCondition());
+        if (node.getUpdate() != null)
+            visit(node.getUpdate());
         if (node.getBody() != null)
             visit(node.getBody());
         symbolTable.popScope();

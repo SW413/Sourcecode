@@ -96,7 +96,7 @@ public class Main {
                     parser.getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
         }
 
-        //TODO check print func! And evaluete args!!!!
+        //TODO print no args.
         //TODO Some way of checking if a float constant can fit in 16 bit.
 
     }
