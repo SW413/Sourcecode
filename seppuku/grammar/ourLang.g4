@@ -24,7 +24,8 @@ controlblock
 
 loop
     : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block      #whileLoop
-    | FOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' forBlock=block     #forLoop
+    | FOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' forBlock=block     #forLoop  
+    | PFOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' pforBlock=block     #pforLoop
     ;
 
 block
@@ -166,7 +167,8 @@ IF: 'if' ;
 ELSE: 'else' ;
 
 WHILE: 'while' ;
-FOR: 'for' ;
+FOR: 'for' ;   
+PFOR: 'pfor' ;
 
 MATRIX: 'matrix' ;
 VECTOR: 'vector' ;
