@@ -18,8 +18,10 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitTopNode(TopNode node) {
-        outputCode.append("#include <stdio.h>\n");
-        outputCode.append("#include <stdint.h>\n");
+        outputCode.append("#include <stdio.h>\n" +
+                          "#include <stdint.h>\n" +
+                          "#define true 1\n" +
+                          "#define false 0\n");
 
         //make prototypes
         outputCode.append("\n\n//--= PROTOTYPES =--\n");
@@ -117,10 +119,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         conditional.append(indent("}"));
         if (node.getElseIfs() != null){
             for(ConditionalNode elif : node.getElseIfs()) {
-                conditional.append(" else if(" + visit(elif.getConditionalExpression()) + ") {\n");
-                conditional.append(statementBody(elif.getBody().getChildren()));
-                conditional.append(indent("}"));
-                //TODO nester else ifs ??? not twerking i think...
+                conditional.append(" else " + visit(elif));
             }
         }
         if (node.getElseBody() != null) {
@@ -129,6 +128,27 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             conditional.append(indent("}"));
         }
         return conditional.toString();
+    }
+
+    @Override
+    public String VisitWhileLoopNode(WhileLoopNode node) {
+        StringBuilder whileLoop = new StringBuilder();
+        whileLoop.append("while(" + visit(node.getCondNode()) + ") {\n");
+        whileLoop.append(statementBody(node.getBody().getChildren()));
+        whileLoop.append("}\n");
+
+        return whileLoop.toString();
+    }
+
+    @Override
+    public String VisitForLoopNode(ForLoopNode node) {
+        StringBuilder forLoop = new StringBuilder();
+        //TODO Null check init cond and update!
+        forLoop.append("for(" + visit(node.getInitialize()) + ";" + visit(node.getCondition()) + ";" + visit(node.getUpdate()) + ") {\n");
+        forLoop.append(statementBody(node.getBody().getChildren()));
+        forLoop.append("}\n");
+
+        return forLoop.toString();
     }
 
     @Override
