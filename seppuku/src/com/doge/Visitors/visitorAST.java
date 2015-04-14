@@ -8,6 +8,7 @@ import com.doge.types.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Stack;
 
 
@@ -421,22 +422,19 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
-        ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
-        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++)
-            if(!ctx.argumentlist().getChild(i).getText().equals(","))
-                arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
+        ArrayList<Object> arguments = new ArrayList<Object>();
 
-        if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class))
-            return new FunctionCallNode(parentStack.peek(), new Variable(null, "print", ctx.argumentlist().getText()), ctx.start.getLine());
-
-        Variable func = new Variable(null, "print", arguments);
-        if (parentStack.peek().getClass() == VariableExpressionNode.class){
-            parentStack.pop();
-            VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), func);
-            Varexp.setLineNumber(ctx.start.getLine());
-            return Varexp;
+        if (ctx.argumentlist().getChildCount() > 0){
+            for(int i = 0; i < ctx.argumentlist().getChildCount(); i++){
+                if(!ctx.argumentlist().getChild(i).getText().equals(","))
+                    if (ctx.argumentlist().getChild(i).getClass() == TerminalNodeImpl.class)
+                        arguments.add(ctx.argumentlist().getChild(i).getText());
+                    else
+                        arguments.add(visit(ctx.argumentlist().getChild(i)));
+            }
         }
-        return new FunctionCallNode(parentStack.peek(), func, ctx.start.getLine());
+
+        return new FunctionCallNode(parentStack.peek(), new Variable(null, "print", arguments, true), ctx.start.getLine());
     }
 
 

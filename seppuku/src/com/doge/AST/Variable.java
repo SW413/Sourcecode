@@ -12,7 +12,7 @@ public class Variable {
     private ValueType valueType;
     private String id;
     private ArrayList<ExpressionNode> arguments;
-    private String printArgument;
+    private ArrayList<Object> printArguments;
     private CollectionCoordinateNode entrance;
     private int[] size;
     private boolean isFunction;
@@ -26,11 +26,11 @@ public class Variable {
         this.isFunction = true;
     }
 
-    public Variable(ValueType valueType, String id, String argument) {
+    public Variable(ValueType valueType, String id, ArrayList<Object> printArguments, boolean shit) {
         this.valueType = valueType;
         this.id = id;
-        this.printArgument = argument;
-        this.isFunction = true;
+        this.printArguments = printArguments;
+        this.isFunction = shit;
     }
 
     public Variable(ValueType valueType, String id, CollectionCoordinateNode entrance) {
@@ -84,8 +84,8 @@ public class Variable {
         return entrance;
     }
 
-    public String getPrintArgument() {
-        return printArgument;
+    public ArrayList<Object> getPrintArguments() {
+        return printArguments;
     }
 
     public int[] getSize() {

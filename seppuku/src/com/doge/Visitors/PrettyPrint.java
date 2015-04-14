@@ -69,7 +69,7 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
             if (!node.getVariable().getId().equals("PRINT")) {
                 System.out.print(node.getVariable().getId() + "(");
             }
-            if (node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0 && !node.getVariable().getId().equals("PRINT")) {
+            /*if (node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0 && !node.getVariable().getId().equals("PRINT")) {
                 int i;
 
                 for (i = 0; i < node.getVariable().getArguments().size() - 1; i++) {
@@ -99,7 +99,7 @@ public class PrettyPrint extends BaseASTVisitor<Void> {
                 System.out.print(")");
             } else {
                 System.out.print(")");
-            }
+            }*/
         } else {
             System.out.print(var.getId());
         }

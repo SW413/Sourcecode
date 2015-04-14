@@ -66,9 +66,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         if (node.getVariable().getId() != "print")
             CheckIfUndeclared(node.getVariable(), node);
         else if (node.getVariable().getId() == "print")
-            if (node.getVariable().getArguments() != null)
-                for(ExpressionNode arg : node.getVariable().getArguments()) {
-                    visit(arg);
+            if (node.getVariable().getPrintArguments() != null)
+                for(Object arg : node.getVariable().getPrintArguments()) {
+                    if (arg != null && arg.getClass().getSuperclass() == ExpressionNode.class)
+                        visit((ExpressionNode) arg);
                 }
         return null;
     }
@@ -156,13 +157,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
-        if (node.getVariable().getId() != "print")
-            CheckIfUndeclared(node.getVariable(), node);
-        else if (node.getVariable().getId() == "print")
-            if (node.getVariable().getArguments() != null)
-                for(ExpressionNode arg : node.getVariable().getArguments()) {
-                    visit(arg);
-                }
+        CheckIfUndeclared(node.getVariable(), node);
         return null;
     }
 

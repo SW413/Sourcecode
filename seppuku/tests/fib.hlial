@@ -32,7 +32,6 @@ for(int i = 0; i < 12; i ++){
     print(fibR(i));
 }
 
-print("\n");
 print("FibI");
 for(int i = 0; i < 12; i ++){
     print(fibI(i));

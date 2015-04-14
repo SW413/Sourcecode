@@ -66,8 +66,7 @@ functioncall
     ;
 
 argumentlist
-    : expression ( ',' expression ) *
-    | STRING
+    : (expression | STRING) ( ',' (expression | STRING) ) *
     | 
     ;
 

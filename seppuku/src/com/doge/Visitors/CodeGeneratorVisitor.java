@@ -259,35 +259,39 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private String printFunction(Variable func){
         StringBuilder formatString = new StringBuilder();
         StringBuilder printArgs = new StringBuilder();
-        if (func.getArguments() != null && func.getArguments().size() > 0) {
-            for (ExpressionNode arg : func.getArguments()) {
-                switch (arg.getValueType()) {
-                    case BOOLEAN:
-                        formatString.append("%s ");
-                        printArgs.append(visit(arg) + "? \"true\" : \"false\", ");
-                        break;
-                    case INT16:
-                    case INT:
-                        formatString.append("%d ");
-                        printArgs.append(visit(arg) + ", ");
-                        break;
-                    case INT64:
-                        formatString.append("%lld ");
-                        printArgs.append(visit(arg) + ", ");
-                        break;
-                    case FLOAT16:
-                    case FLOAT:
-                    case FLOAT64:
-                        formatString.append("%f ");
-                        printArgs.append(visit(arg) + ", ");
-                        break;
-                    default:
-                        break;
+        if (func.getPrintArguments() != null && func.getPrintArguments().size() > 0) {
+            for (Object arg : func.getPrintArguments()) {
+                if (arg != null && arg.getClass() != null) {
+                    if (arg.getClass().getSuperclass() == ExpressionNode.class) {
+                        switch (((ExpressionNode) arg).getValueType()) {
+                            case BOOLEAN:
+                                formatString.append("%s ");
+                                printArgs.append(visit((ExpressionNode) arg) + "? \"true\" : \"false\", ");
+                                break;
+                            case INT16:
+                            case INT:
+                                formatString.append("%d ");
+                                printArgs.append(visit((ExpressionNode) arg) + ", ");
+                                break;
+                            case INT64:
+                                formatString.append("%lld ");
+                                printArgs.append(visit((ExpressionNode) arg) + ", ");
+                                break;
+                            case FLOAT16:
+                            case FLOAT:
+                            case FLOAT64:
+                                formatString.append("%f ");
+                                printArgs.append(visit((ExpressionNode) arg) + ", ");
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        formatString.append("%s");
+                        printArgs.append(arg + ", ");
+                    }
                 }
             }
-        } else if (func.getPrintArgument() != null){
-            formatString.append("%s");
-            printArgs.append(func.getPrintArgument() + ", ");
         }
 
         formatString.append("%s");
