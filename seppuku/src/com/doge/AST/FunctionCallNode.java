@@ -4,20 +4,11 @@ import com.doge.Visitors.IASTVisitor;
 import com.doge.types.OperatorType;
 import java.util.ArrayList;
 
-public class FunctionCallNode extends ExpressionNode {
+public class FunctionCallNode extends VariableExpressionNode {
 
-    private ArrayList<ExpressionNode> argumentList;
-
-    public FunctionCallNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue) {
-        super(parent, lValue, operatorType, rValue);
-    }
-
-    public ArrayList<ExpressionNode> getArgumentList() {
-        return argumentList;
-    }
-
-    public void setArgumentList(ArrayList<ExpressionNode> argumentList) {
-        this.argumentList = argumentList;
+    public FunctionCallNode(AST parent, Variable func, int lineNum) {
+        super(parent, func);
+        this.setLineNumber(lineNum);
     }
 
     public <T> T accept(IASTVisitor<? extends T> node) {

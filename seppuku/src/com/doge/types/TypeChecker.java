@@ -16,9 +16,9 @@ public class TypeChecker {
         if (lValue == null) {
             return ValueType.INVALID;
         } else if (rValue == null) {
-            return lValue.getDatatype();
+            return lValue.getValueType();
         } else {
-            ValueType combined = compatibleTypes(lValue.getDatatype(), rValue.getDatatype());
+            ValueType combined = compatibleTypes(lValue.getValueType(), rValue.getValueType());
             if (combined != ValueType.INVALID) {
                 return combined;
             } else {

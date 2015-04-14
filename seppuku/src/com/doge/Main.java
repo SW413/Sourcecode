@@ -6,20 +6,15 @@ import com.doge.AST.AST;
 import com.doge.ErrorHandling.ANSIEscapeCodes;
 import com.doge.ErrorHandling.ErrorType;
 import com.doge.ErrorHandling.LanguageError;
-import com.doge.Visitors.ASTTypeCheckVisitor;
-import com.doge.Visitors.PrettyPrint;
-import com.doge.Visitors.SymbolTableFillVisitor;
-import com.doge.Visitors.visitorAST;
+import com.doge.Visitors.*;
 import com.doge.checking.SymbolTable;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.jar.Attributes;
 
 import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RED;
 import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
@@ -79,6 +74,20 @@ public class Main {
             abstractSyntaxTree.accept(new PrettyPrint());
             System.out.println();*/
 
+            if (errors.size() == 0){
+                StringBuilder output = new StringBuilder();
+                abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
+                File outputSourcecode = new File("code.c");
+                try {
+                    FileWriter fileWriter = new FileWriter(outputSourcecode.getAbsoluteFile());
+                    Writer writer = new BufferedWriter(fileWriter);
+                    writer.append(output);
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
             System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
         } else {
             System.out.println(String.format("%1$s%3$d syntax %4$s...%2$s Please resolve and attempt recompile",
@@ -87,7 +96,8 @@ public class Main {
                     parser.getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
         }
 
-        //TODO check print func!
+        //TODO check print func! And evaluete args!!!!
         //TODO Some way of checking if a float constant can fit in 16 bit.
+
     }
 }

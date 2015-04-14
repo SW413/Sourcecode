@@ -1,4 +1,0 @@
-int tmp = 2;
-float tmpF = 2.2;
-
-int16 res = tmp + 2;

@@ -30,7 +30,7 @@ public class ourLangParser extends Parser {
 		RULE_functionbody = 8, RULE_functionreturn = 9, RULE_parameterlist = 10, 
 		RULE_parameter = 11, RULE_functioncall = 12, RULE_argumentlist = 13, RULE_expression = 14, 
 		RULE_assignment = 15, RULE_valassignment = 16, RULE_collectionassignment = 17, 
-		RULE_declaration = 18, RULE_datatype = 19, RULE_complexdatatype = 20, 
+		RULE_declaration = 18, RULE_valueType = 19, RULE_complexdatatype = 20, 
 		RULE_functiondatatype = 21, RULE_value = 22, RULE_collectionEntrance = 23, 
 		RULE_valueList = 24, RULE_constantList = 25, RULE_entranceCoordinate = 26, 
 		RULE_collectiontype = 27, RULE_postUnaryOperator = 28, RULE_assignmentOperator = 29, 
@@ -40,7 +40,7 @@ public class ourLangParser extends Parser {
 		"conditionalExpression", "functiondeclaration", "functionbody", "functionreturn", 
 		"parameterlist", "parameter", "functioncall", "argumentlist", "expression", 
 		"assignment", "valassignment", "collectionassignment", "declaration", 
-		"datatype", "complexdatatype", "functiondatatype", "value", "collectionEntrance", 
+		"valueType", "complexdatatype", "functiondatatype", "value", "collectionEntrance", 
 		"valueList", "constantList", "entranceCoordinate", "collectiontype", "postUnaryOperator", 
 		"assignmentOperator", "conditionalOperator", "constant"
 	};
@@ -1084,8 +1084,8 @@ public class ourLangParser extends Parser {
 
 	public static class ParameterContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(ourLangParser.ID, 0); }
-		public DatatypeContext datatype() {
-			return getRuleContext(DatatypeContext.class,0);
+		public ValueTypeContext valueType() {
+			return getRuleContext(ValueTypeContext.class,0);
 		}
 		public ComplexdatatypeContext complexdatatype() {
 			return getRuleContext(ComplexdatatypeContext.class,0);
@@ -1114,7 +1114,7 @@ public class ourLangParser extends Parser {
 			case BOOL:
 				{
 				setState(220);
-				datatype();
+				valueType();
 				}
 				break;
 			case MATRIX:
@@ -1742,8 +1742,8 @@ public class ourLangParser extends Parser {
 		}
 	}
 	public static class PrimitiveDeclContext extends DeclarationContext {
-		public DatatypeContext datatype() {
-			return getRuleContext(DatatypeContext.class,0);
+		public ValueTypeContext valueType() {
+			return getRuleContext(ValueTypeContext.class,0);
 		}
 		public TerminalNode ID() { return getToken(ourLangParser.ID, 0); }
 		public ExpressionContext expression() {
@@ -1785,7 +1785,7 @@ public class ourLangParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(294);
-				datatype();
+				valueType();
 				setState(295);
 				match(ID);
 				setState(296);
@@ -1824,38 +1824,38 @@ public class ourLangParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DatatypeContext extends ParserRuleContext {
-		public DatatypeContext(ParserRuleContext parent, int invokingState) {
+	public static class ValueTypeContext extends ParserRuleContext {
+		public ValueTypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_datatype; }
+		@Override public int getRuleIndex() { return RULE_valueType; }
 	 
-		public DatatypeContext() { }
-		public void copyFrom(DatatypeContext ctx) {
+		public ValueTypeContext() { }
+		public void copyFrom(ValueTypeContext ctx) {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class BooleanContext extends DatatypeContext {
+	public static class BooleanContext extends ValueTypeContext {
 		public TerminalNode BOOL() { return getToken(ourLangParser.BOOL, 0); }
-		public BooleanContext(DatatypeContext ctx) { copyFrom(ctx); }
+		public BooleanContext(ValueTypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitBoolean(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class FloatingpointContext extends DatatypeContext {
+	public static class FloatingpointContext extends ValueTypeContext {
 		public TerminalNode FLOAT() { return getToken(ourLangParser.FLOAT, 0); }
-		public FloatingpointContext(DatatypeContext ctx) { copyFrom(ctx); }
+		public FloatingpointContext(ValueTypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitFloatingpoint(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class IntegerContext extends DatatypeContext {
+	public static class IntegerContext extends ValueTypeContext {
 		public TerminalNode INT() { return getToken(ourLangParser.INT, 0); }
-		public IntegerContext(DatatypeContext ctx) { copyFrom(ctx); }
+		public IntegerContext(ValueTypeContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof ourLangVisitor ) return ((ourLangVisitor<? extends T>)visitor).visitInteger(this);
@@ -1863,9 +1863,9 @@ public class ourLangParser extends Parser {
 		}
 	}
 
-	public final DatatypeContext datatype() throws RecognitionException {
-		DatatypeContext _localctx = new DatatypeContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_datatype);
+	public final ValueTypeContext valueType() throws RecognitionException {
+		ValueTypeContext _localctx = new ValueTypeContext(_ctx, getState());
+		enterRule(_localctx, 38, RULE_valueType);
 		try {
 			setState(309);
 			switch (_input.LA(1)) {
@@ -1912,8 +1912,8 @@ public class ourLangParser extends Parser {
 		public CollectiontypeContext collectiontype() {
 			return getRuleContext(CollectiontypeContext.class,0);
 		}
-		public DatatypeContext datatype() {
-			return getRuleContext(DatatypeContext.class,0);
+		public ValueTypeContext valueType() {
+			return getRuleContext(ValueTypeContext.class,0);
 		}
 		public ComplexdatatypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1937,7 +1937,7 @@ public class ourLangParser extends Parser {
 			setState(312);
 			match(T__1);
 			setState(313);
-			datatype();
+			valueType();
 			setState(314);
 			match(T__2);
 			}
@@ -1954,8 +1954,8 @@ public class ourLangParser extends Parser {
 	}
 
 	public static class FunctiondatatypeContext extends ParserRuleContext {
-		public DatatypeContext datatype() {
-			return getRuleContext(DatatypeContext.class,0);
+		public ValueTypeContext valueType() {
+			return getRuleContext(ValueTypeContext.class,0);
 		}
 		public ComplexdatatypeContext complexdatatype() {
 			return getRuleContext(ComplexdatatypeContext.class,0);
@@ -1984,7 +1984,7 @@ public class ourLangParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(316);
-				datatype();
+				valueType();
 				}
 				break;
 			case MATRIX:

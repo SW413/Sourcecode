@@ -93,12 +93,7 @@ public class BaseASTVisitor<T> implements IASTVisitor<T> {
     }
 
     @Override public T VisitFunctionCallNode(FunctionCallNode node) {
-        if(!node.getArgumentList().isEmpty()){
-            for(ExpressionNode expression : node.getArgumentList()){
-                visit(expression);
-            }
-        }
-        return null;
+        return visitChildren(node);
     }
 
     @Override public T VisitImportNode(ImportNode node) { return visitChildren(node); }

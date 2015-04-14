@@ -57,7 +57,7 @@ parameterlist
     ;
 
 parameter
-    : (datatype | complexdatatype ) ID
+    : (valueType | complexdatatype ) ID
     ;
 
 functioncall
@@ -95,22 +95,22 @@ collectionassignment
 	;
 	
 declaration
-    : datatype ID '=' expression                        #primitiveDecl
+    : valueType ID '=' expression                       #primitiveDecl
     | complexdatatype ID '=' expression                 #complexDecl
     ; 
     
-datatype
+valueType
     : INT                               #integer
     | FLOAT                             #floatingpoint
     | BOOL                              #boolean
     ;
 
 complexdatatype
-    : collectiontype '<' datatype '>'
+    : collectiontype '<' valueType '>'
     ;
 
 functiondatatype
-    : datatype
+    : valueType
     | complexdatatype
     | VOID
     ;

@@ -27,7 +27,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     public Variable VisitFunctionDclNode(FunctionDclNode node) {
         super.VisitFunctionDclNode(node);
         if (node.getFunctionBody() != null) {
-            if (node.getVariable().getDatatype() != ValueType.VOID)
+            if (node.getVariable().getValueType() != ValueType.VOID)
                 TypeChecker.CombineValueTypes(
                     new Variable(node.getFunctionReturn().getExpression().getValueType(), "Return statement"),
                     node.getVariable(), errors, node.getLineNumber());
@@ -85,7 +85,15 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitVariableExpressionNode(VariableExpressionNode node) {
-        if (node.getVariable().getIsFunction() && !node.getVariable().getId().equals("print")) {
+        if (node.getVariable().isFunction() && !node.getVariable().getId().equals("print")) {
+            CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
+        }
+        return node.getVariable();
+    }
+
+    @Override
+    public Variable VisitFunctionCallNode(FunctionCallNode node) {
+        if (node.getVariable().isFunction() && !node.getVariable().getId().equals("print")) {
             CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
         }
         return node.getVariable();

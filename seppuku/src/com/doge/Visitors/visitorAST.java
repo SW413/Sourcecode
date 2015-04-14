@@ -232,9 +232,9 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         parentStack.push(null);
         DeclarationNode dcl = new DeclarationNode(
                 parent,
-                new Variable(TypeParser.parseValueType(ctx.datatype().getText()), ctx.ID().getText()),
-                (ExpressionNode) visit(ctx.expression()));
-        dcl.setLineNumber(ctx.start.getLine());
+                new Variable(TypeParser.parseValueType(ctx.valueType().getText()), ctx.ID().getText()),
+                (ExpressionNode) visit(ctx.expression()),
+                ctx.start.getLine());
         parentStack.pop();
         return  dcl;
     }
@@ -250,6 +250,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
         ExpressionNode expr = (ExpressionNode) visit(ctx.expression());
         Variable var =  new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
+        var.setComplex(true);
 
         //Set size if matrix decl
         if (expr.getClass() == MatrixValNode.class) {
@@ -260,10 +261,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             int[] tmpSize = {((VectorValNode) expr).getValues().size(), ((VectorValNode) expr).getValues().size()};
             var.setSize(tmpSize);
         }
-
-        DeclarationNode dcl = new DeclarationNode(parentStack.peek(), var, expr);
-        dcl.setLineNumber(ctx.start.getLine());
-        return dcl;
+        return new DeclarationNode(parentStack.peek(), var, expr, ctx.start.getLine());
     }
 
     /**
@@ -355,6 +353,13 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         return ConstNode;
     }
 
+    @Override
+    public AST visitValFuncCall(ourLangParser.ValFuncCallContext ctx) {
+        VariableExpressionNode var = new VariableExpressionNode(null, null);
+        parentStack.push(var);
+        return super.visitValFuncCall(ctx);
+    }
+
     /**
      * Parses a value list in {@link com.doge.AST.VectorValNode}s,
      * and if there exists more than one "row", it collects the {@link com.doge.AST.VectorValNode}s
@@ -403,27 +408,35 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
             return rowsOrColsFunc;
         }
 
-        VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, ctx.ID().getText(), arguments));
-        Varexp.setLineNumber(ctx.start.getLine());
-        return Varexp;
+        Variable func = new Variable(null, ctx.ID().getText(), arguments);
+        if (parentStack.peek().getClass() == VariableExpressionNode.class){
+            parentStack.pop();
+            //TODO check if setting parent to null ruins eveeeerything
+            VariableExpressionNode Varexp =  new VariableExpressionNode(null, func);
+            Varexp.setLineNumber(ctx.start.getLine());
+            return Varexp;
+        }
+        return new FunctionCallNode(parentStack.peek(), func, ctx.start.getLine());
     }
 
     @Override
     public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
-        if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class)){
-        VariableExpressionNode tmp = new VariableExpressionNode(parentStack.peek(), new Variable(null, "print", ctx.argumentlist().getText()));
-            tmp.setLineNumber(ctx.start.getLine());
-            return tmp;
-        }
         ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
-        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
-            if(!ctx.argumentlist().getChild(i).getText().equals(",")) {
+        for(int i = 0; i < ctx.argumentlist().getChildCount(); i++)
+            if(!ctx.argumentlist().getChild(i).getText().equals(","))
                 arguments.add((ExpressionNode) visit(ctx.argumentlist().getChild(i)));
-            }
+
+        if((ctx.argumentlist().getChild(0).getClass() == TerminalNodeImpl.class))
+            return new FunctionCallNode(parentStack.peek(), new Variable(null, "print", ctx.argumentlist().getText()), ctx.start.getLine());
+
+        Variable func = new Variable(null, "print", arguments);
+        if (parentStack.peek().getClass() == VariableExpressionNode.class){
+            parentStack.pop();
+            VariableExpressionNode Varexp =  new VariableExpressionNode(parentStack.peek(), func);
+            Varexp.setLineNumber(ctx.start.getLine());
+            return Varexp;
         }
-        VariableExpressionNode varExp =  new VariableExpressionNode(parentStack.peek(), new Variable(null, "print", arguments));
-        varExp.setLineNumber(ctx.start.getLine());
-        return varExp;
+        return new FunctionCallNode(parentStack.peek(), func, ctx.start.getLine());
     }
 
 
