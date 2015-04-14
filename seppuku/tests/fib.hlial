@@ -13,16 +13,16 @@ int64 fibR(int64 n) {
 
 int64 fibI(int64 n)
 {
-	int64 tmp1 = 0;
-	int64 tmp2 = 1;
+    int64 tmp1 = 0;
+    int64 tmp2 = 1;
 
-	for(int64 i = 0; i < n; i++){
+    for(int64 i = 0; i < n; i++){
         int64 tmp3 = tmp1;
         tmp1 = tmp2;
         tmp2 += tmp3;
     }
 
-	return tmp1;
+    return tmp1;
 }
 
 if(true == true){
