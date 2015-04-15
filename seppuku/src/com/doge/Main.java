@@ -95,9 +95,5 @@ public class Main {
                     parser.getNumberOfSyntaxErrors(),
                     parser.getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
         }
-
-        //TODO print no args.
-        //TODO Some way of checking if a float constant can fit in 16 bit.
-
     }
 }
