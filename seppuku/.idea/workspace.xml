@@ -34,8 +34,8 @@
             <file leaf-file-name="PrettyPrint.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/com/doge/Visitors/PrettyPrint.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.48518112" vertical-offset="340" max-vertical-offset="1462">
-                    <caret line="46" column="2" selection-start-line="46" selection-start-column="2" selection-end-line="46" selection-end-column="2" />
+                  <state vertical-scroll-proportion="0.9626784" vertical-offset="534" max-vertical-offset="1530">
+                    <caret line="83" column="74" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="74" />
                     <folding>
                       <element signature="imports" expanded="true" />
                       <element signature="e#304#305#0" expanded="true" />
@@ -56,10 +56,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/doge/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="337" max-vertical-offset="1564">
+            <state vertical-scroll-proportion="0.6002805" vertical-offset="337" max-vertical-offset="1564">
               <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding />
             </state>
@@ -103,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CodeGeneratorVisitor.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CodeGeneratorVisitor.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/doge/Visitors/CodeGeneratorVisitor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5923077" vertical-offset="2540" max-vertical-offset="5083">
-              <caret line="168" column="60" selection-start-line="168" selection-start-column="4" selection-end-line="168" selection-end-column="60" />
+            <state vertical-scroll-proportion="-0.5862069" vertical-offset="2788" max-vertical-offset="5083">
+              <caret line="170" column="94" selection-start-line="170" selection-start-column="94" selection-end-line="170" selection-end-column="94" />
               <folding />
             </state>
           </provider>
@@ -165,9 +165,9 @@
         <option value="$PROJECT_DIR$/code.c" />
         <option value="$PROJECT_DIR$/src/com/doge/Visitors/SymbolTableFillVisitor.java" />
         <option value="$PROJECT_DIR$/tests/fib.hlial" />
-        <option value="$PROJECT_DIR$/src/com/doge/Visitors/CodeGeneratorVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/doge/Visitors/PrettyPrintOLD.java" />
         <option value="$PROJECT_DIR$/src/com/doge/Main.java" />
+        <option value="$PROJECT_DIR$/src/com/doge/Visitors/CodeGeneratorVisitor.java" />
         <option value="$PROJECT_DIR$/src/com/doge/Visitors/PrettyPrint.java" />
       </list>
     </option>
@@ -746,7 +746,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32994652" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.50590765" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="449" y="321" width="983" height="492" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20408164" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="449" y="321" width="983" height="492" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.021186441" sideWeight="0.8165605" order="0" side_tool="false" content_ui="combo" x="686" y="441" width="128" height="40" />
@@ -1155,6 +1155,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/doge/Visitors/CodeGeneratorVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.5862069" vertical-offset="2788" max-vertical-offset="5083">
+          <caret line="170" column="94" selection-start-line="170" selection-start-column="94" selection-end-line="170" selection-end-column="94" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/doge/Visitors/BaseASTVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="807" max-vertical-offset="2788">
@@ -1162,14 +1170,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/doge/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="525" max-vertical-offset="1564">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1194,18 +1194,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/doge/Visitors/CodeGeneratorVisitor.java">
+    <entry file="file://$PROJECT_DIR$/src/com/doge/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5923077" vertical-offset="2540" max-vertical-offset="5083">
-          <caret line="168" column="60" selection-start-line="168" selection-start-column="4" selection-end-line="168" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.6002805" vertical-offset="337" max-vertical-offset="1564">
+          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/doge/Visitors/PrettyPrint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48518112" vertical-offset="340" max-vertical-offset="1462">
-          <caret line="46" column="2" selection-start-line="46" selection-start-column="2" selection-end-line="46" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.9626784" vertical-offset="534" max-vertical-offset="1530">
+          <caret line="83" column="74" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#304#305#0" expanded="true" />

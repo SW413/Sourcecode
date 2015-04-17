@@ -78,3 +78,8 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     */
 }
 
+/*
+Statements
+   De her inde er dem der skal printer.append.
+   Så når de virker så brude resten følge med, da vi "bobler her inde fra"
+ */
