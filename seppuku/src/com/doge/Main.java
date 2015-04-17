@@ -70,9 +70,13 @@ public class Main {
             LanguageError.PrintAllErrors(errors, ErrorType.WARNING);
 
             //Pretty print
-            /*System.out.println("PWETTY PWINT ಠ_ಠ :\n");
-            abstractSyntaxTree.accept(new PrettyPrint());
-            System.out.println();*/
+            StringBuilder printTest = new StringBuilder();
+            System.out.println("PWETTY PWINT ಠ_ಠ :\n");
+            abstractSyntaxTree.accept(new PrettyPrint(printTest));
+            System.out.println(printTest);
+
+
+
 
             if (errors.size() == 0){
                 StringBuilder output = new StringBuilder();
