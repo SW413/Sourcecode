@@ -1,7 +1,6 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
-import com.doge.types.OperatorType;
 
 import java.util.ArrayList;
 
@@ -11,11 +10,11 @@ import java.util.ArrayList;
 public class VectorValNode extends ExpressionNode {
     private ArrayList<ExpressionNode> values = new ArrayList<ExpressionNode>();
 
-    public VectorValNode(AST parent) {
+    public VectorValNode(BaseASTNode parent) {
         super(parent, null, null, null);
     }
 
-    public VectorValNode(AST parent, ArrayList<ExpressionNode> values) {
+    public VectorValNode(BaseASTNode parent, ArrayList<ExpressionNode> values) {
         super(parent, null, null, null);
         this.values = values;
     }

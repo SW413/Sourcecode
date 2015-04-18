@@ -2,8 +2,7 @@ package com.doge;
 
 import com.antlr.ourLangLexer;
 import com.antlr.ourLangParser;
-import com.doge.AST.AST;
-import com.doge.ErrorHandling.ANSIEscapeCodes;
+import com.doge.AST.BaseASTNode;
 import com.doge.ErrorHandling.ErrorType;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.Visitors.*;
@@ -14,7 +13,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.jar.Attributes;
 
 import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RED;
 import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
@@ -49,14 +47,14 @@ public class Main {
         //System.out.println(tree.toStringTree(parser)); // print tree as text
         if (parser.getNumberOfSyntaxErrors() == 0) {
             //Generate abstract syntax tree
-            AST abstractSyntaxTree = new AST(null);
+            BaseASTNode abstractSyntaxTree = new BaseASTNode(null);
             tree.accept(new visitorAST(abstractSyntaxTree));
 
-            //Scope check AST
+            //Scope check BaseASTNode
             ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
             SymbolTable symbolTable = new SymbolTable();
             abstractSyntaxTree.accept(new SymbolTableFillVisitor(symbolTable, errors));
-            //Type check AST
+            //Type check BaseASTNode
             abstractSyntaxTree.accept(new ASTTypeCheckVisitor(symbolTable, errors));
             //Check for unused variables
             errors.addAll(symbolTable.getUnusedVariables());

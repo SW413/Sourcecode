@@ -4,7 +4,7 @@ import com.doge.AST.*;
 import com.doge.types.*;
 
 /**
- * Pretty printing which prints the AST out as the code it was before parsing.
+ * Pretty printing which prints the BaseASTNode out as the code it was before parsing.
  */
 public class PrettyPrint extends BaseASTVisitor<Void> {
 

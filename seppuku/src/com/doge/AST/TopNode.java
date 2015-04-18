@@ -7,12 +7,12 @@ import java.util.ArrayList;
 /**
  * Created by Mathias on 21-03-2015.
  */
-public class TopNode extends AST {
+public class TopNode extends BaseASTNode {
     private ImportNode imports;
     private ArrayList<FunctionDclNode> functionDeclarations = new ArrayList<FunctionDclNode>();
-    private AST statements;
+    private BaseASTNode statements;
 
-    public TopNode(AST parent) {
+    public TopNode(BaseASTNode parent) {
         super(parent);
     }
 
@@ -38,11 +38,11 @@ public class TopNode extends AST {
         //this.addChild(functionDeclaration);
     }
 
-    public AST getStatements() {
+    public BaseASTNode getStatements() {
         return statements;
     }
 
-    public void setStatements(AST statements) {
+    public void setStatements(BaseASTNode statements) {
         this.statements = statements;
         //this.addChild(statements);
     }

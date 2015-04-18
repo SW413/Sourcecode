@@ -1,20 +1,18 @@
 package com.doge.AST;
-import com.antlr.ourLangVisitor;
 import com.doge.Visitors.IASTVisitor;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.misc.Interval;
-import org.antlr.v4.runtime.tree.*;
 
 import java.util.ArrayList;
 
 /**
  * Created by michno on 19/3/15.
  */
-public class AST {
+public class BaseASTNode {
 
     private int LineNumber;
-    private AST parent;
-    private ArrayList<AST> children = new ArrayList<AST>();
+    private BaseASTNode parent;
+    private ArrayList<BaseASTNode> children = new ArrayList<BaseASTNode>();
 
     public int getLineNumber() {
         return LineNumber;
@@ -24,30 +22,30 @@ public class AST {
         LineNumber = lineNumber;
     }
 
-    public AST(AST parent) {
+    public BaseASTNode(BaseASTNode parent) {
         if (parent != null)
             parent.addChild(this);
         this.parent = parent;
     }
 
-    public void setParent(AST parent){
+    public void setParent(BaseASTNode parent){
         parent.children.add(this);
         this.parent = parent;
     }
 
-    public AST getParent() {
+    public BaseASTNode getParent() {
         return this.parent;
     }
 
-    public AST getChild(int i) {
+    public BaseASTNode getChild(int i) {
          return this.children.get(i);
     }
 
-    public void addChild(AST node) {
+    public void addChild(BaseASTNode node) {
         this.children.add(node);
     }
 
-    public ArrayList<AST> getChildren() { return this.children; }
+    public ArrayList<BaseASTNode> getChildren() { return this.children; }
 
 
     public <T> T accept(IASTVisitor<? extends T> node) {

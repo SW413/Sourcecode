@@ -1,22 +1,19 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.RuleNode;
 
 /**
  * Created by Søren on 25-03-2015.
  */
 public interface IASTVisitor<T>  {
 
-    T visit(AST node);
+    T visit(BaseASTNode node);
 
-    T visitChildren(AST node);
+    T visitChildren(BaseASTNode node);
 
     T VisitAssignmentNode(AssignmentNode node);
 
-    T VisitAST(AST node);
+    T VisitAST(BaseASTNode node);
 
     T VisitCollectionCoordinateNode(CollectionCoordinateNode node);
 

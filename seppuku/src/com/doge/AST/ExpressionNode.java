@@ -21,14 +21,14 @@ public class ExpressionNode extends StatementNode {
         return this.rValue;
     }
 
-    public ExpressionNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue) {
+    public ExpressionNode(BaseASTNode parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue) {
         super(parent);
         this.lValue = lValue;
         this.operatorType = operatorType;
         this.rValue = rValue;
     }
 
-    public ExpressionNode(AST parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue, int lineNum) {
+    public ExpressionNode(BaseASTNode parent, ExpressionNode lValue, OperatorType operatorType, ExpressionNode rValue, int lineNum) {
         this(parent, lValue, operatorType, rValue);
         this.setLineNumber(lineNum);
     }

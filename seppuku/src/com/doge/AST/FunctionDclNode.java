@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by michno on 19/3/15.
  */
-public class FunctionDclNode extends AST {
+public class FunctionDclNode extends BaseASTNode {
 
     private Variable variable;
     private ArrayList<Variable> parameters = new ArrayList<Variable>();
@@ -17,7 +17,7 @@ public class FunctionDclNode extends AST {
     private FunctionReturnNode functionReturn;
     private ValueType valueType;
 
-    public FunctionDclNode(AST parent, Variable variable) {
+    public FunctionDclNode(BaseASTNode parent, Variable variable) {
         super(parent);
         this.variable = variable;
     }

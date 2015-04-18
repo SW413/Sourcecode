@@ -8,7 +8,7 @@ import com.doge.Visitors.IASTVisitor;
 public class FunctionReturnNode extends StatementNode {
     private ExpressionNode expression;
 
-    public FunctionReturnNode(AST parent, ExpressionNode expression) {
+    public FunctionReturnNode(BaseASTNode parent, ExpressionNode expression) {
         super(parent);
         this.expression = expression;
     }

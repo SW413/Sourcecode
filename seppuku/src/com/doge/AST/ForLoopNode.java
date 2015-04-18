@@ -1,7 +1,6 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
-import com.doge.types.LoopType;
 
 /**
  * Created by michno on 19/3/15.
@@ -10,10 +9,10 @@ public class ForLoopNode extends StatementNode{
 
     private StatementNode body;
     private ConditionalExpressionNode condition;
-    private AST initialize;
+    private BaseASTNode initialize;
     private ExpressionNode update;
 
-    public ForLoopNode(AST parent) {
+    public ForLoopNode(BaseASTNode parent) {
         super(parent);
     }
 
@@ -33,11 +32,11 @@ public class ForLoopNode extends StatementNode{
         this.condition = condition;
     }
 
-    public AST getInitialize() {
+    public BaseASTNode getInitialize() {
         return initialize;
     }
 
-    public void setInitialize(AST initialize) {
+    public void setInitialize(BaseASTNode initialize) {
         this.initialize = initialize;
     }
 

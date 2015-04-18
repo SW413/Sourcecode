@@ -1,7 +1,6 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
-import com.doge.checking.Scope;
 
 /**
  * Created by michno on 24/3/15.
@@ -9,7 +8,7 @@ import com.doge.checking.Scope;
 public class VariableExpressionNode extends ExpressionNode {
     private Variable variable;
 
-    public VariableExpressionNode(AST parent, Variable variable) {
+    public VariableExpressionNode(BaseASTNode parent, Variable variable) {
         super(parent, null, null, null);
         this.variable = variable;
     }

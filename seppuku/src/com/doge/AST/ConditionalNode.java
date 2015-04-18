@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by michno on 19/3/15.
  */
-public class ConditionalNode extends AST {
+public class ConditionalNode extends BaseASTNode {
 
     private ConditionalExpressionNode conditionalExpression;
     private StatementNode body;
@@ -15,7 +15,7 @@ public class ConditionalNode extends AST {
     private StatementNode elseBody;
     private boolean DoneWithIf = false;
 
-    public ConditionalNode(AST parent, ConditionalExpressionNode conditionalExpression) {
+    public ConditionalNode(BaseASTNode parent, ConditionalExpressionNode conditionalExpression) {
         super(parent);
         this.conditionalExpression = conditionalExpression;
     }
