@@ -26,7 +26,7 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitExpressionNode(ExpressionNode node){
-        /*
+
         if (node.getLValue() != null && node.getRValue() != null) {
             visit(node.getLValue());
             printer.append(" " + node.getOperatorType().toString() + " ");
@@ -37,8 +37,8 @@ public class PrettyPrint extends BaseASTVisitor<String> {
                 printer.append(node.getOperatorType().toString());
             }
         }
-        return
-         */
+
+
         if (node.getRValue() != null){
             return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
         }
@@ -53,6 +53,7 @@ public class PrettyPrint extends BaseASTVisitor<String> {
             for (int i = 0; i <node.getParameterCount() - 1; i++) {
                 printer.append(var.getValueType() + " " + var.getId());
             }
+
             printer.append(node.getParameter(node.getParameterCount() - 1).getValueType() + " " + node.getParameter(node.getParameterCount() - 1).getId() + ") {\n");
         }
         super.VisitFunctionDclNode(node);
@@ -62,20 +63,27 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConstantExpressionNode(ConstantExpressionNode node) {
-       // printer.append(node.getValue());
+        printer.append(node.getValue());
+        if (node.getRValue() == null){
+            printer.append(";");
+        }
         return null;
     }
-/*
+
     @Override
     public String VisitVariableExpressionNode(VariableExpressionNode node) {
         if (node.getVariable().isFunction()) {
-            printer.append(node.getVariable());
+            //printer.append(node.getVariable());
         }
         //printer.append(node.getVariable().getId());
-
         return null;
     }
-    */
+    @Override
+    public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
+        printer.append(node.getOperatorType().toString());
+        return null; //visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+    }
+    
 }
 
 /*
