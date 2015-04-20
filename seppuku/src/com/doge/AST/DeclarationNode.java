@@ -2,8 +2,6 @@ package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
 
-import java.util.ArrayList;
-
 /**
  * Created by michno on 19/3/15.
  */
@@ -11,7 +9,7 @@ public class DeclarationNode extends StatementNode {
     private Variable variable;
     private ExpressionNode expression;
 
-    public DeclarationNode(AST parent, Variable variable, ExpressionNode expression, int lineNum) {
+    public DeclarationNode(BaseASTNode parent, Variable variable, ExpressionNode expression, int lineNum) {
         super(parent);
         this.variable = variable;
         this.expression = expression;

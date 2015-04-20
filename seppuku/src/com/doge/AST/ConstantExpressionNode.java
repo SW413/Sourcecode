@@ -1,7 +1,6 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
-import com.doge.types.OperatorType;
 
 /**
  * Created by michno on 20/3/15.
@@ -9,12 +8,12 @@ import com.doge.types.OperatorType;
 public class ConstantExpressionNode extends ExpressionNode {
     private Object value;
 
-    public ConstantExpressionNode(AST parent, Object value) {
+    public ConstantExpressionNode(BaseASTNode parent, Object value) {
         super(parent, null, null, null);
         this.value = value;
     }
 
-    public ConstantExpressionNode(AST parent, Object value, int lineNum) {
+    public ConstantExpressionNode(BaseASTNode parent, Object value, int lineNum) {
         super(parent, null, null, null, lineNum);
         this.value = value;
     }

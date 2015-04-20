@@ -7,11 +7,11 @@ import com.doge.types.ValueType;
 /**
  * Created by michno on 19/3/15.
  */
-public class StatementNode extends AST {
+public class StatementNode extends BaseASTNode {
     private Scope scope;
     protected ValueType valueType;
 
-    public StatementNode(AST parent) {
+    public StatementNode(BaseASTNode parent) {
         super(parent);
     }
 

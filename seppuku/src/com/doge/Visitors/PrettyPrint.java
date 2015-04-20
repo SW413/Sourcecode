@@ -101,14 +101,10 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         else
             printer.append("; ");
         if (node.getCondition() != null)
-            printer.append(visit(node.getCondition()));
-        printer.append("; ");
+            printer.append(visit(node.getCondition()) + "; ");
         if (node.getUpdate() != null)
             printer.append(visit(node.getUpdate()));
-        printer.append(") {\n");
-        printer.append(statementBody(node.getBody().getChildren()));
-        printer.append("}\n");
-
+        printer.append(") {\n" + statementBody(node.getBody().getChildren()) + "}\n");
         return null;
     }
 

@@ -40,7 +40,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         outputCode.append("\n\n/*--= MAIN METHOD =--*/\n");
         outputCode.append("int main(){\n");
         indentationLevel++;
-        for (AST stmt : node.getStatements().getChildren()) {
+        for (BaseASTNode stmt : node.getStatements().getChildren()) {
             outputCode.append(indent(visit(stmt) + "\n"));
         }
         outputCode.append(indent("return 0;\n}\n"));
@@ -59,7 +59,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             outputCode.append("){\n");
             indentationLevel++;
             if (func.getFunctionBody() != null)
-                for (AST stmt : func.getFunctionBody().getChildren()) {
+                for (BaseASTNode stmt : func.getFunctionBody().getChildren()) {
                     outputCode.append(indent(visit(stmt) + "\n"));
                 }
             if (func.getFunctionReturn() != null)
@@ -112,7 +112,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         StringBuilder conditional = new StringBuilder();
         conditional.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
         indentationLevel++;
-        for (AST stmt : node.getBody().getChildren()){
+        for (BaseASTNode stmt : node.getBody().getChildren()){
             conditional.append(indent(visit(stmt) + "\n"));
         }
         indentationLevel--;
@@ -245,10 +245,10 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return list.toString();
     }
 
-    private String statementBody(ArrayList<AST> statements){
+    private String statementBody(ArrayList<BaseASTNode> statements){
         StringBuilder body = new StringBuilder();
         indentationLevel++;
-        for(AST stmt : statements){
+        for(BaseASTNode stmt : statements){
             body.append(indent(visit(stmt) + "\n"));
         }
         indentationLevel--;

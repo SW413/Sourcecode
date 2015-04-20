@@ -1,12 +1,10 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
-import com.doge.types.OperatorType;
-import java.util.ArrayList;
 
 public class FunctionCallNode extends VariableExpressionNode {
 
-    public FunctionCallNode(AST parent, Variable func, int lineNum) {
+    public FunctionCallNode(BaseASTNode parent, Variable func, int lineNum) {
         super(parent, func);
         this.setLineNumber(lineNum);
     }

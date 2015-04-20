@@ -2,17 +2,15 @@ package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
  * Created by Mathias on 21-03-2015.
  */
-public class ImportNode extends AST {
+public class ImportNode extends BaseASTNode {
     private ArrayList<ImportFile> inputFiles = new ArrayList<ImportFile>();
 
-    public ImportNode(AST parent) {
+    public ImportNode(BaseASTNode parent) {
         super(parent);
     }
 

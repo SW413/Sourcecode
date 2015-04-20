@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class MatrixValNode extends ExpressionNode {
     private ArrayList<VectorValNode> rows = new ArrayList<VectorValNode>();
 
-    public MatrixValNode(AST parent) {
+    public MatrixValNode(BaseASTNode parent) {
         super(parent, null, null, null);
     }
 

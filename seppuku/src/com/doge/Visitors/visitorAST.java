@@ -8,7 +8,6 @@ import com.doge.types.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Stack;
 
 
@@ -19,20 +18,20 @@ import java.util.Stack;
  * @author michno
  * @since 2015-03-19
  **/
-public class visitorAST extends ourLangBaseVisitor<AST> {
+public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
-    private AST ast;
-    //Stack to keep track of parents when building the AST
-    private Stack<AST> parentStack = new Stack<AST>();
+    private BaseASTNode baseAstNode;
+    //Stack to keep track of parents when building the BaseASTNode
+    private Stack<BaseASTNode> parentStack = new Stack<BaseASTNode>();
 
     //Constructor
-    public visitorAST(AST ast){
-        this.ast = ast;
+    public visitorAST(BaseASTNode baseAstNode){
+        this.baseAstNode = baseAstNode;
     }
 
 
     /**
-     * Generate a {@link com.doge.AST.TopNode} and link it to the {@link com.doge.AST.AST} tree.
+     * Generate a {@link com.doge.AST.TopNode} and link it to the {@link com.doge.AST.BaseASTNode} tree.
      * Then push said TopNode to the parent stack and visit children.
      * Finally pop the TopNode from the parent stack,
      * and check if the parent stack is balanced.
@@ -42,8 +41,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return      a {@link com.doge.AST.TopNode}
      */
     @Override
-    public AST visitTopLevel(ourLangParser.TopLevelContext ctx) {
-        TopNode top/*kek*/ = new TopNode(this.ast);
+    public BaseASTNode visitTopLevel(ourLangParser.TopLevelContext ctx) {
+        TopNode top/*kek*/ = new TopNode(this.baseAstNode);
         parentStack.push(top/*kek*/);
         visitChildren(ctx);
         parentStack.pop();
@@ -67,7 +66,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     //TODO currently filepath is relative to compiler location... maybe it should be relative to sourcecode location
     @Override
-    public AST visitImporting(ourLangParser.ImportingContext ctx) {
+    public BaseASTNode visitImporting(ourLangParser.ImportingContext ctx) {
         TopNode tmp = (TopNode)parentStack.peek();
         if (tmp.getImports() == null)
             tmp.setImports(new ImportNode(tmp));
@@ -88,7 +87,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return      a {@link com.doge.AST.FunctionDclNode}
      */
     @Override
-    public AST visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
+    public BaseASTNode visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
         Variable funcVariable = new Variable(TypeParser.parseValueType(ctx.functiondatatype().getText()), ctx.ID().getText(), true);
         FunctionDclNode functionDclNode = new FunctionDclNode(parentStack.peek(), funcVariable);
         parentStack.push(functionDclNode);
@@ -103,7 +102,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
     //TODO doc comment...
     @Override
-    public AST visitStatement(ourLangParser.StatementContext ctx) {
+    public BaseASTNode visitStatement(ourLangParser.StatementContext ctx) {
 
         //Visit through TopLevel
         if (parentStack.peek().getClass() == TopNode.class) {
@@ -192,7 +191,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return
      */
     @Override
-    public AST visitParameterlist(ourLangParser.ParameterlistContext ctx) {
+    public BaseASTNode visitParameterlist(ourLangParser.ParameterlistContext ctx) {
         FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
         for (int i = 0; i < ctx.getChildCount(); i++){
             //Don't parse the commas separating the parameters
@@ -213,7 +212,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return
      */
     @Override
-    public AST visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
+    public BaseASTNode visitFunctionreturn(ourLangParser.FunctionreturnContext ctx) {
         FunctionDclNode tmp = (FunctionDclNode) parentStack.peek();
         tmp.setFunctionReturn(new FunctionReturnNode(tmp, (ExpressionNode) visit(ctx.expression())));
         tmp.getFunctionReturn().setLineNumber(ctx.start.getLine());
@@ -229,7 +228,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      */
     @Override
     public DeclarationNode visitPrimitiveDecl(ourLangParser.PrimitiveDeclContext ctx) {
-        AST parent = parentStack.peek();
+        BaseASTNode parent = parentStack.peek();
         parentStack.push(null);
         DeclarationNode dcl = new DeclarationNode(
                 parent,
@@ -248,7 +247,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return
      */
     @Override
-    public AST visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
+    public BaseASTNode visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
         ExpressionNode expr = (ExpressionNode) visit(ctx.expression());
         Variable var =  new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
         var.setComplex(true);
@@ -273,15 +272,15 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return
      */
     @Override
-    public AST visitEntranceCoordinate(ourLangParser.EntranceCoordinateContext ctx) {
+    public BaseASTNode visitEntranceCoordinate(ourLangParser.EntranceCoordinateContext ctx) {
         return new CollectionCoordinateNode(null,
                 (ExpressionNode) visit(ctx.value(0)),
                 (ExpressionNode) visit(ctx.value(1)));
     }
 
     @Override
-    public AST visitStdAssignment(ourLangParser.StdAssignmentContext ctx) {
-        AST parent = parentStack.peek();
+    public BaseASTNode visitStdAssignment(ourLangParser.StdAssignmentContext ctx) {
+        BaseASTNode parent = parentStack.peek();
         parentStack.push(null);
         AssignmentNode assNode = new AssignmentNode(
                 parent,
@@ -295,8 +294,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitPostUnaryAssignment(ourLangParser.PostUnaryAssignmentContext ctx) {
-        AST parent = parentStack.peek();
+    public BaseASTNode visitPostUnaryAssignment(ourLangParser.PostUnaryAssignmentContext ctx) {
+        BaseASTNode parent = parentStack.peek();
         parentStack.push(null);
         AssignmentNode assNode = new AssignmentNode(
                 parent,
@@ -309,19 +308,19 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitEntireCollectionAssignment(ourLangParser.EntireCollectionAssignmentContext ctx) {
+    public BaseASTNode visitEntireCollectionAssignment(ourLangParser.EntireCollectionAssignmentContext ctx) {
         AssignmentNode assNode = new AssignmentNode(
                 parentStack.peek(),
                 new Variable(null, ctx.ID().getText()),
                 AssignmentOperatorType.BASIC,
                 (ExpressionNode) visit(ctx.expression()));
-        ast.setLineNumber(ctx.start.getLine());
+        baseAstNode.setLineNumber(ctx.start.getLine());
         return assNode;
     }
 
     @Override
-    public AST visitCollectionEntranceAssignment(ourLangParser.CollectionEntranceAssignmentContext ctx) {
-        AST tmp = parentStack.peek();
+    public BaseASTNode visitCollectionEntranceAssignment(ourLangParser.CollectionEntranceAssignmentContext ctx) {
+        BaseASTNode tmp = parentStack.peek();
         parentStack.push(null);
         AssignmentNode assignment = new AssignmentNode(
                 tmp,
@@ -340,14 +339,14 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      *
      */
     @Override
-    public AST visitValID(ourLangParser.ValIDContext ctx) {
+    public BaseASTNode visitValID(ourLangParser.ValIDContext ctx) {
         VariableExpressionNode varexp = new VariableExpressionNode(null, new Variable(null, ctx.ID().getText()));
         varexp.setLineNumber(ctx.start.getLine());
         return varexp;
     }
 
     @Override
-    public AST visitValConstant(ourLangParser.ValConstantContext ctx) {
+    public BaseASTNode visitValConstant(ourLangParser.ValConstantContext ctx) {
         ConstantExpressionNode ConstNode = new ConstantExpressionNode(null, ctx.constant().getText());
         ConstNode.setLineNumber(ctx.start.getLine());
 
@@ -355,7 +354,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitValFuncCall(ourLangParser.ValFuncCallContext ctx) {
+    public BaseASTNode visitValFuncCall(ourLangParser.ValFuncCallContext ctx) {
         VariableExpressionNode var = new VariableExpressionNode(null, null);
         parentStack.push(var);
         return super.visitValFuncCall(ctx);
@@ -370,7 +369,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      * @return      Either a {@link com.doge.AST.MatrixValNode} or a {@link com.doge.AST.VectorValNode}
      */
     @Override
-    public AST visitValList(ourLangParser.ValListContext ctx) {
+    public BaseASTNode visitValList(ourLangParser.ValListContext ctx) {
         MatrixValNode matrix = new MatrixValNode(null);
 
         //Visit all rows
@@ -394,7 +393,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitCustomFunc(ourLangParser.CustomFuncContext ctx) {
+    public BaseASTNode visitCustomFunc(ourLangParser.CustomFuncContext ctx) {
         ArrayList<ExpressionNode> arguments = new ArrayList<ExpressionNode>();
 
         for(int i = 0; i < ctx.argumentlist().getChildCount(); i++) {
@@ -421,7 +420,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
+    public BaseASTNode visitPrintFunc(ourLangParser.PrintFuncContext ctx) {
         ArrayList<Object> arguments = new ArrayList<Object>();
 
         if (ctx.argumentlist().getChildCount() > 0){
@@ -439,12 +438,12 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
 
 
     @Override
-    public AST visitValCollectionEntrance(ourLangParser.ValCollectionEntranceContext ctx) {
+    public BaseASTNode visitValCollectionEntrance(ourLangParser.ValCollectionEntranceContext ctx) {
         return super.visitValCollectionEntrance(ctx);
     }
 
     @Override
-    public AST visitCollectionEntrance(ourLangParser.CollectionEntranceContext ctx) {
+    public BaseASTNode visitCollectionEntrance(ourLangParser.CollectionEntranceContext ctx) {
         return new VariableExpressionNode(null,
                 new Variable(null,
                         ctx.ID().getText(),
@@ -453,7 +452,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitValBool(ourLangParser.ValBoolContext ctx) {
+    public BaseASTNode visitValBool(ourLangParser.ValBoolContext ctx) {
         return new ConstantExpressionNode(null, Boolean.parseBoolean(ctx.BOOLVAL().getText()), ctx.start.getLine());
     }
 
@@ -500,7 +499,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitWhileLoop(ourLangParser.WhileLoopContext ctx) {
+    public BaseASTNode visitWhileLoop(ourLangParser.WhileLoopContext ctx) {
         WhileLoopNode whileLoopNode = new WhileLoopNode(parentStack.peek());
         whileLoopNode.setCondNode((ConditionalExpressionNode)visit(ctx.conditionalExpression()));
         parentStack.push(whileLoopNode);
@@ -511,7 +510,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitForLoop(ourLangParser.ForLoopContext ctx) {
+    public BaseASTNode visitForLoop(ourLangParser.ForLoopContext ctx) {
         ForLoopNode forLoopNode = new ForLoopNode(parentStack.peek());
 
         //Makes sure the intilizations do not appear on the tree as children to the for loop.
@@ -524,8 +523,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
         }
         //Reestablishes the previous stack, hack is over.
         parentStack.pop();
-        forLoopNode.setCondition((ConditionalExpressionNode)visit(ctx.conditionalExpression()));
-        forLoopNode.setUpdate((ExpressionNode)visit(ctx.expression()));
+        forLoopNode.setCondition((ConditionalExpressionNode) visit(ctx.conditionalExpression()));
+        forLoopNode.setUpdate((ExpressionNode) visit(ctx.expression()));
 
         parentStack.push(forLoopNode);
         visitChildren(ctx.forBlock);
@@ -540,8 +539,8 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
      *
      */
     @Override
-    public AST visitControlblock(ourLangParser.ControlblockContext ctx) {
-        AST parent = parentStack.peek();
+    public BaseASTNode visitControlblock(ourLangParser.ControlblockContext ctx) {
+        BaseASTNode parent = parentStack.peek();
 
         //Makes sure the intilizations do not appear on the tree as children to the for loop.
         parentStack.push(null);
@@ -578,7 +577,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx) {
+    public BaseASTNode visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx) {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
@@ -588,7 +587,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitMultiAndCondExpr(ourLangParser.MultiAndCondExprContext ctx) {
+    public BaseASTNode visitMultiAndCondExpr(ourLangParser.MultiAndCondExprContext ctx) {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.conditionalExpression(0)),
@@ -597,7 +596,7 @@ public class visitorAST extends ourLangBaseVisitor<AST> {
                 ctx.start.getLine());
     }
     @Override
-    public AST visitMultiOrCondExpr(ourLangParser.MultiOrCondExprContext ctx) {
+    public BaseASTNode visitMultiOrCondExpr(ourLangParser.MultiOrCondExprContext ctx) {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.conditionalExpression(0)),

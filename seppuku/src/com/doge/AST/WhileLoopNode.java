@@ -26,7 +26,7 @@ public class WhileLoopNode extends StatementNode {
         this.body = body;
     }
 
-    public WhileLoopNode(AST parent) {
+    public WhileLoopNode(BaseASTNode parent) {
         super(parent);
     }
 

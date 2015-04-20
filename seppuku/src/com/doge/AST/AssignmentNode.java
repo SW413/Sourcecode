@@ -1,7 +1,6 @@
 package com.doge.AST;
 
 import com.doge.Visitors.IASTVisitor;
-import com.doge.Visitors.PrettyPrint;
 import com.doge.types.AssignmentOperatorType;
 
 /**
@@ -12,7 +11,7 @@ public class AssignmentNode extends StatementNode {
     private AssignmentOperatorType assignmentOperator;
     private ExpressionNode expression;
 
-    public AssignmentNode(AST parent, Variable variable, AssignmentOperatorType assignmentOperator, ExpressionNode expression) {
+    public AssignmentNode(BaseASTNode parent, Variable variable, AssignmentOperatorType assignmentOperator, ExpressionNode expression) {
         super(parent);
         this.variable = variable;
         this.assignmentOperator = assignmentOperator;

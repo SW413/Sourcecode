@@ -1,9 +1,5 @@
 package com.doge.Visitors;
 import com.doge.AST.*;
-import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.RuleNode;
 
 
 /**
@@ -17,7 +13,7 @@ public class BaseASTVisitor<T> implements IASTVisitor<T> {
         return null;
     }
 
-    @Override public T VisitAST(AST node) { return visitChildren(node); }
+    @Override public T VisitAST(BaseASTNode node) { return visitChildren(node); }
 
     @Override public T VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
         if(node.getCoordinates()[0] != null){
@@ -144,14 +140,14 @@ public class BaseASTVisitor<T> implements IASTVisitor<T> {
         return null;
     }
 
-    @Override public T visit(AST node){return node.accept(this);}
+    @Override public T visit(BaseASTNode node){return node.accept(this);}
 
     //This is a mirror of the visitChildren method created by ANTLR.
-    @Override public T visitChildren(AST node){
+    @Override public T visitChildren(BaseASTNode node){
         T result = null;
         int n = node.getChildCount();
         for (int i = 0; i < n ; i++) {
-            AST child = node.getChild(i);
+            BaseASTNode child = node.getChild(i);
             result = child.accept(this);
         }
 
