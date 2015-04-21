@@ -9,7 +9,7 @@ Missing stuff
   2. Figure out what kind of URI should be used e.g. relative or absolute.
   3. Decide when the file should be imported and if recursive importing should be possible.
   4. Implement the importing of files, maybe the ANTLR lexer/parser should add the contents to the token stream. 
-- [X] **Floating point 16bit**
+- [ ] **Floating point 16bit**
   1. Is this even necessary and/or possible?
   2. If yes to both, implement it.
 - [ ] **Complex return types**
@@ -18,10 +18,10 @@ Missing stuff
   3. Implement it with excessive use of null checks among others. Remember to set the size/dimensions in the declaration variable! 
   4. Test, test, test. This element in the language is key, and should not be error prone.
 - [ ] **Internal functions**    
-  - Clean up the already existing rows and cols. Should be cleaner so further implementations are easier.
-  - *makeMatrix(n, m, value)*
-  - *sum(matrix | vector, matrix | vector)*
-  - Other matrix and vector related functions.
+  - [ ] Clean up the already existing rows and cols. Should be cleaner so further implementations are easier.
+  - [ ] *makeMatrix(n, m, value)*
+  - [ ] *sum(matrix | vector, matrix | vector)*
+  - [ ] Other matrix and vector related functions.
     1. Research what would be relevant.
     2. Implement. Also in OpenCL! (Very important!)
 - [ ] **OpenCL code generations**
