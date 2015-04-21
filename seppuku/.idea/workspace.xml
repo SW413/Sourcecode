@@ -65,7 +65,7 @@
       <file leaf-file-name="build.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23976608" vertical-offset="687" max-vertical-offset="1200">
+            <state vertical-scroll-proportion="0.32748538" vertical-offset="642" max-vertical-offset="1200">
               <caret line="54" column="14" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
               <folding />
             </state>
@@ -88,10 +88,10 @@
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="22260">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1429651064000" expanded="true" signature="84338:84426" placeholder="..." />
-                <marker date="1429651064000" expanded="true" signature="84338:84411" placeholder="..." />
-                <marker date="1429651064000" expanded="true" signature="84338:84398" placeholder="..." />
-                <marker date="1429651064000" expanded="true" signature="84338:84380" placeholder="..." />
+                <marker date="1429651140000" expanded="true" signature="84340:84428" placeholder="..." />
+                <marker date="1429651140000" expanded="true" signature="84340:84413" placeholder="..." />
+                <marker date="1429651140000" expanded="true" signature="84340:84400" placeholder="..." />
+                <marker date="1429651140000" expanded="true" signature="84340:84382" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -850,12 +850,12 @@
       <workItem from="1428922152185" duration="4165000" />
       <workItem from="1428999235272" duration="5735000" />
       <workItem from="1429016594869" duration="828000" />
-      <workItem from="1429643975354" duration="4346000" />
+      <workItem from="1429643975354" duration="4417000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182849000" />
+    <option name="totallyTimeSpent" value="182920000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1360,10 +1360,10 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="21975">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1429651064000" expanded="true" signature="84338:84426" placeholder="..." />
-            <marker date="1429651064000" expanded="true" signature="84338:84411" placeholder="..." />
-            <marker date="1429651064000" expanded="true" signature="84338:84398" placeholder="..." />
-            <marker date="1429651064000" expanded="true" signature="84338:84380" placeholder="..." />
+            <marker date="1429651140000" expanded="true" signature="84340:84428" placeholder="..." />
+            <marker date="1429651140000" expanded="true" signature="84340:84413" placeholder="..." />
+            <marker date="1429651140000" expanded="true" signature="84340:84400" placeholder="..." />
+            <marker date="1429651140000" expanded="true" signature="84340:84382" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1394,7 +1394,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23976608" vertical-offset="687" max-vertical-offset="1200">
+        <state vertical-scroll-proportion="0.32748538" vertical-offset="642" max-vertical-offset="1200">
           <caret line="54" column="14" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
           <folding />
         </state>
