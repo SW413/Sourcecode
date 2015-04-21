@@ -1,8 +1,12 @@
 language: java
 jdk:
   - oraclejdk8
-before_install:
-    - cd seppuku
+before_install: 
+    - cd /usr/local/lib
+    - wget http://antlr.org/download/antlr-4.5-complete.jar
+    - export CLASSPATH=".:/usr/local/lib/antlr-4.5-complete.jar:$CLASSPATH"
+    - cd
+    - cd SW413/Sourcecode/seppuku
 install:
     - ant
 script:
