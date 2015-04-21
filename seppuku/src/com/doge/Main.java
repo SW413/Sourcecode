@@ -75,7 +75,7 @@ public class Main {
             if (errors.size() == 0){
                 StringBuilder output = new StringBuilder();
                 abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
-                File outputSourcecode = new File("code.c");
+                File outputSourcecode = new File("codeout/code.c");
                 try {
                     FileWriter fileWriter = new FileWriter(outputSourcecode.getAbsoluteFile());
                     Writer writer = new BufferedWriter(fileWriter);
