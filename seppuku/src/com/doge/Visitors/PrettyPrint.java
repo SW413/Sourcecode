@@ -17,47 +17,25 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
 
     @Override
-    public String VisitAssignmentNode(AssignmentNode node){
+    public String VisitTopNode(TopNode node) {
+        for (FunctionDclNode funcDcl : node.getFunctionDeclarations()){
+            printer.append(visit(funcDcl) + "\n");
+        }
+        for (BaseASTNode stmt : node.getStatements().getChildren()){
+            printer.append(visit(stmt) + "\n");
+        }
+        return null;
+    }
 
-        //printer.append(node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";\n");
-        return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";\n";
-        //return null;
+    @Override
+    public String VisitAssignmentNode(AssignmentNode node){
+        return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
     }
 
     @Override
     public String VisitDeclarationNode(DeclarationNode node){
-        if (node.getVariable().isComplex()) {
-            StringBuilder complexDecl = new StringBuilder();
-            complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()) + " " + node.getVariable().getId());
-            switch (node.getVariable().getValueType()) {
-                case MATRIX_INT16:
-                case MATRIX_INT:
-                case MATRIX_INT64:
-                case MATRIX_FLOAT16:
-                case MATRIX_FLOAT:
-                case MATRIX_FLOAT64:
-                case MATRIX_BOOLEAN:
-                    complexDecl.append("[" + node.getVariable().getSize()[0] + "]" +
-                            "[" + node.getVariable().getSize()[1] + "] ");
-                    break;
-                case VECTOR_INT16:
-                case VECTOR_INT:
-                case VECTOR_INT64:
-                case VECTOR_FLOAT16:
-                case VECTOR_FLOAT:
-                case VECTOR_FLOAT64:
-                case VECTOR_BOOLEAN:
-                    complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
-                    break;
-            }
-            //printer.append(complexDecl.toString() + " = " + visit(node.getExpression()) + ";\n");
-            return complexDecl.toString() + " = " + visit(node.getExpression()) + ";";
-        }
-        //printer.append(node.getVariable().toCcode() + " = " + visit(node.getExpression()) + ";\n");
-        return node.getVariable().toCcode() + " = " + visit(node.getExpression()) + ";";
-
+        return node.getVariable().getValueType() + " " + node.getVariable().getId() + " = " + visit(node.getExpression()) + ";";
     }
-
 
     //bruges i VisitConditionalNode & VisitWhileLoopNode & VisitForLoopNode
     private String statementBody(ArrayList<BaseASTNode> statements){
@@ -70,20 +48,19 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConditionalNode(ConditionalNode node) {
-        printer.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
-        for (BaseASTNode stmt : node.getBody().getChildren()){
-            printer.append(visit(stmt) + "\n");
-        }
-        printer.append("}\n");
-        if (node.getElseIfs() != null){
+        StringBuilder cond = new StringBuilder();
+        cond.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
+        cond.append(statementBody(node.getBody().getChildren()));
+        cond.append("}");
+        if (node.getElseIfs() != null && node.getElseIfs().size()> 0){
             for(ConditionalNode elif : node.getElseIfs()) {
-                printer.append(" else " + visit(elif));
+                cond.append(" else " + visit(elif));
             }
         }
         if (node.getElseBody() != null) {
-            printer.append(" else {\n" + statementBody(node.getElseBody().getChildren()) + "}\n");
+            cond.append(" else {\n" + statementBody(node.getElseBody().getChildren()) + "}\n");
         }
-        return null;
+        return cond.toString();
     }
 
     @Override
@@ -183,7 +160,7 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     @Override
     public String VisitVariableExpressionNode(VariableExpressionNode node) {
         if (node.getVariable().isFunction()) {
-            return functionWithArgs(node.getVariable());
+            return "TEST";//functionWithArgs(node.getVariable());
         }
         return node.getVariable().getId();
     }

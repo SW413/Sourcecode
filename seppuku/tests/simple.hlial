@@ -1,4 +1,18 @@
-int bar(int aB){
+int a = 2;
+
+int b = 3;
+
+if(a < b){
+    int c = a + b;
+    //print(c);
+} else if(b < a){
+    int c = a - b;
+    print(c);
+} else {
+    print(a + b);
+}
+
+/*int bar(int aB){
     aB += 1;
     return aB + 3 * foo(2, aB);
 }
@@ -31,7 +45,6 @@ if(a == 2){
 
 print(a);
 
-/*
 void baz(bool a){
     if(a == true) {
         int d = 2;
