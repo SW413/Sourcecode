@@ -6,7 +6,9 @@ import com.doge.types.*;
 import java.util.ArrayList;
 
 /**
- * Pretty printing which prints the AST out as the code it was before parsing.
+ * Pretty printing which prints the AST out as the code it was before parsing.7
+ *
+ * TopNode and PrintFunction is still node included.
  */
 public class PrettyPrint extends BaseASTVisitor<String> {
     private StringBuilder printer;
@@ -60,18 +62,19 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
 
     //bruges i VisitConditionalNode & VisitWhileLoopNode & VisitForLoopNode
-    private String statementBody(ArrayList<AST> statements){
+    private String statementBody(ArrayList<BaseASTNode> statements){
         StringBuilder body = new StringBuilder();
-        for(AST stmt : statements){
+        for(BaseASTNode stmt : statements){
             body.append(visit(stmt) + "\n");
         }
+
         return body.toString();
     }
 
     @Override
     public String VisitConditionalNode(ConditionalNode node) {
         printer.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
-        for (AST stmt : node.getBody().getChildren()){
+        for (BaseASTNode stmt : node.getBody().getChildren()){
             printer.append(visit(stmt) + "\n");
         }
         printer.append("}\n");
