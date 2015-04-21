@@ -1,0 +1,8 @@
+language: java
+before_install:
+    - cd seppuku
+install:
+    - ant
+script:
+    - cd out/production/seppuku
+    - java com.doge.Main ../../../tests/simple.hlial

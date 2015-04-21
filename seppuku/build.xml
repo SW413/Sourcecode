@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="seppuku" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="lib/ant-javafx.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javafx-mx.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/packager.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="lib/tools.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module seppuku -->
+  
+  <dirname property="module.seppuku.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.seppuku" value="${jdk.home.1.8}"/>
+  <property name="module.jdk.bin.seppuku" value="${jdk.bin.1.8}"/>
+  <property name="module.jdk.classpath.seppuku" value="jdk.classpath.1.8"/>
+  
+  <property name="compiler.args.seppuku" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
+  
+  <property name="seppuku.output.dir" value="${module.seppuku.basedir}/out/production/seppuku"/>
+  <property name="seppuku.testoutput.dir" value="${module.seppuku.basedir}/out/test/seppuku"/>
+  
+  <path id="seppuku.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="seppuku.module.production.classpath">
+    <path refid="${module.jdk.classpath.seppuku}"/>
+    <pathelement location="${basedir}/antlr-4.5-complete.jar"/>
+  </path>
+  
+  <path id="seppuku.runtime.production.module.classpath">
+    <pathelement location="${seppuku.output.dir}"/>
+    <pathelement location="${basedir}/antlr-4.5-complete.jar"/>
+  </path>
+  
+  <path id="seppuku.module.classpath">
+    <path refid="${module.jdk.classpath.seppuku}"/>
+    <pathelement location="${seppuku.output.dir}"/>
+    <pathelement location="${basedir}/antlr-4.5-complete.jar"/>
+  </path>
+  
+  <path id="seppuku.runtime.module.classpath">
+    <pathelement location="${seppuku.testoutput.dir}"/>
+    <pathelement location="${seppuku.output.dir}"/>
+    <pathelement location="${basedir}/antlr-4.5-complete.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.seppuku">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.seppuku">
+    <patternset refid="excluded.from.module.seppuku"/>
+  </patternset>
+  
+  <path id="seppuku.module.sourcepath">
+    <dirset dir="${module.seppuku.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.seppuku" depends="compile.module.seppuku.production,compile.module.seppuku.tests" description="Compile module seppuku"/>
+  
+  <target name="compile.module.seppuku.production" description="Compile module seppuku; production classes">
+    <mkdir dir="${seppuku.output.dir}"/>
+    <javac destdir="${seppuku.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.seppuku}/javac">
+      <compilerarg line="${compiler.args.seppuku}"/>
+      <bootclasspath refid="seppuku.module.bootclasspath"/>
+      <classpath refid="seppuku.module.production.classpath"/>
+      <src refid="seppuku.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.seppuku"/>
+    </javac>
+    
+    <copy todir="${seppuku.output.dir}">
+      <fileset dir="${module.seppuku.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.seppuku.tests" depends="compile.module.seppuku.production" description="compile module seppuku; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.seppuku" description="cleanup module">
+    <delete dir="${seppuku.output.dir}"/>
+    <delete dir="${seppuku.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.seppuku" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.seppuku" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
