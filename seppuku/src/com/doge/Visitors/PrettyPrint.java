@@ -6,9 +6,7 @@ import com.doge.types.*;
 import java.util.ArrayList;
 
 /**
- * Pretty printing which prints the AST out as the code it was before parsing.7
- *
- * TopNode and PrintFunction is still node included.
+ * Pretty printing which prints the AST out as the code it was before parsing.
  */
 public class PrettyPrint extends BaseASTVisitor<String> {
     private StringBuilder printer;
@@ -21,9 +19,9 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     @Override
     public String VisitAssignmentNode(AssignmentNode node){
 
-        printer.append(node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";\n");
-        //return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";\n";
-        return null;
+        //printer.append(node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";\n");
+        return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";\n";
+        //return null;
     }
 
     @Override
@@ -67,7 +65,6 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         for(BaseASTNode stmt : statements){
             body.append(visit(stmt) + "\n");
         }
-
         return body.toString();
     }
 
@@ -104,10 +101,14 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         else
             printer.append("; ");
         if (node.getCondition() != null)
-            printer.append(visit(node.getCondition()) + "; ");
+            printer.append(visit(node.getCondition()));
+        printer.append("; ");
         if (node.getUpdate() != null)
             printer.append(visit(node.getUpdate()));
-        printer.append(") {\n" + statementBody(node.getBody().getChildren()) + "}\n");
+        printer.append(") {\n");
+        printer.append(statementBody(node.getBody().getChildren()));
+        printer.append("}\n");
+
         return null;
     }
 
