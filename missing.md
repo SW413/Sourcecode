@@ -2,8 +2,8 @@ Missing stuff
 =============
                 
 - [ ] **Pretty Print**
-  1. Needs to be updated, perhaps rewritten (would be a good task that resembles code generation)
-  2. Implement a mechanism that uses the pretty print output on n run throughs to verify that no information is lost. 
+  1. [ ] Needs to be updated, perhaps rewritten (would be a good task that resembles code generation)
+  2. [ ] Implement a mechanism that uses the pretty print output on n run throughs to verify that no information is lost. 
 - [ ] **Importing files**     
   1. It should be possible to insert a given import files containing only function declarations.
   2. Figure out what kind of URI should be used e.g. relative or absolute.
