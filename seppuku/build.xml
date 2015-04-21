@@ -59,45 +59,6 @@
     <exclude name="**/?*.aj"/>
   </patternset>
   
-  <!-- JDK definitions -->
-  
-  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
-  <path id="jdk.classpath.1.8">
-    <fileset dir="${jdk.home.1.8}">
-      <include name="lib/ant-javafx.jar"/>
-      <include name="lib/dt.jar"/>
-      <include name="lib/javafx-mx.jar"/>
-      <include name="lib/jconsole.jar"/>
-      <include name="lib/packager.jar"/>
-      <include name="lib/sa-jdi.jar"/>
-      <include name="lib/tools.jar"/>
-      <include name="jre/lib/charsets.jar"/>
-      <include name="jre/lib/deploy.jar"/>
-      <include name="jre/lib/javaws.jar"/>
-      <include name="jre/lib/jce.jar"/>
-      <include name="jre/lib/jfr.jar"/>
-      <include name="jre/lib/jfxswt.jar"/>
-      <include name="jre/lib/jsse.jar"/>
-      <include name="jre/lib/management-agent.jar"/>
-      <include name="jre/lib/plugin.jar"/>
-      <include name="jre/lib/resources.jar"/>
-      <include name="jre/lib/rt.jar"/>
-      <include name="jre/lib/ext/cldrdata.jar"/>
-      <include name="jre/lib/ext/dnsns.jar"/>
-      <include name="jre/lib/ext/jfxrt.jar"/>
-      <include name="jre/lib/ext/localedata.jar"/>
-      <include name="jre/lib/ext/nashorn.jar"/>
-      <include name="jre/lib/ext/sunec.jar"/>
-      <include name="jre/lib/ext/sunjce_provider.jar"/>
-      <include name="jre/lib/ext/sunpkcs11.jar"/>
-      <include name="jre/lib/ext/zipfs.jar"/>
-    </fileset>
-  </path>
-  
-  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
-  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
-  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  
   <!-- Modules -->
   
   
@@ -106,9 +67,6 @@
   <dirname property="module.seppuku.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.seppuku" value="${jdk.home.1.8}"/>
-  <property name="module.jdk.bin.seppuku" value="${jdk.bin.1.8}"/>
-  <property name="module.jdk.classpath.seppuku" value="jdk.classpath.1.8"/>
   
   <property name="compiler.args.seppuku" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
   
@@ -120,7 +78,6 @@
   </path>
   
   <path id="seppuku.module.production.classpath">
-    <path refid="${module.jdk.classpath.seppuku}"/>
     <pathelement location="${basedir}/antlr-4.5-complete.jar"/>
   </path>
   
@@ -130,7 +87,6 @@
   </path>
   
   <path id="seppuku.module.classpath">
-    <path refid="${module.jdk.classpath.seppuku}"/>
     <pathelement location="${seppuku.output.dir}"/>
     <pathelement location="${basedir}/antlr-4.5-complete.jar"/>
   </path>
@@ -161,7 +117,7 @@
   
   <target name="compile.module.seppuku.production" description="Compile module seppuku; production classes">
     <mkdir dir="${seppuku.output.dir}"/>
-    <javac destdir="${seppuku.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.seppuku}/javac">
+    <javac destdir="${seppuku.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
       <compilerarg line="${compiler.args.seppuku}"/>
       <bootclasspath refid="seppuku.module.bootclasspath"/>
       <classpath refid="seppuku.module.production.classpath"/>
