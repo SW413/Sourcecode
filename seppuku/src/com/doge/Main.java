@@ -76,7 +76,7 @@ public class Main {
                 StringBuilder output = new StringBuilder();
                 abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
                 try {
-                    File outputSourcecode = new File(System.getProperty("user.dir")+ "/codeout/code.c");
+                    File outputSourcecode = new File(FindPath() + "/codeout/code.c");
                     if(!outputSourcecode.exists()) {
                         if (!outputSourcecode.getParentFile().exists())
                             outputSourcecode.getParentFile().mkdirs();
@@ -102,4 +102,22 @@ public class Main {
             System.exit(1);
         }
     }
+
+    public static String FindPath() {
+        String tmp = System.getProperty("user.dir") + "\\hello\\world";
+        String[] need = tmp.split("\\\\");
+
+        if(need.length == 1) need = tmp.split("\\/\\/");
+
+        int i = 0;
+        int cnt = 0;
+
+        while (!need[i].contains("seppuku")) {
+            cnt += need[i].length() + 1;
+            i++;
+        }
+        cnt += 8;
+        return tmp.substring(0,cnt);
+    }
+
 }
