@@ -31,7 +31,7 @@ print("FibR");
 for(int i = 0; i < 12; i ++){
     print(fibR(i));
 }
-
+fibI(i);
 print("FibI");
 for(int i = 0; i < 12; i ++){
     print(fibI(i));
