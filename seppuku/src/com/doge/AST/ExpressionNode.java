@@ -45,6 +45,11 @@ public class ExpressionNode extends StatementNode {
 
     @Override
     public String toString() {
+        if(operatorType == null && rValue ==  null) {
+            // This must be a parenthesis
+            return lValue.toString();
+        }
+
         return (lValue != null ? " " + lValue.toString() : "") + " " + operatorType.toString()+ " " + (rValue != null ? rValue.toString() + " " : "") ;
     }
 }
