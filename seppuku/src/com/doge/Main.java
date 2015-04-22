@@ -79,8 +79,13 @@ public class Main {
             if (errors.size() == 0){
                 StringBuilder output = new StringBuilder();
                 abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
-                File outputSourcecode = new File("code.c");
                 try {
+                    File outputSourcecode = new File("../../../codeout/code.c");
+                    if(!outputSourcecode.exists()) {
+                        if (!outputSourcecode.getParentFile().exists())
+                            outputSourcecode.getParentFile().mkdirs();
+                        outputSourcecode.createNewFile();
+                    }
                     FileWriter fileWriter = new FileWriter(outputSourcecode.getAbsoluteFile());
                     Writer writer = new BufferedWriter(fileWriter);
                     writer.append(output);
@@ -88,14 +93,17 @@ public class Main {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                System.exit(0);
 
+            } else  {
+                System.exit(1);
             }
-            System.out.println("SUT MIN PIK JEG VIL HA' ET BREAKPOINT!");
         } else {
             System.out.println(String.format("%1$s%3$d syntax %4$s...%2$s Please resolve and attempt recompile",
                     ANSI_RED, ANSI_RESET,
                     parser.getNumberOfSyntaxErrors(),
                     parser.getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
+            System.exit(1);
         }
     }
 }
