@@ -76,7 +76,7 @@ public class Main {
                 StringBuilder output = new StringBuilder();
                 abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
                 try {
-                    File outputSourcecode = new File("../../../codeout/code.c");
+                    File outputSourcecode = new File("../../../" + "/codeout/code.c");
                     if(!outputSourcecode.exists()) {
                         if (!outputSourcecode.getParentFile().exists())
                             outputSourcecode.getParentFile().mkdirs();
