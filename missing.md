@@ -5,8 +5,8 @@ Missing stuff :shipit:
   1. Needs to be updated, perhaps rewritten (would be a good task that resembles code generation)
   2. Implement a mechanism that uses the pretty print output on n run throughs to verify that no information is lost. 
 - [ ] **Matrix size in declaration** :metal:
-  1. Change grammar.
-  2. Implement in ast, and other visitors.
+  - [x] Change grammar.
+  - [ ] Implement in ast, and other visitors.
   3. Write tests.
 - [ ] **Importing files**     
   1. It should be possible to insert a given import files containing only function declarations.

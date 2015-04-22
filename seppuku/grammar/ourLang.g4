@@ -95,7 +95,8 @@ collectionassignment
 	
 declaration
     : valueType ID '=' expression                       #primitiveDecl
-    | complexdatatype ID '=' expression                 #complexDecl
+    | complexdatatype ID '=' expression                 #complexDecl  
+    | complexdatatype '[' entranceCoordinate ']' ID     #specialComplexDecl
     ; 
     
 valueType

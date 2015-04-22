@@ -264,6 +264,16 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new DeclarationNode(parentStack.peek(), var, expr, ctx.start.getLine());
     }
 
+    @Override
+    public BaseASTNode visitSpecialComplexDecl(ourLangParser.SpecialComplexDeclContext ctx) {
+        Variable complex = new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
+        complex.setComplex(true);
+        CollectionCoordinateNode sizeNode = (CollectionCoordinateNode) visit(ctx.entranceCoordinate());
+        ExpressionNode[] size = {sizeNode.getCoordinates()[0], sizeNode.getCoordinates()[1]};
+        complex.setSize(size);
+        return new DeclarationNode(parentStack.peek(), complex, null, ctx.start.getLine());
+    }
+
     /**
      * Generates a {@link com.doge.AST.CollectionCoordinateNode} with the coordinates to a complex datatype variable.
      * The coordinates are represented as {@link com.doge.AST.ExpressionNode}s.

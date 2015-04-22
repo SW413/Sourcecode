@@ -47,10 +47,12 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitDeclarationNode(DeclarationNode node) {
-        TypeChecker.CombineValueTypes(
-                node.getVariable(),
-                visit(node.getExpression()),
-                errors, node.getLineNumber());
+        if (node.getExpression() != null) {
+            TypeChecker.CombineValueTypes(
+                    node.getVariable(),
+                    visit(node.getExpression()),
+                    errors, node.getLineNumber());
+        }
         return null;
     }
 

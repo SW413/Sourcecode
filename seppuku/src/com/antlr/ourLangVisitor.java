@@ -217,6 +217,13 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComplexDecl(ourLangParser.ComplexDeclContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code specialComplexDecl}
+	 * labeled alternative in {@link ourLangParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpecialComplexDecl(ourLangParser.SpecialComplexDeclContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code integer}
 	 * labeled alternative in {@link ourLangParser#valueType}.
 	 * @param ctx the parse tree
