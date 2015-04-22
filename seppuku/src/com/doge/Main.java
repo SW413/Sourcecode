@@ -109,7 +109,7 @@ public class Main {
 
         System.out.println(tmp);
 
-        if(need.length == 1) {
+        if(tmp.substring(0,1) == "/") {
             System.out.println("A UNIX SYSTEM I KNOW THIS");
 
             need = tmp.split("\\/\\/");
@@ -119,6 +119,7 @@ public class Main {
         int cnt = 0;
 
         while (!need[i].contains("Sourcecode")) {
+            System.out.println(tmp.substring(0,cnt));
             cnt += need[i].length() + 1;
             i++;
         }
