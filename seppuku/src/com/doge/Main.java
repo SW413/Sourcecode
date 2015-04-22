@@ -76,7 +76,7 @@ public class Main {
                 StringBuilder output = new StringBuilder();
                 abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
                 try {
-                    File outputSourcecode = new File(FindPath() + "/codeout/code.c");
+                    File outputSourcecode = new File("../../../" + "/codeout/code.c");
                     if(!outputSourcecode.exists()) {
                         if (!outputSourcecode.getParentFile().exists())
                             outputSourcecode.getParentFile().mkdirs();
@@ -102,31 +102,4 @@ public class Main {
             System.exit(1);
         }
     }
-
-    public static String FindPath() {
-        String tmp = System.getProperty("user.dir");
-        String[] need = tmp.split("\\\\");
-
-        System.out.println(tmp);
-
-        if(tmp.substring(0,1) == "/") {
-            System.out.println("A UNIX SYSTEM I KNOW THIS");
-
-            need = tmp.split("\\/\\/");
-        }
-
-        int i = 0;
-        int cnt = 0;
-
-        while (!need[i].contains("Sourcecode")) {
-            System.out.println(tmp.substring(0,cnt));
-            cnt += need[i].length() + 1;
-            i++;
-        }
-        cnt += 19;
-
-        System.out.println(tmp.substring(0,cnt));
-        return tmp.substring(0,cnt);
-    }
-
 }
