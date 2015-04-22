@@ -107,6 +107,8 @@ public class Main {
         String tmp = System.getProperty("user.dir") + "\\hello\\world";
         String[] need = tmp.split("\\\\");
 
+        System.out.println(tmp);
+
         if(need.length == 1) need = tmp.split("\\/\\/");
 
         int i = 0;
