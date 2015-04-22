@@ -21,7 +21,7 @@ Missing stuff :shipit:
   2. How should the OpenCL-C approach be?
   3. Implement it with excessive use of null checks among others. Remember to set the size/dimensions in the declaration variable! 
   4. Test, test, test. This element in the language is key, and should not be error prone.
-- [ ] **Internal functions** :blowfish:    
+- [x] **Internal functions** :blowfish:    
   1. Clean up the already existing rows and cols. Should be cleaner so further implementations are easier. 
 - [ ] **stdlib.hlib** :bikini:
   1. *makeMatrix(n, m, value)*
