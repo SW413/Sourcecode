@@ -18,12 +18,21 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitTopNode(TopNode node) {
+        if (node.getImports() != null){
+            //TODO Do this later, not implemented yet
+        }
         for (FunctionDclNode funcDcl : node.getFunctionDeclarations()){
             printer.append(visit(funcDcl) + "\n");
         }
         for (BaseASTNode stmt : node.getStatements().getChildren()){
             printer.append(visit(stmt) + "\n");
         }
+        return null;
+    }
+
+    @Override
+    public String VisitImportNode(ImportNode node) {
+       //TODO Do this later, not implemented yet
         return null;
     }
 
@@ -103,17 +112,19 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         return visit(node.getLValue()) + node.getOperatorType();
     }
 
+
+
     @Override
     public String VisitMatrixValNode(MatrixValNode node) {
         StringBuilder matrix = new StringBuilder();
-        matrix.append("{ ");
+        matrix.append("[ ");
         int i = 1;
         for (VectorValNode row : node.getRows()) {
             matrix.append(visit(row));
             if (i++ != node.getRows().size())
-                matrix.append(", ");
+                matrix.append("; ");
         }
-        matrix.append(" }");
+        matrix.append(" ]");
         return matrix.toString();
     }
 
@@ -131,7 +142,8 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitVectorValNode(VectorValNode node) {
-        return "{ " + commaSepExprList(node.getValues()) + " }";
+        if (node.getParent() instanceof MatrixValNode){ return commaSepExprList(node.getValues());}
+        else { return  "[" + commaSepExprList(node.getValues()) + "]"; }
     }
 
     @Override
@@ -153,8 +165,11 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     public String VisitVariableExpressionNode(VariableExpressionNode node) {
         if (node.getVariable().isFunction()) {
             return functionWithArgs(node.getVariable());
+        } else if (node.getVariable().isComplex()) {
+            return node.getVariable().getId() + visit(node.getVariable().getEntrance());
+        } else {
+            return node.getVariable().getId();
         }
-        return node.getVariable().getId();
     }
 
     @Override
@@ -226,6 +241,13 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         }
         funcCall.append(node.getVariable().getId() + "(" + args.toString() + ");");
         return funcCall.toString();
+    }
+    @Override
+    public String VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
+        StringBuilder coordinates = new StringBuilder();
+        System.out.print("I AM RIGHT HERE!");
+        coordinates.append("[" + node.getCoordinates()[0].toString() + "," + node.getCoordinates()[1].toString() + "]");
+        return coordinates.toString();
     }
 
 }
