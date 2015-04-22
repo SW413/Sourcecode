@@ -104,12 +104,16 @@ public class Main {
     }
 
     public static String FindPath() {
-        String tmp = System.getProperty("user.dir") + "\\hello\\world";
+        String tmp = System.getProperty("user.dir");
         String[] need = tmp.split("\\\\");
 
         System.out.println(tmp);
 
-        if(need.length == 1) need = tmp.split("\\/\\/");
+        if(need.length == 1) {
+            System.out.println("A UNIX SYSTEM I KNOW THIS");
+
+            need = tmp.split("\\/\\/");
+        }
 
         int i = 0;
         int cnt = 0;
@@ -119,6 +123,8 @@ public class Main {
             i++;
         }
         cnt += 8;
+
+        System.out.println(tmp.substring(0,cnt));
         return tmp.substring(0,cnt);
     }
 
