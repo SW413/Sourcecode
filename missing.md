@@ -6,8 +6,8 @@ Missing stuff :shipit:
   2. Implement a mechanism that uses the pretty print output on n run throughs to verify that no information is lost. 
 - [ ] **Matrix size in declaration** :metal:
   - [x] Change grammar.
-  - [ ] Implement in ast, and other visitors.
-  3. Write tests.
+  - [x] Implement in ast, and other visitors.
+  - [ ] Write tests.
 - [ ] **Importing files**     
   1. It should be possible to insert a given import files containing only function declarations.
   2. Figure out what kind of URI should be used e.g. relative or absolute.
