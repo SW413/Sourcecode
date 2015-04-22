@@ -118,11 +118,11 @@ public class Main {
         int i = 0;
         int cnt = 0;
 
-        while (!need[i].contains("seppuku")) {
+        while (!need[i].contains("Sourcecode")) {
             cnt += need[i].length() + 1;
             i++;
         }
-        cnt += 8;
+        cnt += 19;
 
         System.out.println(tmp.substring(0,cnt));
         return tmp.substring(0,cnt);
