@@ -28,7 +28,7 @@ print(neo);
 
 if(a == 2){
     baz();
-    a = 2;
+    a = rows(neo);
 }
 
 

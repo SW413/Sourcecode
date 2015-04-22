@@ -9,6 +9,7 @@ import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.ScopeType;
 import com.doge.types.TypeParser;
+import com.doge.types.ValueType;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitFunctionCallNode(FunctionCallNode node) {
         if (node.getVariable().getId() != "print")
-            CheckIfUndeclared(node.getVariable(), node);
+            checkIfUndeclared(node.getVariable(), node);
         else if (node.getVariable().getId() == "print")
             if (node.getVariable().getPrintArguments() != null)
                 for(Object arg : node.getVariable().getPrintArguments()) {
@@ -145,7 +146,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitAssignmentNode(AssignmentNode node) {
-        CheckIfUndeclared(node.getVariable(), node);
+        checkIfUndeclared(node.getVariable(), node);
         return node.getExpression() != null ? visit(node.getExpression()) : null;
     }
 
@@ -161,56 +162,47 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
-        CheckIfUndeclared(node.getVariable(), node);
+        checkIfUndeclared(node.getVariable(), node);
         return null;
     }
 
     @Override
     public Void VisitConstantExpressionNode(ConstantExpressionNode node) {
-        //Change value to constant if rows or cols function call... bitch
-        if (node.getValue().getClass() == Variable.class){
-            Variable tmp = (Variable) node.getValue();
-            if (tmp.getArguments() == null || tmp.getArguments().size() != 1){
-                errors.add(new ArgumentsError(tmp, 1, 0, node.getLineNumber()));
-            }else {
-                Variable complexVar = symbolTable.currentScope()
-                        .resolve(((VariableExpressionNode) tmp.getArgument(0)).getVariable().getId()).getVariable();
-                switch (tmp.getId()) {
-                    case "rows":
-                        if (complexVar.getSize() != null && complexVar.getSize().length > 0)
-                            node.setValue(Integer.toString(complexVar.getSize()[0]));
-                        break;
-                    case "cols":
-                        if (complexVar.getSize() != null && complexVar.getSize().length > 1)
-                            node.setValue(Integer.toString(complexVar.getSize()[1]));
-                        break;
-                }
-            }
-        }
-
         node.setValueType(TypeParser.ConstantType(node.getValue()));
         return null;
     }
 
-    public Void CheckIfUndeclared(Variable variable, StatementNode node) {
-        Symbol tmpSymbol = symbolTable.currentScope().resolve(variable.getId());
-        if (tmpSymbol != null) {
-            if (variable.getValueType() == null)
-                variable.setValueType(tmpSymbol.getType());
-            tmpSymbol.setUsed(true);
-            node.setScope(symbolTable.currentScope());
-            node.setValueType(tmpSymbol.getType());
-            symbolTable.currentScope().define(tmpSymbol);
-            if (variable.isFunction()) {
-                for (ExpressionNode arg : variable.getArguments()) {
-                    visit(arg);
-                }
+    private Void checkIfUndeclared(Variable variable, StatementNode node) {
+        if (!isLanguageFunc(variable.getId())) {
+            Symbol tmpSymbol = symbolTable.currentScope().resolve(variable.getId());
+            if (tmpSymbol == null) {
+                errors.add(new UnDeclaredError(variable, symbolTable.currentScope(), node.getLineNumber()));
+                symbolTable.currentScope().define(variable);
+                return null;
+            } else {
+                if (variable.getValueType() == null)
+                    variable.setValueType(tmpSymbol.getType());
+                tmpSymbol.setUsed(true);
+                variable.setComplex(tmpSymbol.getVariable().isComplex());
+                node.setScope(symbolTable.currentScope());
+                node.setValueType(tmpSymbol.getType());
+                symbolTable.currentScope().define(tmpSymbol);
             }
-        } else {
-            errors.add(new UnDeclaredError(variable, symbolTable.currentScope(), node.getLineNumber()));
-            symbolTable.currentScope().define(variable);
         }
-
+        if (variable.isFunction()) {
+            for (ExpressionNode arg : variable.getArguments()) {
+                visit(arg);
+            }
+        }
         return null;
+    }
+
+    private boolean isLanguageFunc(String id){
+        switch (id){
+            case "rows":case "cols":
+                return true;
+            default:
+                return false;
+        }
     }
 }
