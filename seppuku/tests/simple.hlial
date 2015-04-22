@@ -18,7 +18,7 @@ matrix<int> neol = [1, 1, 1;
                    2, 2, 2;
                    3, 3, 3];
 
-matrix<int>[100] trinity;
+matrix<int>[100,1] trinity;
 
 print(trinity);
 
