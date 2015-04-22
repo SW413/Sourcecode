@@ -136,6 +136,10 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
             node.setScope(symbolTable.currentScope());
             symbolTable.currentScope().define(node.getVariable(), node.getLineNumber());
         }
+        if (node.getVariable().isComplex() && node.getVariable().getDynamicSize() != null){
+            visit(node.getVariable().getDynamicSize()[0]);
+            visit(node.getVariable().getDynamicSize()[1]);
+        }
         return super.VisitDeclarationNode(node);
     }
 

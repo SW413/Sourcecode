@@ -1,6 +1,7 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
+import com.doge.ErrorHandling.ComplexDatatypeError;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.ErrorHandling.ArgumentsError;
 import com.doge.checking.Symbol;
@@ -8,6 +9,7 @@ import com.doge.checking.SymbolTable;
 import com.doge.types.TypeChecker;
 import com.doge.types.ValueType;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -52,6 +54,17 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
                     node.getVariable(),
                     visit(node.getExpression()),
                     errors, node.getLineNumber());
+        }else{
+            TypeChecker.CombineValueTypes(visit(node.getVariable().getDynamicSize()[0]),
+                    new Variable(ValueType.INT, ""),
+                    errors, node.getLineNumber());
+            TypeChecker.CombineValueTypes(visit(node.getVariable().getDynamicSize()[1]),
+                    new Variable(ValueType.INT, ""),
+                    errors, node.getLineNumber());
+            if (TypeChecker.MatrixOrVector(node.getVariable()) == ValueType.MATRIX &&
+                    visit(node.getVariable().getDynamicSize()[1]).getId().equals("1")){
+                errors.add(new ComplexDatatypeError(node.getVariable(), node.getScope(), node.getLineNumber()));
+            }
         }
         return null;
     }
