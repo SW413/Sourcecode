@@ -190,9 +190,9 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     @Override
     public String VisitFunctionCallNode(FunctionCallNode node) {
         StringBuilder funcCall = new StringBuilder();
-        if (node.getVariable().getId() == "print") {
-            StringBuilder args = new StringBuilder();
+        StringBuilder args = new StringBuilder();
 
+        if (node.getVariable().getId() == "print") {
             if (!node.getVariable().getPrintArguments().isEmpty()){
                 for (int i = 0; i < node.getVariable().getPrintArguments().size(); i++) {
                     Object arg = node.getVariable().getPrintArguments().get(i);
@@ -208,11 +208,23 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
 
                 }
-                funcCall.append("print(" + args + ")");
+            }
+        } else {
+            if (!node.getVariable().getArguments().isEmpty()) {
+                for (int i = 0; i < node.getVariable().getArguments().size(); i++) {
+                    Object arg = node.getVariable().getArguments().get(i);
+                        if (arg.getClass().getSuperclass() == ExpressionNode.class) {
+                            args.append(visit((ExpressionNode) arg));
+                        } else {
+                            args.append(arg);
+                        }
+                    if (!(i == (node.getVariable().getArguments().size() - 1))) {
+                        args.append(", ");
+                    }
+                }
             }
         }
-
-        funcCall.append(";");
+        funcCall.append(node.getVariable().getId() + "(" + args.toString() + ");");
         return funcCall.toString();
     }
 
