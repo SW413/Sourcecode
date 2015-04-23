@@ -23,15 +23,20 @@ public abstract class LanguageError implements Comparable<LanguageError> {
     }
     static public void PrintAllErrors(ArrayList<LanguageError> errorList, ErrorType typeOfErrors) {
         Collections.sort(errorList);
+        String out = "";
         for (LanguageError err : errorList) {
             if (typeOfErrors == null) {
-                System.out.println(err);
+                if(!out.contains(err.toString()))
+                    out += err + "\n";
             }
             else {
-                if (err.errorType == typeOfErrors)
-                    System.out.println(err);
+                if (err.errorType == typeOfErrors) {
+                    if(!out.contains(err.toString()))
+                        out += err + "\n";
+                }
             }
         }
+        System.out.println(out);
     }
 
     @Override

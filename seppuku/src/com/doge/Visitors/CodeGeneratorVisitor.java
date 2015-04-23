@@ -165,7 +165,12 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
-        return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+        if(node.getOperatorType() == null) {
+            // Must be paren
+            return "(" + visit(node.getLValue()) + ")";
+        } else {
+            return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+        }
     }
 
     @Override

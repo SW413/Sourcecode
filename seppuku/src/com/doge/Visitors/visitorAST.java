@@ -615,4 +615,25 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
                 (ExpressionNode) visit(ctx.conditionalExpression(1)),
                 ctx.start.getLine());
     }
+
+    @Override
+    public BaseASTNode visitMultiConExpr(ourLangParser.MultiConExprContext ctx) {
+        return new ConditionalExpressionNode(
+                null,
+                (ExpressionNode) visit(ctx.conditionalExpression(0)),
+                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                (ExpressionNode) visit(ctx.conditionalExpression(1)),
+                ctx.start.getLine());
+    }
+
+    @Override
+    public BaseASTNode visitParenConExpr(ourLangParser.ParenConExprContext ctx) {
+        return new ConditionalExpressionNode(null, (ConditionalExpressionNode) visit(ctx.conditionalExpression()), null, null, ctx.start.getLine());
+    }
+
+
+    @Override
+    public BaseASTNode visitBoolValConExpr(ourLangParser.BoolValConExprContext ctx) {
+        return new ConstantExpressionNode(null, Boolean.getBoolean(ctx.BOOLVAL().getText()));
+    }
 }
