@@ -14,15 +14,17 @@ int foo(int a, int b){
 
 int a = foo(2, 2) - bar(55);
 
-matrix<int> neol = [1, 1, 1;
+matrix<int> neo = [1, 1, 1;
                    2, 2, 2;
                    3, 3, 3];
 
 matrix<int>[100] trinity;
 
-print(trinity);
+vector<int>[100] smith;
 
-print(neol);
+print(trinity, smith);
+
+print(neo);
 
 if(a == 2){
     baz();

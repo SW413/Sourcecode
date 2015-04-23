@@ -266,12 +266,19 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
     @Override
     public BaseASTNode visitSpecialComplexDecl(ourLangParser.SpecialComplexDeclContext ctx) {
+
         Variable complex = new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
         complex.setComplex(true);
         CollectionCoordinateNode sizeNode = (CollectionCoordinateNode) visit(ctx.entranceCoordinate());
-        ExpressionNode[] size = {sizeNode.getCoordinates()[0], sizeNode.getCoordinates()[1]};
-        complex.setSize(size);
+        if(sizeNode.getCoordinates()[1] != null){
+            ExpressionNode[] size = {sizeNode.getCoordinates()[0], sizeNode.getCoordinates()[1]};
+            complex.setSize(size);
+        }else {
+            ExpressionNode[] size = {sizeNode.getCoordinates()[0], new ConstantExpressionNode(null, "1", ctx.start.getLine())};
+            complex.setSize(size);
+        }
         return new DeclarationNode(parentStack.peek(), complex, null, ctx.start.getLine());
+
     }
 
     /**
@@ -283,9 +290,10 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
      */
     @Override
     public BaseASTNode visitEntranceCoordinate(ourLangParser.EntranceCoordinateContext ctx) {
+
         return new CollectionCoordinateNode(null,
                 (ExpressionNode) visit(ctx.value(0)),
-                (ExpressionNode) visit(ctx.value(1)));
+                ctx.value(1) != null ? (ExpressionNode) visit(ctx.value(1)) : null);
     }
 
     @Override

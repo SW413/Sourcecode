@@ -11,6 +11,16 @@ public abstract class LanguageError implements Comparable<LanguageError> {
     protected ErrorType errorType;
     protected int lineNum;
 
+    static public int NumErrors(ArrayList<LanguageError> errorList, ErrorType typeOfErrors){
+        int i = 0;
+        if (typeOfErrors == null)
+            i = errorList.size();
+        for (LanguageError err : errorList) {
+            if (err.errorType == typeOfErrors)
+                i++;
+        }
+        return i;
+    }
     static public void PrintAllErrors(ArrayList<LanguageError> errorList, ErrorType typeOfErrors) {
         Collections.sort(errorList);
         for (LanguageError err : errorList) {

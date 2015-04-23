@@ -1,1 +1,1 @@
-git checkout HEAD~1 seppuku/.idea/workspace.xml
+git checkout origin/Workspace seppuku/.idea/workspace.xml

@@ -72,7 +72,7 @@ public class Main {
             abstractSyntaxTree.accept(new PrettyPrint());
             System.out.println();*/
 
-            if (errors.size() == 0){
+            if (LanguageError.NumErrors(errors, ErrorType.ERROR) == 0){
                 StringBuilder output = new StringBuilder();
                 abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
                 try {
