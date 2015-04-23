@@ -173,11 +173,10 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     public String VisitVariableExpressionNode(VariableExpressionNode node) {
         if (node.getVariable().isFunction()) {
             return functionWithArgs(node.getVariable());
-        } else if (node.getVariable().isComplex()) {
+        } else if (node.getVariable().isComplex() && node.getVariable().getEntrance() != null) {
             return node.getVariable().getId() + visit(node.getVariable().getEntrance());
-        } else {
-            return node.getVariable().getId();
         }
+        return node.getVariable().getId();
     }
 
 
