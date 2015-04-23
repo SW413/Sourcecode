@@ -37,8 +37,12 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     }
 
     @Override
-    public String VisitAssignmentNode(AssignmentNode node){
-        return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
+    public String VisitAssignmentNode(AssignmentNode node) {
+        if (node.getVariable().isComplex()) {
+            return node.getVariable().getId() + visit(node.getVariable().getEntrance()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
+        } else {
+            return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
+        }
     }
 
     @Override
@@ -172,6 +176,7 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         }
     }
 
+
     @Override
     public String VisitConstantExpressionNode(ConstantExpressionNode node) {
         return node.getValue().toString();
@@ -181,13 +186,14 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     public String VisitFunctionDclNode(FunctionDclNode node) {
         Variable func = node.getVariable();
         StringBuilder funcDcl = new StringBuilder();
-        if (func.isFunction()) {
-            funcDcl.append(func.getValueType() + " " + func.getId() + "(");
-            for (int i = 0; i < node.getParameterCount() - 1; i++) {
-                funcDcl.append(func.getValueType() + " " + func.getId());
-            }
-            funcDcl.append(node.getParameter(node.getParameterCount() - 1).getValueType() + " " + node.getParameter(node.getParameterCount() - 1).getId());
+        funcDcl.append(func.getValueType() + " " + func.getId() + "(");
+
+        for (int i = 0; i < node.getParameterCount(); i++) {
+            funcDcl.append(node.getParameter(i).getValueType() + " " + node.getParameter(i).getId());
+            if(i != node.getParameterCount()-1)
+                funcDcl.append(", ");
         }
+
         funcDcl.append(") {\n");
 
         if (node.getFunctionBody() != null)
@@ -245,7 +251,7 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     @Override
     public String VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
         StringBuilder coordinates = new StringBuilder();
-        coordinates.append("[" + node.getCoordinates()[0].toString() + "," + node.getCoordinates()[1].toString() + "]");
+        coordinates.append("[" + visit(node.getCoordinates()[0]) + "," + visit(node.getCoordinates()[1]) + "]");
         return coordinates.toString();
     }
 
