@@ -195,4 +195,26 @@ public class TypeParser {
 
         return ValueType.INVALID;
     }
+
+    public static boolean isComplexValueType(ValueType type) {
+        switch (type) {
+            case MATRIX_INT16:
+            case MATRIX_INT:
+            case MATRIX_INT64:
+            case MATRIX_FLOAT16:
+            case MATRIX_FLOAT:
+            case MATRIX_FLOAT64:
+            case MATRIX_BOOLEAN:
+            case VECTOR_INT16:
+            case VECTOR_INT:
+            case VECTOR_INT64:
+            case VECTOR_FLOAT16:
+            case VECTOR_FLOAT:
+            case VECTOR_FLOAT64:
+            case VECTOR_BOOLEAN:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
