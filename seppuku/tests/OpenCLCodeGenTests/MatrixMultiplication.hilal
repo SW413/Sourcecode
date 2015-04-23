@@ -15,6 +15,19 @@ matrix<int> matrixMultiplication(matrix<int> a, matrix<int> b) {
      */
 
 
+    /* Outer loop for each row (up-down) */
+    for(int i = 0; i < rows(res); i++) {
+        /* Inner loop for each column,
+         * The first values iterated over are the first ones in the first row
+         * This make the cache use more efficient.
+         */
+        for(int j = 0; j < cols(res); j++) {
+            for(int k = 0; k < ; k++) {
+                
+            }
+        }
+    }
+
 
     return res;
 }
