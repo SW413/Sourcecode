@@ -421,6 +421,8 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         }
 
         Variable func = new Variable(null, ctx.ID().getText(), arguments);
+        if(func.getId().equals("rows") || func.getId().equals("cols"))
+            func.setValueType(ValueType.INT);
         if (parentStack.peek().getClass() == VariableExpressionNode.class){
             parentStack.pop();
             VariableExpressionNode varExpr =  new VariableExpressionNode(null, func);
