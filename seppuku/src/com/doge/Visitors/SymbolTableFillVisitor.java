@@ -198,6 +198,9 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
             for (ExpressionNode arg : variable.getArguments()) {
                 visit(arg);
             }
+        }else{
+            if(variable.getId().equals("rows") || variable.getId().equals("cols"))
+                node.setValueType(ValueType.INT);
         }
         return null;
     }
