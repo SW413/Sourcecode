@@ -1,0 +1,20 @@
+/*
+ * Matrixmultiplication: res[i, j] is given by multiplying each element in the row of i with the column of j.
+ */
+
+matrix<int> matrixMultiplication(matrix<int> a, matrix<int> b) {
+    /* If a is of dim: n x m, and b is of dim: m x p, then a.m and b.m must be the same,
+     * and the result is of dim n x p
+     */
+
+    /* This is zero initialized */
+    matrix<int>[rows(a),cols(b)] res;
+
+    /*
+     * Iterate over every part of the resulting array
+     */
+
+
+
+    return res;
+}

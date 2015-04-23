@@ -1,0 +1,56 @@
+
+/*
+ * The sum of two matrices is the sum for each corresponding index in both of the input matrices.
+ * So foreach index [i, j] in the result is the sum of [i, j] in each input.
+ */
+matrix<int> matrixSum(matrix<int> a, matrix<int> b) {
+    if(rows(a) != rows(b)) {
+        print("Error! Mismatch in matrix rows");
+    }
+
+    if(cols(a) != cols(b)) {
+        print("Error! Mismatch in matrix columns");
+    }
+
+    matrix<int>[rows(a),cols(a)] c; /* This is zero initialized */
+
+    /* Outer loop for each row (up-down) */
+    for(int i = 0; i < rows(a); i++) {
+        /* Inner loop for each column,
+         * The first values iterated over are the first ones in the first row
+         * This make the cache use more efficient.
+         */
+        for(int j = 0; j < cols(a); j++) {
+            c[i, j] = a[i, j] + b[i, j];
+        }
+    }
+
+    return c;
+}
+
+bool testMatrixSum() {
+    bool isSame = true;
+
+    matrix<int> a = [1, 2, 3;
+                     4, 5, 6];
+
+    matrix<int> b = [-1, -2, -3;
+                     -4, -5, -6];
+
+    matrix<int> expected = [0, 0, 0;
+                            0, 0, 0];
+
+    matrix<int> actual = matrixSum(a, b);
+
+    for(int i = 0; i < rows(a); i++) {
+        for(int j = 0; j < cols(a); j++) {
+            if(expected[i, j] != actual[i, j]) {
+                isSame = false;
+            }
+        }
+    }
+
+    return isSame;
+}
+
+print(testMatrixSum());
