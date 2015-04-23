@@ -17,26 +17,37 @@ matrix<int> matrixScale(matrix<int> a, int scale) {
     return res;
 }
 
-bool testMatrixScale() {
+bool compareMatrix(matrix<int> a, matrix<int> b) {
     bool isSame = true;
 
-    matrix<int> a = [1, 2, 3;
-                     4, 5, 6];
-
-    matrix<int> expected = [0, 0, 0;
-                            0, 0, 0];
-
-    matrix<int> actual = matrixScale(a, 0);
+    if(rows(a) != rows(b) || cols(a) != cols(b)) {
+        isSame = false;
+    }
 
     for(int i = 0; i < rows(a); i++) {
         for(int j = 0; j < cols(a); j++) {
-            if(expected[i, j] != actual[i, j]) {
+            if(a[i, j] != b[i, j]) {
                 isSame = false;
             }
         }
     }
 
     return isSame;
+}
+
+bool testMatrixScale() {
+
+    matrix<int> a = [1, 2, 3;
+                     4, 5, 6];
+
+    int scale = 0;
+
+    matrix<int> expected = [0, 0, 0;
+                            0, 0, 0];
+
+    matrix<int> actual = matrixScale(a, scale);
+
+    return compareMatrix(expected, actual);
 }
 
 print(testMatrixScale());

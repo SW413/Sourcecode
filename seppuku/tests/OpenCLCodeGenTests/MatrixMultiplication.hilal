@@ -1,11 +1,15 @@
 /*
- * Matrixmultiplication: res[i, j] is given by multiplying each element in the row of i with the column of j.
+ * Naïve matrixmultiplication: res[i, j] is given by multiplying each element in the row of i with the column of j.
  */
 
 matrix<int> matrixMultiplication(matrix<int> a, matrix<int> b) {
     /* If a is of dim: n x m, and b is of dim: m x p, then a.m and b.m must be the same,
      * and the result is of dim n x p
      */
+
+     if(cols(a) != rows(b) {
+        print("Error! incompatible matrices");
+     }
 
     /* This is zero initialized */
     matrix<int>[rows(a),cols(b)] res;
@@ -22,12 +26,46 @@ matrix<int> matrixMultiplication(matrix<int> a, matrix<int> b) {
          * This make the cache use more efficient.
          */
         for(int j = 0; j < cols(res); j++) {
-            for(int k = 0; k < ; k++) {
-                
+            for(int k = 0; k < cols(b); k++) {
+            /* this is the m mentioned in the topmost description,
+             * and the number of multiplications made for each index in the resulting matrix */
+                res[i, j] += a[i, k] * b[k, j];
             }
         }
     }
 
-
     return res;
+}
+
+bool compareMatrix(matrix<int> a, matrix<int> b) {
+    bool isSame = true;
+
+    if(rows(a) != rows(b) || cols(a) != cols(b)) {
+        isSame = false;
+    }
+
+    for(int i = 0; i < rows(a); i++) {
+        for(int j = 0; j < cols(a); j++) {
+            if(a[i, j] != b[i, j]) {
+                isSame = false;
+            }
+        }
+    }
+
+    return isSame;
+}
+
+bool testMatrixSum() {
+    matrix<int> a = [1, 2;
+                     3, 4];
+
+    matrix<int> b = [1, 2, 3;
+                     4, 5, 6];
+
+    matrix<int> expected = [5, 12, 15;
+                            19, 26, 33];
+
+    matrix<int> actual = matrixSum(a, b);
+
+    return compareMatrix(expected, actual);
 }

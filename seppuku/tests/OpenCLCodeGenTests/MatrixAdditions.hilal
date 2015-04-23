@@ -28,8 +28,25 @@ matrix<int> matrixSum(matrix<int> a, matrix<int> b) {
     return c;
 }
 
-bool testMatrixSum() {
+bool compareMatrix(matrix<int> a, matrix<int> b) {
     bool isSame = true;
+
+    if(rows(a) != rows(b) || cols(a) != cols(b)) {
+        isSame = false;
+    }
+
+    for(int i = 0; i < rows(a); i++) {
+        for(int j = 0; j < cols(a); j++) {
+            if(a[i, j] != b[i, j]) {
+                isSame = false;
+            }
+        }
+    }
+
+    return isSame;
+}
+
+bool testMatrixSum() {
 
     matrix<int> a = [1, 2, 3;
                      4, 5, 6];
@@ -42,15 +59,7 @@ bool testMatrixSum() {
 
     matrix<int> actual = matrixSum(a, b);
 
-    for(int i = 0; i < rows(a); i++) {
-        for(int j = 0; j < cols(a); j++) {
-            if(expected[i, j] != actual[i, j]) {
-                isSame = false;
-            }
-        }
-    }
-
-    return isSame;
+    return compareMatrix(expected, actual);
 }
 
 print(testMatrixSum());
