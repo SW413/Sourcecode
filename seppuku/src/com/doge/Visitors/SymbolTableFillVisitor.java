@@ -11,6 +11,7 @@ import com.doge.types.ScopeType;
 import com.doge.types.TypeParser;
 import com.doge.types.ValueType;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -49,8 +50,12 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         Variable func = symbolTable.currentScope().resolve(node.getVariable().getId()).getVariable();
         ArrayList<ExpressionNode> args = new ArrayList<ExpressionNode>();
         for (Variable variable : node.getParameters()) {
-            args.add(new VariableExpressionNode(null, variable));
-            symbolTable.currentScope().define(variable, node.getLineNumber());
+            Variable tmp = variable;
+            if (TypeParser.isComplexValueType(variable.getValueType()))
+                tmp.setComplex(true);
+            args.add(new VariableExpressionNode(null, tmp));
+
+            symbolTable.currentScope().define(tmp, node.getLineNumber());
         }
         func.setArguments(args);
         if (node.getFunctionBody() != null)
