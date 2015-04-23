@@ -23,9 +23,8 @@ controlblock
     ;
 
 loop
-    : WHILE '(' (conditionalExpression | BOOLVAL) ')' whileBlock=block      #whileLoop
+    : WHILE '(' conditionalExpression ')' whileBlock=block      #whileLoop
     | FOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' forBlock=block     #forLoop  
-    | PFOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' pforBlock=block     #pforLoop
     ;
 
 block
@@ -33,9 +32,12 @@ block
     ;
     
 conditionalExpression
-    : conditionalExpression '&&' conditionalExpression  #multiAndCondExpr
-    | conditionalExpression '||' conditionalExpression  #multiOrCondExpr
-    | expression conditionalOperator expression         #singleCondExpr
+    : conditionalExpression '&&' conditionalExpression                  #multiAndCondExpr
+    | conditionalExpression '||' conditionalExpression                  #multiOrCondExpr
+    | expression conditionalOperator expression                         #singleCondExpr
+    | conditionalExpression  ( '==' | '!=' ) conditionalExpression      #multiConExpr
+    | '(' conditionalExpression ')'                                     #parenConExpr
+    | BOOLVAL                                                           #BoolValConExpr
     ;
 
 functiondeclaration
@@ -95,7 +97,8 @@ collectionassignment
 	
 declaration
     : valueType ID '=' expression                       #primitiveDecl
-    | complexdatatype ID '=' expression                 #complexDecl
+    | complexdatatype ID '=' expression                 #complexDecl  
+    | complexdatatype '[' entranceCoordinate ']' ID     #specialComplexDecl
     ; 
     
 valueType

@@ -5,9 +5,9 @@ Missing stuff :shipit:
   1. Needs to be updated, perhaps rewritten (would be a good task that resembles code generation)
   2. Implement a mechanism that uses the pretty print output on n run throughs to verify that no information is lost. 
 - [ ] **Matrix size in declaration** :metal:
-  1. Change grammar.
-  2. Implement in ast, and other visitors.
-  3. Write tests.
+  - [x] Change grammar.
+  - [x] Implement in ast, and other visitors.
+  - [ ] Write tests.
 - [ ] **Importing files**     
   1. It should be possible to insert a given import files containing only function declarations.
   2. Figure out what kind of URI should be used e.g. relative or absolute.
@@ -21,7 +21,7 @@ Missing stuff :shipit:
   2. How should the OpenCL-C approach be?
   3. Implement it with excessive use of null checks among others. Remember to set the size/dimensions in the declaration variable! 
   4. Test, test, test. This element in the language is key, and should not be error prone.
-- [ ] **Internal functions** :blowfish:    
+- [x] **Internal functions** :blowfish:    
   1. Clean up the already existing rows and cols. Should be cleaner so further implementations are easier. 
 - [ ] **stdlib.hlib** :bikini:
   1. *makeMatrix(n, m, value)*

@@ -11,6 +11,28 @@ import java.util.ArrayList;
  */
 public class TypeChecker {
 
+    public static ValueType MatrixOrVector(Variable value){
+        switch (value.getValueType()){
+            case MATRIX_INT16:
+            case MATRIX_INT:
+            case MATRIX_INT64:
+            case MATRIX_FLOAT16:
+            case MATRIX_FLOAT:
+            case MATRIX_FLOAT64:
+            case MATRIX_BOOLEAN:
+                return ValueType.MATRIX;
+            case VECTOR_INT16:
+            case VECTOR_INT:
+            case VECTOR_INT64:
+            case VECTOR_FLOAT16:
+            case VECTOR_FLOAT:
+            case VECTOR_FLOAT64:
+            case VECTOR_BOOLEAN:
+                return ValueType.VECTOR;
+            default:
+                return ValueType.INVALID;
+        }
+    }
     //Can be modified to support implicit type conversion
     public static ValueType CombineValueTypes(Variable lValue, Variable rValue, ArrayList<LanguageError> errors, int lineNum) {
         if (lValue == null) {

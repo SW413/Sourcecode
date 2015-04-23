@@ -15,6 +15,7 @@ public class Variable {
     private ArrayList<Object> printArguments;
     private CollectionCoordinateNode entrance;
     private int[] size;
+    private ExpressionNode[] dynamicSize;
     private boolean isFunction;
     private boolean isComplex;
     //private int funcDeclScope;
@@ -91,10 +92,15 @@ public class Variable {
     public int[] getSize() {
         return size;
     }
+    public ExpressionNode[] getDynamicSize() {return dynamicSize;}
 
     public void setSize(int[] size) {
         this.size = size;
     }
+    public void setSize(ExpressionNode[] size) {
+        this.dynamicSize = size;
+    }
+
 
     @Override
     public String toString() {

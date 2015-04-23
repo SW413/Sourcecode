@@ -1,13 +1,16 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
+import com.doge.ErrorHandling.ComplexDatatypeError;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.ErrorHandling.ArgumentsError;
+import com.doge.ErrorHandling.TypeMismatchError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
 import com.doge.types.TypeChecker;
 import com.doge.types.ValueType;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -47,10 +50,23 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitDeclarationNode(DeclarationNode node) {
-        TypeChecker.CombineValueTypes(
-                node.getVariable(),
-                visit(node.getExpression()),
-                errors, node.getLineNumber());
+        if (node.getExpression() != null) {
+            TypeChecker.CombineValueTypes(
+                    node.getVariable(),
+                    visit(node.getExpression()),
+                    errors, node.getLineNumber());
+        }else{
+            TypeChecker.CombineValueTypes(visit(node.getVariable().getDynamicSize()[0]),
+                    new Variable(ValueType.INT, ""),
+                    errors, node.getLineNumber());
+            TypeChecker.CombineValueTypes(visit(node.getVariable().getDynamicSize()[1]),
+                    new Variable(ValueType.INT, ""),
+                    errors, node.getLineNumber());
+            if (TypeChecker.MatrixOrVector(node.getVariable()) == ValueType.MATRIX &&
+                    visit(node.getVariable().getDynamicSize()[1]).getId().equals("1")){
+                errors.add(new ComplexDatatypeError(node.getVariable(), node.getScope(), node.getLineNumber()));
+            }
+        }
         return null;
     }
 
@@ -85,7 +101,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitVariableExpressionNode(VariableExpressionNode node) {
-        if (node.getVariable().isFunction() && !node.getVariable().getId().equals("print")) {
+        if (node.getVariable().isFunction()) {
             CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
         }
         return node.getVariable();
@@ -93,7 +109,7 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     @Override
     public Variable VisitFunctionCallNode(FunctionCallNode node) {
-        if (node.getVariable().isFunction() && !node.getVariable().getId().equals("print")) {
+        if (node.getVariable().isFunction()) {
             CheckFuncArgsMatch(node.getVariable(), node.getLineNumber());
         }
         return node.getVariable();
@@ -108,18 +124,40 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     private Void CheckFuncArgsMatch(Variable func, int lineNum) {
-        Symbol funcDeclSym = symbolTable.getScope(1).resolve(func.getId());
-        if (funcDeclSym != null) {
-            Variable funcDecl = funcDeclSym.getVariable();
-            if (funcDecl.getArguments().size() != func.getArguments().size()) {
-                errors.add(new ArgumentsError(func, funcDecl.getArguments().size(), func.getArguments().size(), lineNum));
-            } else {
-                int i = 0;
-                for (ExpressionNode arg : func.getArguments()) {
-                    TypeChecker.CombineValueTypes(visit(funcDecl.getArgument(i++)), visit(arg), errors, lineNum);
+        if (func.getId().equals("print"))
+            return null;
+        if (isLanguageFunc(func.getId())){
+            if (func.getArguments().size() != 1) {
+                errors.add(new ArgumentsError(func, 1, func.getArguments().size(), lineNum));
+            }else{
+                Variable tmp = visit(func.getArgument(0));
+                if (!tmp.isComplex()){
+                    errors.add(new TypeMismatchError(tmp, new Variable(ValueType.COMPLEX, ""), lineNum));
+                }
+            }
+        }else {
+            Symbol funcDeclSym = symbolTable.getScope(1).resolve(func.getId());
+            if (funcDeclSym != null) {
+                Variable funcDecl = funcDeclSym.getVariable();
+                if (funcDecl.getArguments().size() != func.getArguments().size()) {
+                    errors.add(new ArgumentsError(func, funcDecl.getArguments().size(), func.getArguments().size(), lineNum));
+                } else {
+                    int i = 0;
+                    for (ExpressionNode arg : func.getArguments()) {
+                        TypeChecker.CombineValueTypes(visit(funcDecl.getArgument(i++)), visit(arg), errors, lineNum);
+                    }
                 }
             }
         }
         return null;
+    }
+
+    private boolean isLanguageFunc(String id){
+        switch (id){
+            case "rows":case "cols":
+                return true;
+            default:
+                return false;
+        }
     }
 }

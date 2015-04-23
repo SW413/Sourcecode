@@ -73,33 +73,36 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitDeclarationNode(DeclarationNode node) {
-        if (node.getVariable().isComplex()) {
-            StringBuilder complexDecl = new StringBuilder();
-            complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()) + " " + node.getVariable().getId());
-            switch (node.getVariable().getValueType()) {
-                case MATRIX_INT16:
-                case MATRIX_INT:
-                case MATRIX_INT64:
-                case MATRIX_FLOAT16:
-                case MATRIX_FLOAT:
-                case MATRIX_FLOAT64:
-                case MATRIX_BOOLEAN:
-                    complexDecl.append("[" + node.getVariable().getSize()[0] + "]" +
-                            "[" + node.getVariable().getSize()[1] + "] ");
-                    break;
-                case VECTOR_INT16:
-                case VECTOR_INT:
-                case VECTOR_INT64:
-                case VECTOR_FLOAT16:
-                case VECTOR_FLOAT:
-                case VECTOR_FLOAT64:
-                case VECTOR_BOOLEAN:
-                    complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
-                    break;
+        if (node.getExpression() != null) {
+            if (node.getVariable().isComplex()) {
+                StringBuilder complexDecl = new StringBuilder();
+                complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()) + " " + node.getVariable().getId());
+                switch (node.getVariable().getValueType()) {
+                    case MATRIX_INT16:
+                    case MATRIX_INT:
+                    case MATRIX_INT64:
+                    case MATRIX_FLOAT16:
+                    case MATRIX_FLOAT:
+                    case MATRIX_FLOAT64:
+                    case MATRIX_BOOLEAN:
+                        complexDecl.append("[" + node.getVariable().getSize()[0] + "]" +
+                                "[" + node.getVariable().getSize()[1] + "] ");
+                        break;
+                    case VECTOR_INT16:
+                    case VECTOR_INT:
+                    case VECTOR_INT64:
+                    case VECTOR_FLOAT16:
+                    case VECTOR_FLOAT:
+                    case VECTOR_FLOAT64:
+                    case VECTOR_BOOLEAN:
+                        complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
+                        break;
+                }
+                return complexDecl.toString() + " = " + visit(node.getExpression()) + ";";
             }
-            return complexDecl.toString() + " = " + visit(node.getExpression()) + ";";
+            return node.getVariable().toCcode() + " = " + visit(node.getExpression()) + ";";
         }
-        return node.getVariable().toCcode() + " = " + visit(node.getExpression()) + ";";
+        return node.getVariable().toCcode() + "\uD83D\uDC13;";
     }
 
     @Override
@@ -162,7 +165,12 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
-        return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+        if(node.getOperatorType() == null) {
+            // Must be paren
+            return "(" + visit(node.getLValue()) + ")";
+        } else {
+            return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+        }
     }
 
     @Override

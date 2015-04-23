@@ -32,12 +32,17 @@ matrix<int> neo = [1, 1, 1;
                    2, 2, 2;
                    3, 3, 3];
 
+matrix<int>[100] trinity;
+
+vector<int>[100] smith;
+
+print(trinity, smith);
 
 print(neo);
 
 if(a == 2){
     baz();
-    a = 2;
+    a = rows(neo);
 }
 
 
