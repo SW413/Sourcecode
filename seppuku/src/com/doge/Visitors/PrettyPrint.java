@@ -29,12 +29,16 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         }
         return null;
     }
-
+    
+    /*  - Grammatikken skal skrive lidt om før import virker
     @Override
     public String VisitImportNode(ImportNode node) {
-       //TODO Do this later, not implemented yet
-        return null;
-    }
+        StringBuilder imports = new StringBuilder();
+        for (int i = 0; i < node.getInputFiles().size(); i++) {
+            imports.append("import <" + node.getInputFiles().get(i).getName() + ">");
+        }
+        return imports.toString();
+    } */
 
     @Override
     public String VisitAssignmentNode(AssignmentNode node) {
