@@ -181,13 +181,14 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     public String VisitFunctionDclNode(FunctionDclNode node) {
         Variable func = node.getVariable();
         StringBuilder funcDcl = new StringBuilder();
-        if (func.isFunction()) {
-            funcDcl.append(func.getValueType() + " " + func.getId() + "(");
-            for (int i = 0; i < node.getParameterCount() - 1; i++) {
-                funcDcl.append(func.getValueType() + " " + func.getId());
-            }
-            funcDcl.append(node.getParameter(node.getParameterCount() - 1).getValueType() + " " + node.getParameter(node.getParameterCount() - 1).getId());
+        funcDcl.append(func.getValueType() + " " + func.getId() + "(");
+
+        for (int i = 0; i < node.getParameterCount(); i++) {
+            funcDcl.append(node.getParameter(i).getValueType() + " " + node.getParameter(i).getId());
+            if(i != node.getParameterCount()-1)
+                funcDcl.append(", ");
         }
+
         funcDcl.append(") {\n");
 
         if (node.getFunctionBody() != null)
