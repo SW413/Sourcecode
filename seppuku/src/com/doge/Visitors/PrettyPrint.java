@@ -245,7 +245,6 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     @Override
     public String VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
         StringBuilder coordinates = new StringBuilder();
-        System.out.print("I AM RIGHT HERE!");
         coordinates.append("[" + node.getCoordinates()[0].toString() + "," + node.getCoordinates()[1].toString() + "]");
         return coordinates.toString();
     }
