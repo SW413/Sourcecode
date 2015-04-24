@@ -9,3 +9,7 @@ matrix<int> neo = [ 1, 2, 4;
 if(a < b){
     print(neo);
 }
+
+if((a < b) == true){
+    print(a);
+}

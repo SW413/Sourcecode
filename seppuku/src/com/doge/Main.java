@@ -71,6 +71,7 @@ public class Main {
             if (args.length > 1 && args[1].equals("--prettyTest")) {
                 StringBuilder printTest = new StringBuilder();
                 abstractSyntaxTree.accept(new PrettyPrint(printTest));
+                System.out.println("DEBUG PRETTYPRINT:\n" + printTest.toString());
                 if (args[0].equals("prettyTest.hlial")){
 
                     StringBuilder inputCode = new StringBuilder();

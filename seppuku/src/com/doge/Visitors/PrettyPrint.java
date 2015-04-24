@@ -109,6 +109,8 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
+        if (node.getOperatorType() == null)
+            return "( " + visit(node.getLValue()) + " )";
         return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
     }
 
