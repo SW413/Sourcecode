@@ -3,233 +3,266 @@ package com.doge.Visitors;
 import com.doge.AST.*;
 import com.doge.types.*;
 
+import java.util.ArrayList;
+
 /**
- * Pretty printing which prints the BaseASTNode out as the code it was before parsing.
+ * Pretty printing which prints the AST out as the code it was before parsing.
  */
-public class PrettyPrint extends BaseASTVisitor<Void> {
+public class PrettyPrint extends BaseASTVisitor<String> {
+    private StringBuilder printer;
 
-    @Override
-    public Void VisitDeclarationNode(DeclarationNode node) {
-        Variable var = node.getVariable();
-
-        System.out.print(String.format("%s %s = ", var.getValueType(), var.getId()));
-        //System.out.print(TypeParser.parseStringFromValue(var.getValueType()) + " " + var.getId() + " = ");
-
-        visit(node.getExpression());
-        System.out.print("");
-        return null;
+    public PrettyPrint(StringBuilder printer) {
+        this.printer = printer;
     }
 
+
     @Override
-    public Void VisitFunctionDclNode(FunctionDclNode node) {
-        Variable var = node.getVariable();
-        if (var.isFunction()) {
-            System.out.print(String.format("%s %s (", var.getValueType(), var.getId()));
-            //System.out.print(TypeParser.parseStringFromValue(var.getValueType()) + " " + var.getId() + "(");
-            for (int i = 0; i < node.getParameterCount() - 1; i++) {
-                System.out.print(String.format("%s %s", var.getValueType(), var.getId()));
-                //System.out.print(TypeParser.parseStringFromValue(node.getParameter(i).getValueType()) + " " + node.getParameter(i).getId() + ",");
-            }
-            System.out.print(String.format("%s %s ) \n", node.getParameter(node.getParameterCount() - 1).getValueType(), node.getParameter(node.getParameterCount() - 1).getId()));
-            //System.out.print(TypeParser.parseStringFromValue(node.getParameter(node.getParameterCount() - 1).getValueType()) +
-            //      " " + node.getParameter(node.getParameterCount() - 1).getId() + ") { \n");
+    public String VisitTopNode(TopNode node) {
+        if (node.getImports() != null){
+            //TODO Do this later, not implemented yet
         }
-        super.VisitFunctionDclNode(node);
-        System.out.println("}\n");
-        return null;
-    }
-
-    @Override
-    public Void VisitExpressionNode(ExpressionNode node) {
-        if (node.getLValue() != null && node.getRValue() != null) {
-            visit(node.getLValue());
-            System.out.print(String.format(" %s ", node.getOperatorType()));
-            //System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
-            visit(node.getRValue());
-        } else if (node.getLValue() != null) {
-            visit(node.getLValue());
-            if (node.getOperatorType() != null) {
-                System.out.print(String.format("%s", node.getOperatorType()));
-                //System.out.print(TypeParser.parseStringFromOperator(node.getOperatorType()));
-            }
+        for (FunctionDclNode funcDcl : node.getFunctionDeclarations()){
+            printer.append(visit(funcDcl) + "\n");
+        }
+        for (BaseASTNode stmt : node.getStatements().getChildren()){
+            printer.append(visit(stmt) + "\n");
         }
         return null;
     }
+    
+    /*  - Grammatikken skal skrive lidt om før import virker
+    @Override
+    public String VisitImportNode(ImportNode node) {
+        StringBuilder imports = new StringBuilder();
+        for (int i = 0; i < node.getInputFiles().size(); i++) {
+            imports.append("import <" + node.getInputFiles().get(i).getName() + ">");
+        }
+        return imports.toString();
+    } */
 
     @Override
-    public Void VisitConstantExpressionNode(ConstantExpressionNode node) {
-        System.out.print(node.getValue());
-        return super.VisitConstantExpressionNode(node);
-    }
-
-    @Override
-    public Void VisitVariableExpressionNode(VariableExpressionNode node) {
-        Variable var = node.getVariable();
-        if (var.isFunction()) {
-            if (!node.getVariable().getId().equals("PRINT")) {
-                System.out.print(node.getVariable().getId() + "(");
-            }
-            /*if (node.getVariable().getPrintArgument() == null && node.getVariable().getArguments().size() > 0 && !node.getVariable().getId().equals("PRINT")) {
-                int i;
-
-                for (i = 0; i < node.getVariable().getArguments().size() - 1; i++) {
-                    visit(node.getVariable().getArguments().get(i));
-                    System.out.print(",");
-                }
-                visit(node.getVariable().getArguments().get(i));
-                System.out.print(")");
-            } else if (node.getVariable().getPrintArgument() != null) {
-                System.out.print("print(" + node.getVariable().getPrintArgument() + ")");
-            } else if (node.getVariable().getId().equals("PRINT") && node.getVariable().getArguments() != null) {
-                System.out.print("print(");
-                int i;
-                for (i = 0; i < node.getVariable().getArguments().size() - 1; i++) {
-                    if (((VariableExpressionNode) node.getVariable().getArguments().get(i)).getVariable() != null) {
-                        visit(((VariableExpressionNode) node.getVariable().getArguments().get(i)).getVariable().getEntrance());
-                    } else {
-                        visit(node.getVariable().getArguments().get(i));
-                        System.out.print(",");
-                    }
-                }
-                if (((VariableExpressionNode) node.getVariable().getArguments().get(i)).getVariable() != null) {
-                    visit(((VariableExpressionNode) node.getVariable().getArguments().get(i)).getVariable().getEntrance());
-                } else {
-                    visit(node.getVariable().getArguments().get(i));
-                }
-                System.out.print(")");
-            } else {
-                System.out.print(")");
-            }*/
+    public String VisitAssignmentNode(AssignmentNode node) {
+        if (node.getVariable().isComplex()) {
+            return node.getVariable().getId() + visit(node.getVariable().getEntrance()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
         } else {
-            System.out.print(var.getId());
+            return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
         }
-        return null;
     }
 
     @Override
-    public Void VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
-        System.out.print("[" + ((ConstantExpressionNode) node.getCoordinates()[0]).getValue() + "," + ((ConstantExpressionNode) node.getCoordinates()[1]).getValue() + "]");
-        return null;
+    public String VisitDeclarationNode(DeclarationNode node){
+        return node.getVariable().getValueType() + " " + node.getVariable().getId() + " = " + visit(node.getExpression()) + ";";
     }
 
-    @Override
-    public Void VisitForLoopNode(ForLoopNode node) {
-        System.out.print("for(");
-        visit(node.getInitialize());
-        System.out.print("; ");
-        visit(node.getCondition());
-        System.out.print("; ");
-        visit(node.getUpdate());
-        System.out.print("){\n");
-        visit(node.getBody());
-        System.out.println("}");
-        return null;
-    }
-
-    @Override
-    public Void VisitStatementNode(StatementNode node) {
-        for (int i = 0; i < node.getChildCount(); i++) {
-            visit(node.getChild(i));
-            if (node.getChild(i).getClass() != ForLoopNode.class && node.getChild(i).getClass() != WhileLoopNode.class && node.getChild(i).getClass() != ConditionalNode.class)
-                System.out.print(";\n");
+    //bruges i VisitConditionalNode & VisitWhileLoopNode & VisitForLoopNode
+    private String statementBody(ArrayList<BaseASTNode> statements){
+        StringBuilder body = new StringBuilder();
+        for(BaseASTNode stmt : statements){
+            body.append(visit(stmt) + "\n");
         }
-        return null;
+        return body.toString();
     }
 
     @Override
-    public Void VisitAssignmentNode(AssignmentNode node) {
-        if(node.getAssignmentOperator() != AssignmentOperatorType.DECREMENT && node.getAssignmentOperator() != AssignmentOperatorType.INCREMENT)
-            System.out.print(node.getVariable().getId() + " " + node.PrettyPrint() + " ");
-        else
-            System.out.print(node.getVariable().getId() + node.PrettyPrint());
-        return super.VisitAssignmentNode(node);
-    }
-
-    @Override
-    public Void VisitFunctionReturnNode(FunctionReturnNode node) {
-        System.out.print("return ");
-        visit(node.getExpression());
-        System.out.println(";");
-        return null;
-    }
-
-    @Override
-    public Void VisitMatrixValNode(MatrixValNode node) {
-        if (!node.getRows().isEmpty()) {
-            int i;
-
-            System.out.print("[");
-            for (i = 0; i < node.getRows().size() - 1; i++) {
-                visit(node.getRows().get(i));
-                System.out.print(";");
-            }
-            visit(node.getRows().get(i));
-            System.out.print("]");
-        }
-        return null;
-    }
-
-    @Override
-    public Void VisitVectorValNode(VectorValNode node) {
-        if (((MatrixValNode) node.getParent()).getRows().size() == 1) {
-            System.out.print("[");
-        }
-        int i;
-        for (i = 0; i < node.getValues().size() - 1; i++) {
-            visit(node.getValues().get(i));
-            System.out.print(",");
-        }
-        visit(node.getValues().get(i));
-        if (((MatrixValNode) node.getParent()).getRows().size() == 1) {
-            System.out.print("]");
-        }
-        return null;
-    }
-
-
-    @Override
-    public Void VisitConditionalExpressionNode(ConditionalExpressionNode node) {
-        if (node.getLValue() != null && node.getRValue() != null) {
-            visit(node.getLValue());
-            System.out.print(String.format(" %s ", node.getOperatorType()));
-            //System.out.print(" " + TypeParser.parseStringFromOperator(node.getOperatorType()) + " ");
-            visit(node.getRValue());
-        }
-        return null;
-    }
-
-    @Override
-    public Void VisitConditionalNode(ConditionalNode node) {
-        System.out.print("if(");
-        visit(node.getConditionalExpression());
-        System.out.print("){\n");
-        visit(node.getBody());
-        System.out.println("}");
-
-        if (!node.getElseIfs().isEmpty()) {
-            for (ConditionalNode conditionalNode : node.getElseIfs()) {
-                System.out.print("else ");
-                visit(conditionalNode);
+    public String VisitConditionalNode(ConditionalNode node) {
+        StringBuilder cond = new StringBuilder();
+        cond.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
+        cond.append(statementBody(node.getBody().getChildren()));
+        cond.append("}");
+        if (node.getElseIfs() != null && node.getElseIfs().size()> 0){
+            for(ConditionalNode elif : node.getElseIfs()) {
+                cond.append(" else " + visit(elif));
             }
         }
         if (node.getElseBody() != null) {
-            System.out.print("else{\n");
-            visit(node.getElseBody());
-            System.out.println("}\n");
-
+            cond.append(" else {\n" + statementBody(node.getElseBody().getChildren()) + "}\n");
         }
-        return null;
+        return cond.toString();
     }
 
     @Override
-    public Void VisitWhileLoopNode(WhileLoopNode node) {
-        System.out.print("while(");
-        visit(node.getCondNode());
-        System.out.print("){\n");
-        visit(node.getBody());
-        System.out.println("}\n");
+    public String VisitWhileLoopNode(WhileLoopNode node) {
+        //printer.append("while(" + visit(node.getCondNode()) + "){\n" + statementBody(node.getBody().getChildren()) + "}\n");
+        return "while(" + visit(node.getCondNode()) + "){\n" + statementBody(node.getBody().getChildren()) + "}\n";
 
-        return null;
     }
+
+    @Override
+    public String VisitForLoopNode(ForLoopNode node) {
+        StringBuilder loopNode = new StringBuilder();
+        loopNode.append("for(");
+        if (node.getInitialize() != null)
+            loopNode.append(visit(node.getInitialize()) + " ");
+        else
+            loopNode.append("; ");
+        if (node.getCondition() != null)
+            loopNode.append(visit(node.getCondition()));
+        loopNode.append("; ");
+        if (node.getUpdate() != null)
+            loopNode.append(visit(node.getUpdate()));
+        loopNode.append(") {\n");
+        loopNode.append(statementBody(node.getBody().getChildren()));
+        loopNode.append("}\n");
+
+        return loopNode.toString();
+    }
+
+    @Override
+    public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
+        if (node.getOperatorType() == null)
+            return "( " + visit(node.getLValue()) + " )";
+        return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+    }
+
+    @Override
+    public String VisitExpressionNode(ExpressionNode node){
+        if (node.getRValue() != null){
+            return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
+        }
+        return visit(node.getLValue()) + node.getOperatorType();
+    }
+
+
+
+    @Override
+    public String VisitMatrixValNode(MatrixValNode node) {
+        StringBuilder matrix = new StringBuilder();
+        matrix.append("[ ");
+        int i = 1;
+        for (VectorValNode row : node.getRows()) {
+            matrix.append(visit(row));
+            if (i++ != node.getRows().size())
+                matrix.append("; ");
+        }
+        matrix.append(" ]");
+        return matrix.toString();
+    }
+
+    // Bruges i VisitVectorValNode
+    private String commaSepExprList(ArrayList<ExpressionNode> items){
+        StringBuilder list = new StringBuilder();
+        int i = 1;
+        for (ExpressionNode val : items) {
+            list.append(visit(val));
+            if (i++ != items.size())
+                list.append(", ");
+        }
+        return list.toString();
+    }
+
+    @Override
+    public String VisitVectorValNode(VectorValNode node) {
+        if (node.getParent() instanceof MatrixValNode){ return commaSepExprList(node.getValues());}
+        else { return  "[" + commaSepExprList(node.getValues()) + "]"; }
+    }
+
+    @Override
+    public String VisitFunctionReturnNode(FunctionReturnNode node) {
+        return "return " + visit(node.getExpression()) + ";";
+    }
+
+    // bruges i VisitFunctionCallNode & VisitVariableExpressionNode
+    private String functionWithArgs(Variable func){
+        StringBuilder funcVar = new StringBuilder();
+        funcVar.append(func.getId() + "(");
+        if (func.getArguments() != null)
+            funcVar.append(commaSepExprList(func.getArguments()));
+        funcVar.append(")");
+        return funcVar.toString();
+    }
+
+    @Override
+    public String VisitVariableExpressionNode(VariableExpressionNode node) {
+        if (node.getVariable().isFunction()) {
+            return functionWithArgs(node.getVariable());
+        } else if (node.getVariable().isComplex() && node.getVariable().getEntrance() != null) {
+            return node.getVariable().getId() + visit(node.getVariable().getEntrance());
+        }
+        return node.getVariable().getId();
+    }
+
+
+    @Override
+    public String VisitConstantExpressionNode(ConstantExpressionNode node) {
+        return node.getValue().toString();
+    }
+
+    @Override
+    public String VisitFunctionDclNode(FunctionDclNode node) {
+        Variable func = node.getVariable();
+        StringBuilder funcDcl = new StringBuilder();
+        funcDcl.append(func.getValueType() + " " + func.getId() + "(");
+
+        for (int i = 0; i < node.getParameterCount(); i++) {
+            funcDcl.append(node.getParameter(i).getValueType() + " " + node.getParameter(i).getId());
+            if(i != node.getParameterCount()-1)
+                funcDcl.append(", ");
+        }
+
+        funcDcl.append(") {\n");
+
+        if (node.getFunctionBody() != null)
+            for (BaseASTNode stmt : node.getFunctionBody().getChildren()) {
+                funcDcl.append(visit(stmt) + "\n");
+            }
+        if (node.getFunctionReturn() != null)
+            funcDcl.append("return " + visit(node.getFunctionReturn().getExpression()) + ";\n");
+
+        funcDcl.append("}\n");
+        return funcDcl.toString();
+
+    }
+
+    @Override
+    public String VisitFunctionCallNode(FunctionCallNode node) {
+        StringBuilder funcCall = new StringBuilder();
+        StringBuilder args = new StringBuilder();
+
+        if (node.getVariable().getId() == "print") {
+            if (!node.getVariable().getPrintArguments().isEmpty()){
+                for (int i = 0; i < node.getVariable().getPrintArguments().size(); i++) {
+                    Object arg = node.getVariable().getPrintArguments().get(i);
+                    if (arg != null && arg.getClass() != null)
+                        if (arg.getClass().getSuperclass() == ExpressionNode.class) {
+                            args.append(visit( (ExpressionNode) arg));
+                        } else {
+                            args.append(arg);
+                        }
+                        if (!(i == (node.getVariable().getPrintArguments().size()-1))){
+                            args.append(", ");
+                        }
+
+
+                }
+            }
+        } else {
+            if (!node.getVariable().getArguments().isEmpty()) {
+                for (int i = 0; i < node.getVariable().getArguments().size(); i++) {
+                    Object arg = node.getVariable().getArguments().get(i);
+                        if (arg.getClass().getSuperclass() == ExpressionNode.class) {
+                            args.append(visit((ExpressionNode) arg));
+                        } else {
+                            args.append(arg);
+                        }
+                    if (!(i == (node.getVariable().getArguments().size() - 1))) {
+                        args.append(", ");
+                    }
+                }
+            }
+        }
+        funcCall.append(node.getVariable().getId() + "(" + args.toString() + ");");
+        return funcCall.toString();
+    }
+    @Override
+    public String VisitCollectionCoordinateNode(CollectionCoordinateNode node) {
+        StringBuilder coordinates = new StringBuilder();
+        coordinates.append("[" + visit(node.getCoordinates()[0]) + "," + visit(node.getCoordinates()[1]) + "]");
+        return coordinates.toString();
+    }
+
 }
+
+
+
+
 
