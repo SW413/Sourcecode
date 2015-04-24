@@ -49,7 +49,7 @@ public class BaseASTVisitor<T> implements IASTVisitor<T> {
             visit(node.getElseBody());
         }
 
-        return visitChildren(node);
+        return null;
     }
 
     @Override public T VisitConstantExpressionNode(ConstantExpressionNode node) { return null; }

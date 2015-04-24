@@ -50,13 +50,6 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForLoop(ourLangParser.ForLoopContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code pforLoop}
-	 * labeled alternative in {@link ourLangParser#loop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPforLoop(ourLangParser.PforLoopContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link ourLangParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -77,12 +70,33 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code BoolValConExpr}
+	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolValConExpr(ourLangParser.BoolValConExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code multiConExpr}
+	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiConExpr(ourLangParser.MultiConExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code multiOrCondExpr}
 	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMultiOrCondExpr(ourLangParser.MultiOrCondExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parenConExpr}
+	 * labeled alternative in {@link ourLangParser#conditionalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenConExpr(ourLangParser.ParenConExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ourLangParser#functiondeclaration}.
 	 * @param ctx the parse tree

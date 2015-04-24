@@ -332,7 +332,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
                 new Variable(null, ctx.ID().getText()),
                 AssignmentOperatorType.BASIC,
                 (ExpressionNode) visit(ctx.expression()));
-        baseAstNode.setLineNumber(ctx.start.getLine());
+        assNode.setLineNumber(ctx.start.getLine());
         return assNode;
     }
 
@@ -420,19 +420,14 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
             }
         }
 
-        if(ctx.ID().getText().equals("rows") || ctx.ID().getText().equals("cols")){
-            ConstantExpressionNode rowsOrColsFunc = new ConstantExpressionNode(null, new Variable(ValueType.INT, ctx.ID().getText(), arguments));
-            rowsOrColsFunc.setLineNumber(ctx.start.getLine());
-            return rowsOrColsFunc;
-        }
-
         Variable func = new Variable(null, ctx.ID().getText(), arguments);
+        if(func.getId().equals("rows") || func.getId().equals("cols"))
+            func.setValueType(ValueType.INT);
         if (parentStack.peek().getClass() == VariableExpressionNode.class){
             parentStack.pop();
-            //TODO check if setting parent to null ruins eveeeerything
-            VariableExpressionNode Varexp =  new VariableExpressionNode(null, func);
-            Varexp.setLineNumber(ctx.start.getLine());
-            return Varexp;
+            VariableExpressionNode varExpr =  new VariableExpressionNode(null, func);
+            varExpr.setLineNumber(ctx.start.getLine());
+            return varExpr;
         }
         return new FunctionCallNode(parentStack.peek(), func, ctx.start.getLine());
     }
@@ -621,5 +616,26 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
                 TypeParser.parseOperator(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.conditionalExpression(1)),
                 ctx.start.getLine());
+    }
+
+    @Override
+    public BaseASTNode visitMultiConExpr(ourLangParser.MultiConExprContext ctx) {
+        return new ConditionalExpressionNode(
+                null,
+                (ExpressionNode) visit(ctx.conditionalExpression(0)),
+                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                (ExpressionNode) visit(ctx.conditionalExpression(1)),
+                ctx.start.getLine());
+    }
+
+    @Override
+    public BaseASTNode visitParenConExpr(ourLangParser.ParenConExprContext ctx) {
+        return new ConditionalExpressionNode(null, (ConditionalExpressionNode) visit(ctx.conditionalExpression()), null, null, ctx.start.getLine());
+    }
+
+
+    @Override
+    public BaseASTNode visitBoolValConExpr(ourLangParser.BoolValConExprContext ctx) {
+        return new ConstantExpressionNode(null, Boolean.getBoolean(ctx.BOOLVAL().getText()));
     }
 }

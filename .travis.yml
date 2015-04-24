@@ -9,4 +9,4 @@ install:
     - ant
 script:
     - cd out/production/seppuku
-    - java com.doge.Main ../../../tests/simple.hlial
+    - java com.doge.Main ../../../tests/simple.hlial --prettyTest
