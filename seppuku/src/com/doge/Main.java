@@ -20,7 +20,7 @@ import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
 public class Main {
 
     public static void main(String[] args) {
-
+        Main obj = new Main();
         //Get sourcecode file and set as ANTLR input stream
         String inputFile = null;
         if (args.length > 0) inputFile = args[0];
@@ -114,7 +114,7 @@ public class Main {
 
             if (LanguageError.NumErrors(errors, ErrorType.ERROR) == 0){
                 StringBuilder output = new StringBuilder();
-                abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
+                abstractSyntaxTree.accept(new CodeGeneratorVisitorOLD(output));
                 try {
                     File outputSourcecode = new File("../../../" + "/codeout/code.c");
                     if(!outputSourcecode.exists()) {
@@ -124,6 +124,9 @@ public class Main {
                     }
                     FileWriter fileWriter = new FileWriter(outputSourcecode.getAbsoluteFile());
                     Writer writer = new BufferedWriter(fileWriter);
+                    obj.exportResource("simpleCL.h");
+                    obj.exportResource("simpleCL.c");
+                    obj.exportResource("Makefile");
                     writer.append(output);
                     writer.close();
                 } catch (IOException e) {
@@ -141,5 +144,31 @@ public class Main {
                     parser.getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
             System.exit(1);
         }
+    }
+
+    private boolean exportResource(String resourceName){
+        InputStream stream = null;
+        OutputStream resStreamOut = null;
+        try {
+            stream = getClass().getClassLoader().getResourceAsStream(resourceName);
+            if(stream == null) {
+                System.out.println("Cannot get resource \"" + resourceName + "\"");
+                return false;
+            }
+
+            int readBytes;
+            byte[] buffer = new byte[4096];
+            resStreamOut = new FileOutputStream("../../../codeout/" + resourceName);
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+
+            stream.close();
+            resStreamOut.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return true;
     }
 }

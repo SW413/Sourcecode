@@ -8,17 +8,17 @@ import java.util.ArrayList;
 /**
  * Created by Mathias on 11-04-2015.
  */
-public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
+public class CodeGeneratorVisitorOLD extends BaseASTVisitor<String> {
     private StringBuilder outputCode;
     private int indentationLevel = 0;
 
-    public CodeGeneratorVisitor(StringBuilder outputCode) {
+    public CodeGeneratorVisitorOLD(StringBuilder outputCode) {
         this.outputCode = outputCode;
     }
 
     @Override
     public String VisitTopNode(TopNode node) {
-        outputCode.append("#include <simpleCL.h>\n" +
+        outputCode.append("#include <stdio.h>\n" +
                           "#include <stdint.h>\n" +
                           "#define true 1\n" +
                           "#define false 0\n");
