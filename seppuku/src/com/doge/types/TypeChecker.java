@@ -40,7 +40,9 @@ public class TypeChecker {
         } else if (rValue == null) {
             return lValue.getValueType();
         } else {
-            ValueType combined = compatibleTypes(lValue.getValueType(), rValue.getValueType());
+            ValueType combined = compatibleTypes(
+                    lValue.getEntrance() != null ? complexToSimple(lValue.getValueType()) : lValue.getValueType(),
+                    rValue.getEntrance() != null ? complexToSimple(rValue.getValueType()) : rValue.getValueType());
             if (combined != ValueType.INVALID) {
                 return combined;
             } else {
@@ -218,5 +220,26 @@ public class TypeChecker {
                 return ValueType.INVALID;
         }
         return ValueType.INVALID;
+    }
+
+    private static ValueType complexToSimple(ValueType type){
+        switch (type){
+            case VECTOR_INT16: case MATRIX_INT16:
+                return ValueType.INT16;
+            case VECTOR_INT: case MATRIX_INT:
+                return ValueType.INT;
+            case VECTOR_INT64: case MATRIX_INT64:
+                return ValueType.INT64;
+            case VECTOR_FLOAT16: case MATRIX_FLOAT16:
+                return ValueType.FLOAT16;
+            case VECTOR_FLOAT: case MATRIX_FLOAT:
+                return ValueType.FLOAT;
+            case VECTOR_FLOAT64: case MATRIX_FLOAT64:
+                return ValueType.FLOAT64;
+            case VECTOR_BOOLEAN: case MATRIX_BOOLEAN:
+                return ValueType.BOOLEAN;
+            default:
+                return ValueType.INVALID;
+        }
     }
 }
