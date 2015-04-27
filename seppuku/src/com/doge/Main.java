@@ -165,8 +165,8 @@ public class Main {
 
             stream.close();
             resStreamOut.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return true;
