@@ -6,7 +6,7 @@
 # it wants to stop the commit.
 #
 # To enable this hook, rename this file to "pre-commit".
-git diff Workspace seppuku/.idea/workspace.xml > worksp.out
+git diff origin/Workspace seppuku/.idea/workspace.xml > worksp.out
 
 if [ $(wc -l < worksp.out) -ne 0 ]
 then
