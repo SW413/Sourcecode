@@ -79,10 +79,9 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
                 node.getLineNumber()
         );
         if (valueType != ValueType.INVALID)
-            node.setValueType(ValueType.BOOLEAN);
-        else
-            node.setValueType(valueType);
+            valueType = ValueType.BOOLEAN;
 
+        node.setValueType(valueType);
         return new Variable(valueType, "LogicExpr:<" + node.toString() + ">");
     }
 
