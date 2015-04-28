@@ -195,7 +195,7 @@ PRINT: 'print' ;
 
 ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
 
-LIBRARY: [a-zA-Z0-9_\/]+('.')?[a-zA-Z0-9_]*;
+LIBRARY: [a-zA-Z0-9_\/'.']+;
 
 //Whitespace and comments
 

@@ -36,7 +36,7 @@ public class ourLangParser extends Parser {
 		RULE_collectiontype = 27, RULE_postUnaryOperator = 28, RULE_assignmentOperator = 29, 
 		RULE_conditionalOperator = 30, RULE_constant = 31;
 	public static final String[] ruleNames = {
-		"topLevel", "statement", "parsing", "controlblock", "loop", "block",
+		"topLevel", "statement", "importing", "controlblock", "loop", "block", 
 		"conditionalExpression", "functiondeclaration", "functionbody", "functionreturn", 
 		"parameterlist", "parameter", "functioncall", "argumentlist", "expression", 
 		"assignment", "valassignment", "collectionassignment", "declaration", 
