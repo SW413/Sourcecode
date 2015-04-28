@@ -174,6 +174,42 @@ public class TypeParser {
         return null;
     }
 
+    public static String OpenCL_TypeFromValueType(ValueType datatype) {
+        switch (datatype) {
+            case VOID:
+                return "void";
+            case INT:
+            case MATRIX_INT:
+            case VECTOR_INT:
+                return "cl_int";
+            case INT16:
+            case MATRIX_INT16:
+            case VECTOR_INT16:
+                return "cl_short";
+            case INT64:
+            case MATRIX_INT64:
+            case VECTOR_INT64:
+                return "cl_long";
+            case FLOAT:
+            case MATRIX_FLOAT:
+            case VECTOR_FLOAT:
+                return "cl_float";
+            case FLOAT16:
+            case MATRIX_FLOAT16:
+            case VECTOR_FLOAT16:
+                return "cl_half";
+            case FLOAT64:
+            case MATRIX_FLOAT64:
+            case VECTOR_FLOAT64:
+                return "cl_double";
+            case BOOLEAN:
+            case MATRIX_BOOLEAN:
+            case VECTOR_BOOLEAN:
+                return "cl_char";
+        }
+        return null;
+    }
+
     public static ValueType ConstantType(Object constant) {
         if (constant.getClass() == null || constant.getClass() == Variable.class) {
             return ValueType.INVALID;

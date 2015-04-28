@@ -8,14 +8,14 @@ import java.util.ArrayList;
  * Created by Mathias on 21-03-2015.
  */
 public class ImportNode extends BaseASTNode {
-    private ArrayList<ImportFile> inputFiles = new ArrayList<ImportFile>();
+    private ArrayList<String> inputFilePaths = new ArrayList<String>();
 
     public ImportNode(BaseASTNode parent) {
         super(parent);
     }
 
     public Void addFile(String path) {
-        inputFiles.add(new ImportFile(path));
+        inputFilePaths.add(path);
         return null;
     }
 
@@ -24,7 +24,8 @@ public class ImportNode extends BaseASTNode {
         else return node.visitChildren(this);
     }
 
-    public ArrayList<ImportFile> getInputFiles() {
-        return inputFiles;
+    public String getInputFilePath(int i) { return inputFilePaths.get(i); }
+    public ArrayList<String> getInputFilePaths() {
+        return inputFilePaths;
     }
 }

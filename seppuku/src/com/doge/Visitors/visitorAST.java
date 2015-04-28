@@ -73,7 +73,6 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         parentStack.push(tmp.getImports());
         ((ImportNode) parentStack.peek()).addFile(ctx.LIBRARY().getText());
         parentStack.pop();
-        tmp.getImports().getInputFiles().get(tmp.getImports().getInputFiles().size()-1).setLineNumber(ctx.start.getLine());
         return tmp.getImports();
     }
 
