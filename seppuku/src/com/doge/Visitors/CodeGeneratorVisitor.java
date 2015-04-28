@@ -1,6 +1,7 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
+import com.doge.types.TypeChecker;
 import com.doge.types.TypeParser;
 
 import java.util.ArrayList;
@@ -77,24 +78,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             if (node.getVariable().isComplex()) {
                 StringBuilder complexDecl = new StringBuilder();
                 complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()) + " " + node.getVariable().getId());
-                switch (node.getVariable().getValueType()) {
-                    case MATRIX_INT16:
-                    case MATRIX_INT:
-                    case MATRIX_INT64:
-                    case MATRIX_FLOAT16:
-                    case MATRIX_FLOAT:
-                    case MATRIX_FLOAT64:
-                    case MATRIX_BOOLEAN:
+                if (node.getVariable().getSize() != null)
+                switch (TypeChecker.MatrixOrVector(node.getVariable())) {
+                    case MATRIX:
                         complexDecl.append("[" + node.getVariable().getSize()[0] + "]" +
                                 "[" + node.getVariable().getSize()[1] + "] ");
                         break;
-                    case VECTOR_INT16:
-                    case VECTOR_INT:
-                    case VECTOR_INT64:
-                    case VECTOR_FLOAT16:
-                    case VECTOR_FLOAT:
-                    case VECTOR_FLOAT64:
-                    case VECTOR_BOOLEAN:
+                    case VECTOR:
                         complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
                         break;
                 }
@@ -307,4 +297,5 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
         return "printf(\"" + formatString.toString() + "\", " + printArgs.toString() + ")";
     }
+
 }

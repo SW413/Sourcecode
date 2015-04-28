@@ -1,0 +1,53 @@
+matrix<int> matrixScale(matrix<int> a, int scale) {
+
+    /* This is zero initialized */
+    matrix<int>[rows(a),cols(a)] res;
+
+    /* Outer loop for each row (up-down) */
+    for(int i = 0; i < rows(a); i++) {
+        /* Inner loop for each column,
+         * The first values iterated over are the first ones in the first row
+         * This make the cache use more efficient.
+         */
+        for(int j = 0; j < cols(a); j++) {
+            res[i, j] = a[i, j] * scale;
+        }
+    }
+
+    return res;
+}
+
+bool compareMatrix(matrix<int> a, matrix<int> b) {
+    bool isSame = true;
+
+    if(rows(a) != rows(b) || cols(a) != cols(b)) {
+        isSame = false;
+    }
+
+    for(int i = 0; i < rows(a); i++) {
+        for(int j = 0; j < cols(a); j++) {
+            if(a[i, j] != b[i, j]) {
+                isSame = false;
+            }
+        }
+    }
+
+    return isSame;
+}
+
+bool testMatrixScale() {
+
+    matrix<int> a = [1, 2, 3;
+                     4, 5, 6];
+
+    int scale = 0;
+
+    matrix<int> expected = [0, 0, 0;
+                            0, 0, 0];
+
+    matrix<int> actual = matrixScale(a, scale);
+
+    return compareMatrix(expected, actual);
+}
+
+print(testMatrixScale());
