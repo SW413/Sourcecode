@@ -1,6 +1,7 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
+import com.doge.types.TypeChecker;
 import com.doge.types.TypeParser;
 
 import java.util.ArrayList;
@@ -18,18 +19,17 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitTopNode(TopNode node) {
-        outputCode.append("#include <simpleCL.h>\n" +
-                          "#include <stdint.h>\n" +
-                          "#define true 1\n" +
-                          "#define false 0\n");
+        outputCode.append("#include \"simpleCL.h\"\n" +
+                "#define true 1\n" +
+                "#define false 0\n");
 
         //make prototypes
-        outputCode.append("\n\n//--= PROTOTYPES =--\n");
+        outputCode.append("\n\n/*--= PROTOTYPES =--*/\n");
         for (FunctionDclNode funcDecl : node.getFunctionDeclarations()) {
-            outputCode.append(funcDecl.getVariable().toCcode() + "(");
+            outputCode.append(funcDecl.getVariable().toOpenCLcode() + "(");
             int i = 1;
-            for(Variable arg : funcDecl.getParameters()) {
-                outputCode.append(arg.toCcode());
+            for (Variable arg : funcDecl.getParameters()) {
+                outputCode.append(arg.toOpenCLcode());
                 if (i++ != funcDecl.getParameterCount())
                     outputCode.append(", ");
             }
@@ -49,7 +49,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         //functions
         outputCode.append("\n\n/*--= CUSTOM FUNCTIONS =--*/\n");
         for (FunctionDclNode func : node.getFunctionDeclarations()) {
-            outputCode.append(func.getVariable().toCcode() + "(");
+            outputCode.append(func.getVariable().toOpenCLcode() + "(");
             int i = 1;
             for (Variable arg : func.getParameters()) {
                 outputCode.append(arg.toCcode());
@@ -73,36 +73,44 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitDeclarationNode(DeclarationNode node) {
-        if (node.getExpression() != null) {
-            if (node.getVariable().isComplex()) {
-                StringBuilder complexDecl = new StringBuilder();
-                complexDecl.append(TypeParser.cTypeFromValueType(node.getVariable().getValueType()) + " " + node.getVariable().getId());
-                switch (node.getVariable().getValueType()) {
-                    case MATRIX_INT16:
-                    case MATRIX_INT:
-                    case MATRIX_INT64:
-                    case MATRIX_FLOAT16:
-                    case MATRIX_FLOAT:
-                    case MATRIX_FLOAT64:
-                    case MATRIX_BOOLEAN:
-                        complexDecl.append("[" + node.getVariable().getSize()[0] + "]" +
-                                "[" + node.getVariable().getSize()[1] + "] ");
+        if (node.getVariable().isComplex()) {
+            StringBuilder complexDecl = new StringBuilder();
+            complexDecl.append(TypeParser.OpenCL_TypeFromValueType(node.getVariable().getValueType()) + " ");
+            if (node.getExpression() != null) {
+                complexDecl.append(node.getVariable().getId());
+                switch (TypeChecker.MatrixOrVector(node.getVariable())) {
+                    case MATRIX:
+                        complexDecl.append("[" + node.getVariable().getSize()[0] + "*" +
+                                node.getVariable().getSize()[1] + "] ");
                         break;
-                    case VECTOR_INT16:
-                    case VECTOR_INT:
-                    case VECTOR_INT64:
-                    case VECTOR_FLOAT16:
-                    case VECTOR_FLOAT:
-                    case VECTOR_FLOAT64:
-                    case VECTOR_BOOLEAN:
+                    case VECTOR:
                         complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
                         break;
                 }
                 return complexDecl.toString() + " = " + visit(node.getExpression()) + ";";
+            }else{
+                String dynRows, dynCols, typeSize;
+                dynRows = visit(node.getVariable().getDynamicSize()[0]);
+                dynCols = visit(node.getVariable().getDynamicSize()[1]);
+                typeSize = "sizeof(" + TypeParser.OpenCL_TypeFromValueType(node.getVariable().getValueType()) + ")";
+                complexDecl.append("*" + node.getVariable().getId());
+                complexDecl.append(" = " +
+                        "malloc(" + dynRows + " * " + dynCols + " * " +
+                        typeSize + ");\n");
+                complexDecl.append(indent("memset( " +
+                        node.getVariable().getId() +
+                        ", " +
+                        "0, " +
+                        typeSize +
+                        " * " +
+                        dynRows +
+                        " * " +
+                        dynCols +
+                        ");"));
+                return complexDecl.toString();
             }
-            return node.getVariable().toCcode() + " = " + visit(node.getExpression()) + ";";
         }
-        return node.getVariable().toCcode() + "\uD83D\uDC13;";
+        return node.getVariable().toOpenCLcode() + " = " + visit(node.getExpression()) + ";";
     }
 
     @Override
@@ -115,13 +123,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         StringBuilder conditional = new StringBuilder();
         conditional.append("if(" + visit(node.getConditionalExpression()) + ") {\n");
         indentationLevel++;
-        for (BaseASTNode stmt : node.getBody().getChildren()){
+        for (BaseASTNode stmt : node.getBody().getChildren()) {
             conditional.append(indent(visit(stmt) + "\n"));
         }
         indentationLevel--;
         conditional.append(indent("}"));
-        if (node.getElseIfs() != null){
-            for(ConditionalNode elif : node.getElseIfs()) {
+        if (node.getElseIfs() != null) {
+            for (ConditionalNode elif : node.getElseIfs()) {
                 conditional.append(" else " + visit(elif));
             }
         }
@@ -165,7 +173,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
-        if(node.getOperatorType() == null) {
+        if (node.getOperatorType() == null) {
             // Must be paren
             return "(" + visit(node.getLValue()) + ")";
         } else {
@@ -233,7 +241,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return indentation + txt;
     }
 
-    private String functionWithArgs(Variable func){
+    private String functionWithArgs(Variable func) {
         StringBuilder funcVar = new StringBuilder();
         funcVar.append(func.getId() + "(");
         if (func.getArguments() != null)
@@ -242,7 +250,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return funcVar.toString();
     }
 
-    private String commaSepExprList(ArrayList<ExpressionNode> items){
+    private String commaSepExprList(ArrayList<ExpressionNode> items) {
         StringBuilder list = new StringBuilder();
         int i = 1;
         for (ExpressionNode val : items) {
@@ -253,10 +261,10 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return list.toString();
     }
 
-    private String statementBody(ArrayList<BaseASTNode> statements){
+    private String statementBody(ArrayList<BaseASTNode> statements) {
         StringBuilder body = new StringBuilder();
         indentationLevel++;
-        for(BaseASTNode stmt : statements){
+        for (BaseASTNode stmt : statements) {
             body.append(indent(visit(stmt) + "\n"));
         }
         indentationLevel--;
@@ -264,7 +272,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return body.toString();
     }
 
-    private String printFunction(Variable func){
+    private String printFunction(Variable func) {
         StringBuilder formatString = new StringBuilder();
         StringBuilder printArgs = new StringBuilder();
         if (func.getPrintArguments() != null && func.getPrintArguments().size() > 0) {

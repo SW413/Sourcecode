@@ -111,5 +111,9 @@ public class Variable {
     public String toCcode(){
         return String.format("%s %s", TypeParser.cTypeFromValueType(getValueType()), getId());
     }
+
+    public String toOpenCLcode(){
+        return String.format("%s %s", TypeParser.OpenCL_TypeFromValueType(getValueType()), getId());
+    }
 }
 
