@@ -1,19 +1,19 @@
 Missing stuff :shipit:
 ======================
                 
-- [ ] **Pretty Print** :shit:
+- [x] **Pretty Print** :shit:
   1. Needs to be updated, perhaps rewritten (would be a good task that resembles code generation)
   2. Implement a mechanism that uses the pretty print output on n run throughs to verify that no information is lost. 
-- [ ] **Matrix size in declaration** :metal:
+- [x] **Matrix size in declaration** :metal:
   - [x] Change grammar.
   - [x] Implement in ast, and other visitors.
-  - [ ] Write tests.
-- [ ] **Importing files**     
+  - [x] Write tests.
+- [x] **Importing files**     
   1. It should be possible to insert a given import files containing only function declarations.
   2. Figure out what kind of URI should be used e.g. relative or absolute.
   3. Decide when the file should be imported and if recursive importing should be possible.
   4. Implement the importing of files, maybe the ANTLR lexer/parser should add the contents to the token stream. 
-- [ ] **Floating point 16bit** :wine_glass:
+- [x] **Floating point 16bit** :wine_glass:
   1. Is this even necessary and/or possible?
   2. If yes to both, implement it.
 - [ ] **Complex return types**
