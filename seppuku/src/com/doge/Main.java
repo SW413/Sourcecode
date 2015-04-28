@@ -1,17 +1,18 @@
 package com.doge;
 
-import com.antlr.ourLangLexer;
-import com.antlr.ourLangParser;
 import com.doge.AST.BaseASTNode;
+import com.doge.AST.TopNode;
 import com.doge.ErrorHandling.ErrorType;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.Visitors.*;
 import com.doge.checking.SymbolTable;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import com.doge.parsing.FileHandling;
+import com.doge.parsing.FunctionImports;
+import com.doge.parsing.Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 
 import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RED;
@@ -20,35 +21,32 @@ import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
 public class Main {
 
     public static void main(String[] args) {
-        Main obj = new Main();
-        //Get sourcecode file and set as ANTLR input stream
+        FileHandling filesNstuff = new FileHandling();
+        Parser parser = new Parser();
+
         String inputFile = null;
-        if (args.length > 0) inputFile = args[0];
-        InputStream is = System.in;
-        if (inputFile != null) try {
-            is = new FileInputStream(inputFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (args.length > 0 && !args[0].equals("--prettyTest")) {
+            inputFile = args[0];
         }
-        ANTLRInputStream input = null;
-        try {
-            input = new ANTLRInputStream(is);
-        } catch (IOException e) {
-            e.printStackTrace();
+        else{
+            System.out.println("Something is wrong with the input file!");
+            System.exit(1);
         }
 
-        //ANTLR magic
-        ourLangLexer lexer = new ourLangLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        ourLangParser parser = new ourLangParser(tokens);
-        ParseTree tree = parser.topLevel();
+
+        ParseTree tree = parser.GenerateParseTreeFromSourcecode(inputFile);
 
 
         //System.out.println(tree.toStringTree(parser)); // print tree as text
-        if (parser.getNumberOfSyntaxErrors() == 0) {
+        if (parser.getOurLangParser().getNumberOfSyntaxErrors() == 0) {
             //Generate abstract syntax tree
             BaseASTNode abstractSyntaxTree = new BaseASTNode(null);
             tree.accept(new visitorAST(abstractSyntaxTree));
+
+            if (((TopNode)abstractSyntaxTree.getChild(0)).getImports() != null){
+                FunctionImports funcImp = new FunctionImports();
+                funcImp.AddFunctionDeclarationsFromImportNodes(abstractSyntaxTree, FileSystems.getDefault().getPath(inputFile).toAbsolutePath().toString());
+            }
 
             //Scope check BaseASTNode
             ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
@@ -114,61 +112,28 @@ public class Main {
 
             if (LanguageError.NumErrors(errors, ErrorType.ERROR) == 0){
                 StringBuilder output = new StringBuilder();
-                abstractSyntaxTree.accept(new CodeGeneratorVisitorOLD(output));
-                try {
-                    File outputSourcecode = new File("../../../" + "/codeout/code.c");
-                    if(!outputSourcecode.exists()) {
-                        if (!outputSourcecode.getParentFile().exists())
-                            outputSourcecode.getParentFile().mkdirs();
-                        outputSourcecode.createNewFile();
-                    }
-                    FileWriter fileWriter = new FileWriter(outputSourcecode.getAbsoluteFile());
-                    Writer writer = new BufferedWriter(fileWriter);
-                    obj.exportResource("simpleCL.h");
-                    obj.exportResource("simpleCL.c");
-                    obj.exportResource("Makefile");
-                    writer.append(output);
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.exit(0);
 
+                abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
+
+                File outputSourcecode = filesNstuff.GetFileForOutputCode("code.c", "../../../codeout/");
+                filesNstuff.WriteToFile(outputSourcecode, output);
+
+                filesNstuff.ExportResource("simpleCL.h", "../../../codeout/");
+                filesNstuff.ExportResource("simpleCL.c", "../../../codeout/");
+                filesNstuff.ExportResource("Makefile", "../../../codeout/");
+
+                System.exit(0);
             } else  {
                 System.exit(1);
             }
         } else {
             System.out.println(String.format("%1$s%3$d syntax %4$s...%2$s Please resolve and attempt recompile",
                     ANSI_RED, ANSI_RESET,
-                    parser.getNumberOfSyntaxErrors(),
-                    parser.getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
+                    parser.getOurLangParser().getNumberOfSyntaxErrors(),
+                    parser.getOurLangParser().getNumberOfSyntaxErrors() > 1 ? "errors" : "error"));
             System.exit(1);
         }
     }
 
-    private boolean exportResource(String resourceName){
-        InputStream stream = null;
-        OutputStream resStreamOut = null;
-        try {
-            stream = getClass().getClassLoader().getResourceAsStream(resourceName);
-            if(stream == null) {
-                System.out.println("Cannot get resource \"" + resourceName + "\"");
-                return false;
-            }
 
-            int readBytes;
-            byte[] buffer = new byte[4096];
-            resStreamOut = new FileOutputStream("../../../codeout/" + resourceName);
-            while ((readBytes = stream.read(buffer)) > 0) {
-                resStreamOut.write(buffer, 0, readBytes);
-            }
-
-            stream.close();
-            resStreamOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return true;
-    }
 }
