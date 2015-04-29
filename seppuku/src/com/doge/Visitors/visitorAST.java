@@ -2,6 +2,7 @@ package com.doge.Visitors;
 
 import com.doge.AST.*;
 import com.doge.types.AssignmentOperatorType;
+import com.doge.types.OperatorType;
 import com.doge.types.TypeParser;
 import com.antlr.*;
 import com.doge.types.ValueType;
@@ -87,7 +88,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
      */
     @Override
     public BaseASTNode visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
-        Variable funcVariable = new Variable(TypeParser.parseValueType(ctx.functiondatatype().getText()), ctx.ID().getText(), true);
+        Variable funcVariable = new Variable(ValueType.fromString(ctx.functiondatatype().getText()), ctx.ID().getText(), true);
         FunctionDclNode functionDclNode = new FunctionDclNode(parentStack.peek(), funcVariable);
         parentStack.push(functionDclNode);
         visit(ctx.parameterlist());
@@ -196,7 +197,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
             //Don't parse the commas separating the parameters
             if (!ctx.getChild(i).getText().equals(",")) {
                 tmp.setParameter(new Variable(
-                        TypeParser.parseValueType(ctx.getChild(i).getChild(0).getText()),
+                        ValueType.fromString(ctx.getChild(i).getChild(0).getText()),
                         ctx.getChild(i).getChild(1).getText()));
             }
         }
@@ -231,7 +232,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         parentStack.push(null);
         DeclarationNode dcl = new DeclarationNode(
                 parent,
-                new Variable(TypeParser.parseValueType(ctx.valueType().getText()), ctx.ID().getText()),
+                new Variable(ValueType.fromString(ctx.valueType().getText()), ctx.ID().getText()),
                 (ExpressionNode) visit(ctx.expression()),
                 ctx.start.getLine());
         parentStack.pop();
@@ -248,7 +249,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
     @Override
     public BaseASTNode visitComplexDecl(ourLangParser.ComplexDeclContext ctx) {
         ExpressionNode expr = (ExpressionNode) visit(ctx.expression());
-        Variable var =  new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
+        Variable var =  new Variable(ValueType.fromString(ctx.complexdatatype().getText()), ctx.ID().getText());
         var.setComplex(true);
 
         //Set size if matrix decl
@@ -266,7 +267,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
     @Override
     public BaseASTNode visitSpecialComplexDecl(ourLangParser.SpecialComplexDeclContext ctx) {
 
-        Variable complex = new Variable(TypeParser.parseValueType(ctx.complexdatatype().getText()), ctx.ID().getText());
+        Variable complex = new Variable(ValueType.fromString(ctx.complexdatatype().getText()), ctx.ID().getText());
         complex.setComplex(true);
         CollectionCoordinateNode sizeNode = (CollectionCoordinateNode) visit(ctx.entranceCoordinate());
         if(sizeNode.getCoordinates()[1] != null){
@@ -302,7 +303,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         AssignmentNode assNode = new AssignmentNode(
                 parent,
                 new Variable(null, ctx.ID().getText()),
-                TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
+                AssignmentOperatorType.fromString(ctx.assignmentOperator().getText()),
                 (ExpressionNode) visit(ctx.expression()));
 
         parentStack.pop();
@@ -317,7 +318,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         AssignmentNode assNode = new AssignmentNode(
                 parent,
                 new Variable(null, ctx.ID().getText()),
-                TypeParser.parseAssignmentOperator(ctx.postUnaryOperator().getText()),
+                AssignmentOperatorType.fromString(ctx.postUnaryOperator().getText()),
                 null);
         parentStack.pop();
         assNode.setLineNumber(ctx.start.getLine());
@@ -344,7 +345,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
                 new Variable(null,
                         ctx.collectionEntrance().ID().getText(),
                         (CollectionCoordinateNode) visit(ctx.collectionEntrance().entranceCoordinate())),
-                TypeParser.parseAssignmentOperator(ctx.assignmentOperator().getText()),
+                AssignmentOperatorType.fromString(ctx.assignmentOperator().getText()),
                 (ExpressionNode) visit(ctx.expression()));
         assignment.setLineNumber(ctx.start.getLine());
         parentStack.pop();
@@ -477,7 +478,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new ExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
-                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                OperatorType.fromString(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.expression(1)),
                 ctx.start.getLine());
     }
@@ -488,7 +489,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         ExpressionNode tmp = new ExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
-                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                OperatorType.fromString(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.expression(1)),
                 ctx.start.getLine());
         parentStack.pop();
@@ -505,7 +506,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new ExpressionNode(
                 null,
                 new VariableExpressionNode(null, new Variable(null, ctx.ID().getText())),
-                TypeParser.parseOperator(ctx.postUnaryOperator().getText()),
+                OperatorType.fromString(ctx.postUnaryOperator().getText()),
                 null,
                 ctx.start.getLine());
     }
@@ -593,7 +594,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.expression(0)),
-                TypeParser.parseOperator(ctx.conditionalOperator().getText()),
+                OperatorType.fromString(ctx.conditionalOperator().getText()),
                 (ExpressionNode) visit(ctx.expression(1)),
                 ctx.start.getLine());
     }
@@ -603,7 +604,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.conditionalExpression(0)),
-                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                OperatorType.fromString(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.conditionalExpression(1)),
                 ctx.start.getLine());
     }
@@ -612,7 +613,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.conditionalExpression(0)),
-                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                OperatorType.fromString(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.conditionalExpression(1)),
                 ctx.start.getLine());
     }
@@ -622,7 +623,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new ConditionalExpressionNode(
                 null,
                 (ExpressionNode) visit(ctx.conditionalExpression(0)),
-                TypeParser.parseOperator(ctx.getChild(1).getText()),
+                OperatorType.fromString(ctx.getChild(1).getText()),
                 (ExpressionNode) visit(ctx.conditionalExpression(1)),
                 ctx.start.getLine());
     }
