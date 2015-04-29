@@ -73,11 +73,11 @@ argumentlist
     ;
 
 expression
-    : expression ( '*' | '/' | '%' ) expression     #mulExpr
-    | expression ( '+' | '-' ) expression           #addExpr
-    | '(' expression ')'                            #parenExpr
-    | value                                         #valueExpr
-    | ID postUnaryOperator                          #postIDExpr
+    : expression ( '*' | '/' | '%' | '#' ) expression   #mulExpr
+    | expression ( '+' | '-' ) expression               #addExpr
+    | '(' expression ')'                                #parenExpr
+    | value                                             #valueExpr
+    | ID postUnaryOperator                              #postIDExpr
     ;
 
 assignment
@@ -148,8 +148,7 @@ collectiontype
     ;
 
 postUnaryOperator 
-    : '++' | '--'
-    ;
+    : '++' | '--' | '!' | '^' ;
 
 assignmentOperator
     : '=' | '+=' | '-=' | '*=' | '/=' ;

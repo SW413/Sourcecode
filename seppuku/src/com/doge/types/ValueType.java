@@ -40,4 +40,15 @@ public enum ValueType {
     public String toString(){
         return valType;
     }
+
+    public static ValueType fromString(String text) {
+        if (text != null) {
+            for (ValueType val : ValueType.values()) {
+                if (text.equalsIgnoreCase(val.valType)) {
+                    return val;
+                }
+            }
+        }
+        return ValueType.INVALID;
+    }
 }

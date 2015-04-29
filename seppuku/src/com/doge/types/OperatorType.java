@@ -9,8 +9,11 @@ public enum OperatorType {
     MUL("*"),
     DIV("/"),
     MOD("%"),
+    MULINDEX("#"),
     INCREMENT("++"),
     DECREMENT("--"),
+    INVERS("!"),
+    TRANSPOSE("^"),
     EQUAL("=="),
     NOTEQUAL("!="),
     BIGGERTHAN(">"),
@@ -28,5 +31,16 @@ public enum OperatorType {
     @Override
     public String toString(){
         return oppType;
+    }
+
+    public static OperatorType fromString(String text) {
+        if (text != null) {
+            for (OperatorType opp : OperatorType.values()) {
+                if (text.equalsIgnoreCase(opp.oppType)) {
+                    return opp;
+                }
+            }
+        }
+        return null;
     }
 }

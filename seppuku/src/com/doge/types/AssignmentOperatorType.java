@@ -22,4 +22,14 @@ public enum AssignmentOperatorType {
         return oppType;
     }
 
+    public static AssignmentOperatorType fromString(String text) {
+        if (text != null) {
+            for (AssignmentOperatorType opp : AssignmentOperatorType.values()) {
+                if (text.equalsIgnoreCase(opp.oppType)) {
+                    return opp;
+                }
+            }
+        }
+        return null;
+    }
 }

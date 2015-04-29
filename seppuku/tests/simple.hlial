@@ -14,5 +14,5 @@ if(a < b){
 }
 
 if((a < b) == true){
-    print(a);
+    print(a + b);
 }
