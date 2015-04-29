@@ -7,7 +7,9 @@ import com.doge.ErrorHandling.ArgumentsError;
 import com.doge.ErrorHandling.TypeMismatchError;
 import com.doge.checking.Symbol;
 import com.doge.checking.SymbolTable;
+import com.doge.types.OperatorType;
 import com.doge.types.TypeChecker;
+import com.doge.types.TypeParser;
 import com.doge.types.ValueType;
 
 import java.lang.reflect.Type;
@@ -93,7 +95,13 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
                 errors,
                 node.getLineNumber()
         );
+
         node.setValueType(valueType);
+
+        if (TypeParser.isComplexValueType(valueType) && node.getOperatorType() != null && !OperatorType.isAllowed(node.getOperatorType())){
+            System.out.println("\nOperator not allowed at the moment!\n");
+            System.exit(1);
+        }
 
         return new Variable(valueType, "Expr:<" + node.toString() + ">");
     }

@@ -9,7 +9,7 @@ public enum OperatorType {
     MUL("*"),
     DIV("/"),
     MOD("%"),
-    MULINDEX("#"),
+    MULENTRY("#"),
     INCREMENT("++"),
     DECREMENT("--"),
     INVERS("!"),
@@ -42,5 +42,14 @@ public enum OperatorType {
             }
         }
         return null;
+    }
+
+    public static boolean isAllowed(OperatorType opp){
+        switch (opp){
+            case ADD:case SUB: case MUL:
+                return true;
+            default:
+                return false;
+        }
     }
 }
