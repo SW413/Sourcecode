@@ -51,6 +51,15 @@ public class PrettyPrint extends BaseASTVisitor<String> {
 
     @Override
     public String VisitDeclarationNode(DeclarationNode node){
+        if (node.getExpression() == null)
+            return node.getVariable().getValueType() +
+                    "[" +
+                    visit(node.getVariable().getDynamicSize()[0]) +
+                    ", " +
+                    visit(node.getVariable().getDynamicSize()[1]) +
+                    "] " +
+                    node.getVariable().getId() +
+                    ";";
         return node.getVariable().getValueType() + " " + node.getVariable().getId() + " = " + visit(node.getExpression()) + ";";
     }
 
