@@ -1,6 +1,8 @@
 package com.doge.components;
 
 import java.io.*;
+import java.net.URL;
+import java.util.Scanner;
 
 /**
  * Created by michno on 28/4/15.
@@ -50,10 +52,8 @@ public class FileHandling {
     }
 
     public boolean ExportResource(String resourceName, String dest){
-        InputStream stream = null;
-        OutputStream resStreamOut = null;
         try {
-            stream = getClass().getClassLoader().getResourceAsStream(resourceName);
+            InputStream stream = openResourceAsStream(resourceName);
             if(stream == null) {
                 System.out.println("Cannot get resource \"" + resourceName + "\"");
                 return false;
@@ -61,7 +61,8 @@ public class FileHandling {
 
             int readBytes;
             byte[] buffer = new byte[4096];
-            resStreamOut = new FileOutputStream(dest + resourceName);
+            OutputStream resStreamOut = new FileOutputStream(dest + resourceName);
+
             while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);
             }
@@ -74,4 +75,47 @@ public class FileHandling {
 
         return true;
     }
+
+    public String ImportStringFromResource(String resourceName){
+        StringBuilder stringBuilder = new StringBuilder();
+        File input = openResourceAsFile(resourceName);
+        try (Scanner scanner = new Scanner(input)){
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                stringBuilder.append(line).append("\n");
+            }
+
+            scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private File openResourceAsFile(String resourceName){
+        File file = null;
+        try {
+            file = new File(getClass().getClassLoader().getResource(resourceName).getFile());
+            if (file != null)
+                return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private InputStream openResourceAsStream(String resourceName){
+        InputStream stream = null;
+        try {
+            stream = getClass().getClassLoader().getResourceAsStream(resourceName);
+            if (stream != null)
+                return stream;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

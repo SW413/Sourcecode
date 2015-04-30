@@ -22,7 +22,7 @@ while(a == 2 || a < 0 && a != -1) {
     print(a);
 }
 
-while(true) {
-	print("Infinite loop!");
+while(true){
+    print("din mor");
 }
 
