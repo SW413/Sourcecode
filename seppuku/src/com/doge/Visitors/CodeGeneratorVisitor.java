@@ -36,6 +36,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             outputCode.append(");\n");
         }
 
+        //make complex datatypes
+
+
         //main method
         outputCode.append("\n\n/*--= MAIN METHOD =--*/\n");
         outputCode.append("int main(){\n");
