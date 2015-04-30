@@ -1,13 +1,17 @@
 import<fib.hlial>
-int a = 2;
+int a = 3;
 
 int b = 3;
 
-matrix<float>[a, b] lol;
+matrix<int>[a, b] lol;
 
 matrix<int> neo = [ 1, 2, 4;
                     3, 2, 1;
                     2, 1, 5];
+
+matrix<int>[3, 3] res;
+
+res = lol + neo;
 
 if(a < b){
     print(neo);

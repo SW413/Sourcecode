@@ -51,9 +51,10 @@ public class FileHandling {
         return fileInputStream;
     }
 
-    public boolean ExportResource(String resourceName, String dest){
+    public boolean ExportResource(String resourcePath, String dest){
         try {
-            InputStream stream = openResourceAsStream(resourceName);
+            String resourceName = resourcePath.substring(resourcePath.lastIndexOf('/') + 1, resourcePath.length());
+            InputStream stream = openResourceAsStream(resourcePath);
             if(stream == null) {
                 System.out.println("Cannot get resource \"" + resourceName + "\"");
                 return false;

@@ -1,9 +1,12 @@
 package com.doge.Visitors;
 
 import com.doge.AST.*;
+import com.doge.components.FileHandling;
 import com.doge.types.TypeChecker;
 import com.doge.types.TypeParser;
+import com.doge.types.ValueType;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private StringBuilder outputCode;
     private int indentationLevel = 0;
+    private FileHandling filesNstuff = new FileHandling();
 
     public CodeGeneratorVisitor(StringBuilder outputCode) {
         this.outputCode = outputCode;
@@ -42,6 +46,10 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         outputCode.append("\n\n/*--= MAIN METHOD =--*/\n");
         outputCode.append("int main(){\n");
         indentationLevel++;
+
+        outputCode.append(filesNstuff.ImportStringFromResource("codesnippets/simpleCLsetup.c") + "\n\n");
+
+
         for (BaseASTNode stmt : node.getStatements().getChildren()) {
             outputCode.append(indent(visit(stmt) + "\n"));
         }
@@ -76,49 +84,53 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     @Override
     public String VisitDeclarationNode(DeclarationNode node) {
         if (node.getVariable().isComplex()) {
-            StringBuilder complexDecl = new StringBuilder();
-            complexDecl.append(TypeParser.OpenCL_TypeFromValueType(node.getVariable().getValueType()) + " ");
-            if (node.getExpression() != null) {
-                complexDecl.append(node.getVariable().getId());
-                switch (TypeChecker.MatrixOrVector(node.getVariable())) {
-                    case MATRIX:
-                        complexDecl.append("[" + node.getVariable().getSize()[0] + "*" +
-                                node.getVariable().getSize()[1] + "] ");
-                        break;
-                    case VECTOR:
-                        complexDecl.append("[" + node.getVariable().getSize()[0] + "] ");
-                        break;
-                }
-                return complexDecl.toString() + " = " + visit(node.getExpression()) + ";";
-            }else{
-                String dynRows, dynCols, typeSize;
-                dynRows = visit(node.getVariable().getDynamicSize()[0]);
-                dynCols = visit(node.getVariable().getDynamicSize()[1]);
-                typeSize = "sizeof(" + TypeParser.OpenCL_TypeFromValueType(node.getVariable().getValueType()) + ")";
-                complexDecl.append("*" + node.getVariable().getId());
-                complexDecl.append(" = " +
-                        "malloc(" + dynRows + " * " + dynCols + " * " +
-                        typeSize + ");\n");
-                complexDecl.append(indent("memset( " +
-                        node.getVariable().getId() +
-                        ", " +
-                        "0, " +
-                        typeSize +
-                        " * " +
-                        dynRows +
-                        " * " +
-                        dynCols +
-                        ");"));
-                return complexDecl.toString();
+            String complexType = "";
+            switch (TypeChecker.MatrixOrVector(node.getVariable())) {
+                case MATRIX:
+                    complexType = filesNstuff.ImportStringFromResource("codesnippets/makeMatrix.c");
+                        complexType = complexType.replaceAll("§ROWS§",
+                                node.getVariable().getSize() != null ?
+                                        String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
+                        complexType = complexType.replaceAll("§COLS§",
+                                node.getVariable().getSize()!= null ?
+                                        String.format("%d", node.getVariable().getSize()[1]) : visit(node.getVariable().getDynamicSize()[1]));
+                    break;
+                case VECTOR:
+                    complexType = filesNstuff.ImportStringFromResource("codesnippets/makeVector.c");
+                    complexType = complexType.replaceAll("§ROWS§",
+                            node.getVariable().getSize() != null ?
+                                    String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
+                    break;
             }
+            complexType = complexType.replaceAll("§ID§", node.getVariable().getId());
+            complexType = complexType.replaceAll("§SIMPLETYPE§",
+                    (TypeParser.OpenCL_TypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType())).toString()));
+
+
+
+            return complexType.toString();
         }
         return node.getVariable().toOpenCLcode() + " = " + visit(node.getExpression()) + ";";
     }
 
     @Override
     public String VisitAssignmentNode(AssignmentNode node) {
-        if (node.getExpression() == null)
-            return node.getVariable().getId() + node.getAssignmentOperator() + ";";
+
+        if (node.getExpression() == null) {
+           return node.getVariable().getId() + node.getAssignmentOperator() + ";";
+        } else {
+            System.out.println(node.getExpression().getValueType());
+            System.out.println(TypeChecker.MatrixOrVector(node.getExpression().getValueType()) + " LOLLLLL ");
+            if (true){
+            switch (node.getExpression().getOperatorType()){
+
+                case ADD:
+                    return matrixAdd(visit(node.getExpression().getLValue()), visit(node.getExpression().getRValue()), node.getVariable().getId());
+                default:
+                    break;
+            }}
+        }
+
         return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
     }
 
@@ -319,5 +331,16 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         printArgs.append("\"\\n\"");
 
         return "printf(\"" + formatString.toString() + "\", " + printArgs.toString() + ")";
+    }
+
+    private String matrixAdd(String aID, String bID, String resID){
+        filesNstuff.ExportResource("kernels/matrixAdd.cl", "../../../codeout/");
+        String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/matrixAdd.c");
+
+        argsNlauch = argsNlauch.replaceAll("§MATRIX_A§",     aID);
+        argsNlauch = argsNlauch.replaceAll("§MATRIX_B§",     bID);
+        argsNlauch = argsNlauch.replaceAll("§MATRIX_RES§", resID);
+
+        return argsNlauch;
     }
 }

@@ -12,7 +12,11 @@ import java.util.ArrayList;
 public class TypeChecker {
 
     public static ValueType MatrixOrVector(Variable value){
-        switch (value.getValueType()){
+        return MatrixOrVector(value.getValueType());
+    }
+
+    public static ValueType MatrixOrVector(ValueType valueType){
+        switch (valueType){
             case MATRIX_INT16:
             case MATRIX_INT:
             case MATRIX_INT64:
@@ -41,8 +45,8 @@ public class TypeChecker {
             return lValue.getValueType();
         } else {
             ValueType combined = compatibleTypes(
-                    lValue.getEntrance() != null ? complexToSimple(lValue.getValueType()) : lValue.getValueType(),
-                    rValue.getEntrance() != null ? complexToSimple(rValue.getValueType()) : rValue.getValueType());
+                    lValue.getEntrance() != null ? ComplexToSimple(lValue.getValueType()) : lValue.getValueType(),
+                    rValue.getEntrance() != null ? ComplexToSimple(rValue.getValueType()) : rValue.getValueType());
             if (combined != ValueType.INVALID) {
                 return combined;
             } else {
@@ -222,7 +226,7 @@ public class TypeChecker {
         return ValueType.INVALID;
     }
 
-    private static ValueType complexToSimple(ValueType type){
+    public static ValueType ComplexToSimple(ValueType type){
         switch (type){
             case VECTOR_INT16: case MATRIX_INT16:
                 return ValueType.INT16;
