@@ -26,7 +26,8 @@ public class FunctionImports {
 
     private ArrayList<FunctionDclNode> parseImportFile(String relativePath, String sourcecodePath){
         Parser parser = new Parser();
-        ParseTree tree = parser.GenerateParseTreeFromSourcecode(sourcecodePath + relativePath);
+        ParseTree tree = parser.GenerateParseTreeFromSourcecode(
+                isWindows() ? (sourcecodePath + relativePath).replaceAll("/", "\\") : (sourcecodePath + relativePath));
         if (parser.getOurLangParser().getNumberOfSyntaxErrors() == 0) {
             BaseASTNode abstractSyntaxTree = new BaseASTNode(null);
             tree.accept(new visitorAST(abstractSyntaxTree));
@@ -35,5 +36,9 @@ public class FunctionImports {
         System.out.println("Syntax errors in import files!");
         System.exit(1);
         return null;
+    }
+
+    private boolean isWindows(){
+        return System.getProperty("os.name").indexOf("win") >= 0;
     }
 }

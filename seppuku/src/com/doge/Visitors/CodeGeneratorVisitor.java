@@ -118,6 +118,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitAssignmentNode(AssignmentNode node) {
+        if (node.getExpression() == null)
+            return node.getVariable().getId() + node.getAssignmentOperator() + ";";
         return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
     }
 
@@ -149,7 +151,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         StringBuilder whileLoop = new StringBuilder();
         whileLoop.append("while(" + visit(node.getCondNode()) + ") {\n");
         whileLoop.append(statementBody(node.getBody().getChildren()));
-        whileLoop.append("}\n");
+        whileLoop.append(indent("}\n"));
 
         return whileLoop.toString();
     }
@@ -177,7 +179,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     @Override
     public String VisitConditionalExpressionNode(ConditionalExpressionNode node) {
         if (node.getOperatorType() == null) {
-            // Must be paren
+            if (node.getLValue().getClass() == ConstantExpressionNode.class)
+                return visit(node.getLValue());
             return "(" + visit(node.getLValue()) + ")";
         } else {
             return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());

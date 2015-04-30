@@ -98,6 +98,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
     @Override
     public Void VisitWhileLoopNode(WhileLoopNode node) {
         symbolTable.pushScope(ScopeType.LOOP);
+        visit(node.getCondNode());
         if (node.getBody() != null)
             visit(node.getBody());
         symbolTable.popScope();

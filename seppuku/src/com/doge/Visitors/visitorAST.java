@@ -593,9 +593,9 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
     public BaseASTNode visitSingleCondExpr(ourLangParser.SingleCondExprContext ctx) {
         return new ConditionalExpressionNode(
                 null,
-                (ExpressionNode) visit(ctx.expression(0)),
+                ctx.expression(0) != null ? (ExpressionNode) visit(ctx.expression(0)) : null,
                 OperatorType.fromString(ctx.conditionalOperator().getText()),
-                (ExpressionNode) visit(ctx.expression(1)),
+                ctx.expression(1) != null ? (ExpressionNode) visit(ctx.expression(1)) : null,
                 ctx.start.getLine());
     }
 
@@ -636,6 +636,11 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
     @Override
     public BaseASTNode visitBoolValConExpr(ourLangParser.BoolValConExprContext ctx) {
-        return new ConstantExpressionNode(null, Boolean.getBoolean(ctx.BOOLVAL().getText()));
+        return new ConditionalExpressionNode(null,
+                new ConstantExpressionNode(null, Boolean.parseBoolean(ctx.BOOLVAL().getText())),
+                null,
+                null,
+                ctx.start.getLine()
+        );
     }
 }
