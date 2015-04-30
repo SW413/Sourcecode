@@ -1,4 +1,4 @@
-package com.doge.parsing;
+package com.doge.components;
 
 import com.doge.AST.BaseASTNode;
 import com.doge.AST.FunctionDclNode;

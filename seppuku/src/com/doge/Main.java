@@ -6,9 +6,9 @@ import com.doge.ErrorHandling.ErrorType;
 import com.doge.ErrorHandling.LanguageError;
 import com.doge.Visitors.*;
 import com.doge.checking.SymbolTable;
-import com.doge.parsing.FileHandling;
-import com.doge.parsing.FunctionImports;
-import com.doge.parsing.Parser;
+import com.doge.components.FileHandling;
+import com.doge.components.FunctionImports;
+import com.doge.components.Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;

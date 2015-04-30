@@ -4,7 +4,7 @@ import com.doge.AST.*;
 import com.doge.types.AssignmentOperatorType;
 
 /**
- * Pretty printing which prints the AST out as the code it was before parsing.
+ * Pretty printing which prints the AST out as the code it was before components.
  */
 public class PrettyPrintOLD extends BaseASTVisitor<Void> {
 
