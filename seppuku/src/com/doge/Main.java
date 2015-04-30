@@ -120,6 +120,7 @@ public class Main {
 
                 filesNstuff.ExportResource("simpleCL.h", "../../../codeout/");
                 filesNstuff.ExportResource("simpleCL.c", "../../../codeout/");
+                filesNstuff.ExportResource("complexTypes.h", "../../../codeout/");
                 filesNstuff.ExportResource("Makefile", "../../../codeout/");
 
                 System.exit(0);

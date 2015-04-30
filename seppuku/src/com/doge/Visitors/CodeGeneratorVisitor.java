@@ -20,6 +20,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     @Override
     public String VisitTopNode(TopNode node) {
         outputCode.append("#include \"simpleCL.h\"\n" +
+                "#include \"complexTypes.h\"\n" +
                 "#define true 1\n" +
                 "#define false 0\n");
 
@@ -35,8 +36,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             }
             outputCode.append(");\n");
         }
-
-        //make complex datatypes
 
 
         //main method
