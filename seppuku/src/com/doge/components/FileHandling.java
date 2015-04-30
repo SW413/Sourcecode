@@ -1,7 +1,6 @@
-package com.doge.parsing;
+package com.doge.components;
 
 import java.io.*;
-import java.nio.file.Path;
 
 /**
  * Created by michno on 28/4/15.

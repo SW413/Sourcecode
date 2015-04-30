@@ -6,7 +6,7 @@ import com.doge.types.*;
 import java.util.ArrayList;
 
 /**
- * Pretty printing which prints the AST out as the code it was before parsing.
+ * Pretty printing which prints the AST out as the code it was before components.
  */
 public class PrettyPrint extends BaseASTVisitor<String> {
     private StringBuilder printer;
