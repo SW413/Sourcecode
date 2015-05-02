@@ -1,22 +1,26 @@
 package com.doge;
 
-import com.doge.AST.BaseASTNode;
-import com.doge.AST.TopNode;
-import com.doge.ErrorHandling.ErrorType;
-import com.doge.ErrorHandling.LanguageError;
-import com.doge.Visitors.*;
-import com.doge.checking.SymbolTable;
-import com.doge.components.FileHandling;
-import com.doge.components.FunctionImports;
-import com.doge.components.Parser;
+import com.doge.CodeGeneration.Visitors.CodeGeneratorVisitor;
+import com.doge.ContextualAnalysis.AST.BaseASTNode;
+import com.doge.ContextualAnalysis.AST.TopNode;
+import com.doge.MiscComponents.ErrorReporting.ErrorType;
+import com.doge.MiscComponents.ErrorReporting.LanguageError;
+import com.doge.MiscComponents.Visitors.*;
+import com.doge.ContextualAnalysis.checking.SymbolTable;
+import com.doge.MiscComponents.FileHandling;
+import com.doge.MiscComponents.FunctionImports;
+import com.doge.ContextualAnalysis.Visitors.ASTTypeCheckVisitor;
+import com.doge.ContextualAnalysis.Visitors.SymbolTableFillVisitor;
+import com.doge.ContextualAnalysis.Visitors.visitorAST;
+import com.doge.SyntaxAnalysis.Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 
-import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RED;
-import static com.doge.ErrorHandling.ANSIEscapeCodes.ANSI_RESET;
+import static com.doge.MiscComponents.ErrorReporting.ANSIEscapeCodes.ANSI_RED;
+import static com.doge.MiscComponents.ErrorReporting.ANSIEscapeCodes.ANSI_RESET;
 
 public class Main {
 
