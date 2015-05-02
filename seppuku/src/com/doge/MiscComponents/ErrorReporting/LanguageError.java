@@ -25,7 +25,7 @@ public abstract class LanguageError implements Comparable<LanguageError> {
         Collections.sort(errorList);
         String out = "";
         for (LanguageError err : errorList) {
-            if (typeOfErrors == null) {
+            if (typeOfErrors == ErrorType.ALL) {
                 if(!out.contains(err.toString()))
                     out += err + "\n";
             }

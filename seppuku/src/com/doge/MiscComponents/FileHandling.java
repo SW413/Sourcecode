@@ -8,6 +8,17 @@ import java.util.Scanner;
  */
 public class FileHandling {
 
+    public String CheckArgs(String[] args){
+        String inputFile = null;
+        if (args.length > 0 && !args[0].equals("--prettyTest")) {
+            inputFile = args[0];
+        } else {
+            System.out.println("Something is wrong with the input file argument!");
+            System.exit(1);
+        }
+        return inputFile;
+    }
+
     public File GetFileForOutputCode(String filename, String dest){
         File outputSourcecode = null;
         try {

@@ -1,4 +1,4 @@
-package com.doge.MiscComponents.Visitors;
+package com.doge.MiscComponents.PrettyPrinter.Visitors;
 
 import com.doge.ContextualAnalysis.AST.*;
 import com.doge.ContextualAnalysis.Visitors.BaseASTVisitor;
