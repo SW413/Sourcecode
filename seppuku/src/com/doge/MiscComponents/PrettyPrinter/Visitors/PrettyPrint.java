@@ -19,7 +19,7 @@ public class PrettyPrint extends BaseASTVisitor<String> {
     @Override
     public String VisitTopNode(TopNode node) {
         if (node.getImports() != null){
-            //TODO Do this later, not implemented yet
+            //printer.append(visit(node.getImports())); Still doesn't work.
         }
         for (FunctionDclNode funcDcl : node.getFunctionDeclarations()){
             printer.append(visit(funcDcl) + "\n");
@@ -30,21 +30,25 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         return null;
     }
     
-    /*  - Grammatikken skal skrive lidt om før import virker
+
     @Override
     public String VisitImportNode(ImportNode node) {
         StringBuilder imports = new StringBuilder();
-        for (int i = 0; i < node.getInputFiles().size(); i++) {
-            imports.append("import <" + node.getInputFiles().get(i).getName() + ">");
+        for (int i = 0; i < node.getInputFilePaths().size(); i++) {
+            imports.append("import <" + node.getInputFilePaths().get(i) + ">");
         }
         return imports.toString();
-    } */
+    }
 
     @Override
     public String VisitAssignmentNode(AssignmentNode node) {
-        if (node.getVariable().isComplex()) {
+        if (node.getVariable().isComplex() && node.getVariable().getEntrance() != null) {
             return node.getVariable().getId() + visit(node.getVariable().getEntrance()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
-        } else {
+        }
+        else if(node.getVariable().isComplex()){
+            return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
+        }
+        else {
             return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
         }
     }
