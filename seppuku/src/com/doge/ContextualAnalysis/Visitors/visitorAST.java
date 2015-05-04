@@ -23,12 +23,21 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
     private BaseASTNode baseAstNode;
     //Stack to keep track of parents when building the BaseASTNode
     private Stack<BaseASTNode> parentStack = new Stack<BaseASTNode>();
+    private Boolean isImporting;
+    private String importingFileName;
 
     //Constructor
     public visitorAST(BaseASTNode baseAstNode){
         this.baseAstNode = baseAstNode;
+        this.isImporting = false;
+        this.importingFileName = "";
     }
 
+    public visitorAST(BaseASTNode baseAstNode, Boolean isImporting, String importingFileName){
+        this.baseAstNode = baseAstNode;
+        this.isImporting = isImporting;
+        this.importingFileName = importingFileName;
+    }
 
     /**
      * Generate a {@link com.doge.ContextualAnalysis.AST.TopNode} and link it to the {@link com.doge.ContextualAnalysis.AST.BaseASTNode} tree.
@@ -88,7 +97,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
     @Override
     public BaseASTNode visitFunctiondeclaration(ourLangParser.FunctiondeclarationContext ctx) {
         Variable funcVariable = new Variable(ValueType.fromString(ctx.functiondatatype().getText()), ctx.ID().getText(), true);
-        FunctionDclNode functionDclNode = new FunctionDclNode(parentStack.peek(), funcVariable);
+        FunctionDclNode functionDclNode = isImporting ? new FunctionDclNode(parentStack.peek(), funcVariable, true, importingFileName) : new FunctionDclNode(parentStack.peek(), funcVariable);
         parentStack.push(functionDclNode);
         visit(ctx.parameterlist());
         visit(ctx.functionbody());

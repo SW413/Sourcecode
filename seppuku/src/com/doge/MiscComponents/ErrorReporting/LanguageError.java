@@ -1,5 +1,7 @@
 package com.doge.MiscComponents.ErrorReporting;
 
+import com.doge.ContextualAnalysis.AST.Variable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -37,6 +39,10 @@ public abstract class LanguageError implements Comparable<LanguageError> {
             }
         }
         System.out.println(out);
+    }
+
+    static public String GetFileNameForError(Variable variable) {
+        return variable.getFunctionDclNode() != null ? variable.getFunctionDclNode().getFileName() : "";
     }
 
     @Override

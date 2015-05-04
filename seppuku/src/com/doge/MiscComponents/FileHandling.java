@@ -2,6 +2,7 @@ package com.doge.MiscComponents;
 
 import java.io.*;
 import java.util.Scanner;
+import com.doge.MiscComponents.ErrorReporting.ANSIEscapeCodes;
 
 /**
  * Created by michno on 28/4/15.
@@ -59,7 +60,8 @@ public class FileHandling {
         if (inputFile != null) try {
             fileInputStream = new FileInputStream(inputFile);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(ANSIEscapeCodes.ANSI_RED + "Error: Import file \" " + inputFile + "\" not found." + ANSIEscapeCodes.ANSI_RESET);
+            System.exit(1);
         }
 
         return fileInputStream;
