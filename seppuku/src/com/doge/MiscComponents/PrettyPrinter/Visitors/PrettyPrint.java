@@ -15,12 +15,8 @@ public class PrettyPrint extends BaseASTVisitor<String> {
         this.printer = printer;
     }
 
-
     @Override
     public String VisitTopNode(TopNode node) {
-        if (node.getImports() != null){
-            //printer.append(visit(node.getImports())); Still doesn't work.
-        }
         for (FunctionDclNode funcDcl : node.getFunctionDeclarations()){
             printer.append(visit(funcDcl) + "\n");
         }
@@ -28,16 +24,6 @@ public class PrettyPrint extends BaseASTVisitor<String> {
             printer.append(visit(stmt) + "\n");
         }
         return null;
-    }
-    
-
-    @Override
-    public String VisitImportNode(ImportNode node) {
-        StringBuilder imports = new StringBuilder();
-        for (int i = 0; i < node.getInputFilePaths().size(); i++) {
-            imports.append("import <" + node.getInputFilePaths().get(i) + ">");
-        }
-        return imports.toString();
     }
 
     @Override

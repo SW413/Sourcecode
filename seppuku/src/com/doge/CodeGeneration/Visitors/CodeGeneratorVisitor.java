@@ -6,6 +6,7 @@ import com.doge.MiscComponents.FileHandling;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -16,6 +17,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private StringBuilder outputCode;
     private int indentationLevel = 0;
     private FileHandling filesNstuff = new FileHandling();
+
     private Stack<Variable> resultVarStack = new Stack<Variable>();
     private Stack<String> aIdStack = new Stack<String>();
     private Stack<String> bIdStack = new Stack<String>();
@@ -66,7 +68,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             outputCode.append(func.getVariable().toOpenCLcode() + "(");
             int i = 1;
             for (Variable arg : func.getParameters()) {
-                outputCode.append(arg.toCcode());
+                outputCode.append(arg.toOpenCLcode());
                 if (i++ != func.getParameterCount())
                     outputCode.append(", ");
             }
@@ -210,8 +212,20 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
             switch (node.getOperatorType()) {
                 case ADD:
-                    expression.append(matrixKernel("matrixAdd", aIdStack.pop(), bIdStack.pop(), resultVarStack.peek().getId()));
+                    expression.append(matrixKernel(
+                            "matrixAdd",
+                            aIdStack.pop(),
+                            bIdStack.pop(),
+                            resultVarStack.peek().getId(),
+                            TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                    break;
                 case SUB:
+                    expression.append(matrixKernel(
+                            "matrixSub",
+                            aIdStack.pop(),
+                            bIdStack.pop(),
+                            resultVarStack.peek().getId(),
+                            TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     break;
                 case MUL:
                     break;
@@ -317,7 +331,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (func.getPrintArguments() != null && func.getPrintArguments().size() > 0) {
             for (Object arg : func.getPrintArguments()) {
                 if (arg != null && arg.getClass() != null) {
-                    if (arg.getClass().getSuperclass() == ExpressionNode.class) {
+                    if (arg.getClass().getSuperclass() == ExpressionNode.class || arg.getClass() == ExpressionNode.class) {
                         switch (((ExpressionNode) arg).getValueType()) {
                             case BOOLEAN:
                                 formatString.append("%s ");
@@ -355,9 +369,12 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return "printf(\"" + formatString.toString() + "\", " + printArgs.toString() + ")";
     }
 
-    private String matrixKernel(String kernelName, String aID, String bID, String resID) {
+    private String matrixKernel(String kernelName, String aID, String bID, String resID, String simpleType) {
 
-        filesNstuff.ExportResource("kernels/" + kernelName + ".cl", "../../../codeout/");
+
+        String kernel = filesNstuff.ImportStringFromResource("kernels/" + kernelName + ".cl");
+        kernel = kernel.replaceAll("§MATRIXTYPE§", simpleType);
+        filesNstuff.WriteToFile(new File("../../../codeout/" + kernelName + ".cl"), kernel);
 
         String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/" + kernelName + ".c");
 

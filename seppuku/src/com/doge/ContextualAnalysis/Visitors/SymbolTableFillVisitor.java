@@ -72,7 +72,7 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
         else if (node.getVariable().getId() == "print")
             if (node.getVariable().getPrintArguments() != null)
                 for(Object arg : node.getVariable().getPrintArguments()) {
-                    if (arg != null && arg.getClass().getSuperclass() == ExpressionNode.class)
+                    if (arg != null && arg.getClass().getSuperclass() == ExpressionNode.class || arg.getClass() == ExpressionNode.class)
                         visit((ExpressionNode) arg);
                 }
         return null;

@@ -49,6 +49,10 @@ public class FileHandling {
         return true;
     }
 
+    public boolean WriteToFile(File file, String text){
+        return WriteToFile(file, new StringBuilder(text));
+    }
+
     public FileInputStream GetFileInputStreamFromPath(String path){
         String inputFile = path;
         FileInputStream fileInputStream = null;
@@ -86,6 +90,7 @@ public class FileHandling {
 
         return true;
     }
+
 
     public String ImportStringFromResource(String resourceName){
         StringBuilder stringBuilder = new StringBuilder();

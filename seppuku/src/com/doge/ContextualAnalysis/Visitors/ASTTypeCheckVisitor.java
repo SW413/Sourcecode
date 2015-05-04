@@ -13,6 +13,7 @@ import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by michno on 25-03-2015.
@@ -130,8 +131,13 @@ public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
     }
 
     private Void CheckFuncArgsMatch(Variable func, int lineNum) {
-        if (func.getId().equals("print"))
+        if (func.getId().equals("print")){
+            for(Object arg : func.getPrintArguments()){
+                if (arg != null && arg.getClass().getSuperclass() == ExpressionNode.class || arg.getClass() == ExpressionNode.class)
+                    visit((ExpressionNode) arg);
+            }
             return null;
+        }
         if (isLanguageFunc(func.getId())){
             if (func.getArguments().size() != 1) {
                 errors.add(new ArgumentsError(func, 1, func.getArguments().size(), lineNum));

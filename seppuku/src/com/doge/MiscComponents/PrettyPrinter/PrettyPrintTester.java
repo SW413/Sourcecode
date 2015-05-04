@@ -53,7 +53,7 @@ public class PrettyPrintTester {
                 }
 
                 String[] testArgs = {"prettyTest.hlial", "--prettyTest"};
-                main(testArgs);
+                //main(testArgs);
             }
         }
     }

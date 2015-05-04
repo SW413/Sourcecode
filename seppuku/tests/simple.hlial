@@ -1,20 +1,17 @@
 import<fib.hlial>
-int a = 3;
+int a = 1000;
 
-int b = 3;
+int b = 1000;
 
 matrix<int>[a, b] Am;
 
-matrix<int> Bm = [ 1, 2, 4;
-                    3, 2, 1;
-                    2, 1, 5];
+matrix<int>[b, a] Bm;
 
-matrix<int>[3, 3] RESm;
-matrix<int>[3, 3] Cm;
+matrix<int>[a, a] RESm;
 
-RESm = Am + Bm + Cm;
+RESm = Am - Bm;
 
-if(a < b){
+if(a == b){
     print(Am);
 }
 

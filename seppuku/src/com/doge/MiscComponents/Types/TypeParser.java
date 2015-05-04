@@ -14,15 +14,15 @@ public class TypeParser {
             case INT:
             case MATRIX_INT:
             case VECTOR_INT:
-                return "int32_t";
+                return "int";
             case INT16:
             case MATRIX_INT16:
             case VECTOR_INT16:
-                return "int16_t";
+                return "short";
             case INT64:
             case MATRIX_INT64:
             case VECTOR_INT64:
-                return "int64_t";
+                return "long";
             case FLOAT:
             case MATRIX_FLOAT:
             case VECTOR_FLOAT:
@@ -39,7 +39,7 @@ public class TypeParser {
             case BOOLEAN:
             case MATRIX_BOOLEAN:
             case VECTOR_BOOLEAN:
-                return "bool";
+                return "char";
         }
         return null;
     }
