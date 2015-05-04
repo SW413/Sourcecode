@@ -228,6 +228,12 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                             TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     break;
                 case MUL:
+                    expression.append(matrixKernel(
+                            "matrixMul",
+                            aIdStack.pop(),
+                            bIdStack.pop(),
+                            resultVarStack.peek().getId(),
+                            TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     break;
             }
 
@@ -352,6 +358,10 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 formatString.append("%f ");
                                 printArgs.append(visit((ExpressionNode) arg) + ", ");
                                 break;
+                            case MATRIX_INT:
+                                String tmp = filesNstuff.ImportStringFromResource("codesnippets/printMatrix.c");
+                                tmp = tmp.replaceAll("§MATRIX§", visit((ExpressionNode) arg));
+                                return tmp + "\n" + indent("printf(\"%c\", '\\n')");
                             default:
                                 break;
                         }
