@@ -3,18 +3,19 @@ int a = 3;
 
 int b = 3;
 
-matrix<int>[a, b] lol;
+matrix<int>[a, b] Am;
 
-matrix<int> neo = [ 1, 2, 4;
+matrix<int> Bm = [ 1, 2, 4;
                     3, 2, 1;
                     2, 1, 5];
 
-matrix<int>[3, 3] res;
+matrix<int>[3, 3] RESm;
+matrix<int>[3, 3] Cm;
 
-res = lol + neo;
+RESm = Am + Bm + Cm;
 
 if(a < b){
-    print(neo);
+    print(Am);
 }
 
 if((a < b) == true){

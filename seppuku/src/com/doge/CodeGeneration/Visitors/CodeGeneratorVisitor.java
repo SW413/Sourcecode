@@ -7,6 +7,7 @@ import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by Mathias on 11-04-2015.
@@ -15,6 +16,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private StringBuilder outputCode;
     private int indentationLevel = 0;
     private FileHandling filesNstuff = new FileHandling();
+    private Stack<Variable> resultVarStack = new Stack<Variable>();
+    private Stack<String> aIdStack = new Stack<String>();
+    private Stack<String> bIdStack = new Stack<String>();
 
     public CodeGeneratorVisitor(StringBuilder outputCode) {
         this.outputCode = outputCode;
@@ -22,10 +26,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitTopNode(TopNode node) {
-        outputCode.append("#include \"simpleCL.h\"\n" +
-                "#include \"complexTypes.h\"\n" +
-                "#define true 1\n" +
-                "#define false 0\n");
+        outputCode.append(
+                "#include \"simpleCL.h\"\n" +
+                        "#include \"complexTypes.h\"\n" +
+                        "#define true 1\n" +
+                        "#define false 0\n");
 
         //make prototypes
         outputCode.append("\n\n/*--= PROTOTYPES =--*/\n");
@@ -86,48 +91,37 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             String complexType = "";
             switch (TypeChecker.MatrixOrVector(node.getVariable())) {
                 case MATRIX:
-                    complexType = filesNstuff.ImportStringFromResource("codesnippets/makeMatrix.c");
-                        complexType = complexType.replaceAll("§ROWS§",
-                                node.getVariable().getSize() != null ?
-                                        String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
-                        complexType = complexType.replaceAll("§COLS§",
-                                node.getVariable().getSize()!= null ?
-                                        String.format("%d", node.getVariable().getSize()[1]) : visit(node.getVariable().getDynamicSize()[1]));
+                    complexType = makeMatrix(
+                            node.getVariable().getSize() != null ?
+                                    String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]),
+                            node.getVariable().getSize() != null ?
+                                    String.format("%d", node.getVariable().getSize()[1]) : visit(node.getVariable().getDynamicSize()[1]));
                     break;
                 case VECTOR:
-                    complexType = filesNstuff.ImportStringFromResource("codesnippets/makeVector.c");
-                    complexType = complexType.replaceAll("§ROWS§",
+                    complexType = makeVector(
                             node.getVariable().getSize() != null ?
                                     String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
                     break;
             }
             complexType = complexType.replaceAll("§ID§", node.getVariable().getId());
             complexType = complexType.replaceAll("§SIMPLETYPE§",
-                    (TypeParser.OpenCL_TypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType())).toString()));
+                    (TypeParser.OpenCL_TypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType()))));
 
 
-
-            return complexType.toString();
+            return complexType;
         }
         return node.getVariable().toOpenCLcode() + " = " + visit(node.getExpression()) + ";";
     }
 
     @Override
     public String VisitAssignmentNode(AssignmentNode node) {
-
         if (node.getExpression() == null) {
-           return node.getVariable().getId() + node.getAssignmentOperator() + ";";
-        } else {
-            System.out.println(node.getExpression().getValueType());
-            System.out.println(TypeChecker.MatrixOrVector(node.getExpression().getValueType()) + " LOLLLLL ");
-            if (true){
-            switch (node.getExpression().getOperatorType()){
-
-                case ADD:
-                    return matrixAdd(visit(node.getExpression().getLValue()), visit(node.getExpression().getRValue()), node.getVariable().getId());
-                default:
-                    break;
-            }}
+            return node.getVariable().getId() + node.getAssignmentOperator() + ";";
+        } else if (node.getVariable().isComplex()) {
+            resultVarStack.push(node.getVariable());
+            String kernelAss = visit(node.getExpression());
+            resultVarStack.pop();
+            return kernelAss;
         }
 
         return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
@@ -199,6 +193,35 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitExpressionNode(ExpressionNode node) {
+        StringBuilder expression = new StringBuilder();
+        if (resultVarStack.size() > 0) {
+            if (node.getLValue().getClass() == VariableExpressionNode.class) {
+                aIdStack.push(visit(node.getLValue()));
+            }else{
+                aIdStack.push(resultVarStack.peek().getId());
+                expression.append(visit(node.getLValue()));
+            }
+            if (node.getRValue().getClass() == VariableExpressionNode.class) {
+                bIdStack.push(visit(node.getRValue()));
+            }else{
+                aIdStack.push(resultVarStack.peek().getId());
+                expression.append(visit(node.getRValue()));
+            }
+
+            switch (node.getOperatorType()) {
+                case ADD:
+                    expression.append(matrixKernel("matrixAdd", aIdStack.pop(), bIdStack.pop(), resultVarStack.peek().getId()));
+                case SUB:
+                    break;
+                case MUL:
+                    break;
+            }
+
+            return expression.toString();
+        }
+
+
+
         if (node.getRValue() != null)
             return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
         return visit(node.getLValue()) + node.getOperatorType();
@@ -332,14 +355,36 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return "printf(\"" + formatString.toString() + "\", " + printArgs.toString() + ")";
     }
 
-    private String matrixAdd(String aID, String bID, String resID){
-        filesNstuff.ExportResource("kernels/matrixAdd.cl", "../../../codeout/");
-        String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/matrixAdd.c");
+    private String matrixKernel(String kernelName, String aID, String bID, String resID) {
 
-        argsNlauch = argsNlauch.replaceAll("§MATRIX_A§",     aID);
-        argsNlauch = argsNlauch.replaceAll("§MATRIX_B§",     bID);
+        filesNstuff.ExportResource("kernels/" + kernelName + ".cl", "../../../codeout/");
+
+        String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/" + kernelName + ".c");
+
+        argsNlauch = argsNlauch.replaceAll("§MATRIX_A§", aID);
+        argsNlauch = argsNlauch.replaceAll("§MATRIX_B§", bID);
         argsNlauch = argsNlauch.replaceAll("§MATRIX_RES§", resID);
+
+        argsNlauch = argsNlauch.replaceAll("\\n", "\n" + indent(""));
 
         return argsNlauch;
     }
+
+    private String makeMatrix(String rows, String cols) {
+        String matrix = filesNstuff.ImportStringFromResource("codesnippets/makeMatrix.c");
+        matrix = matrix.replaceAll("§ROWS§", rows);
+        matrix = matrix.replaceAll("§COLS§", cols);
+        matrix = matrix.replaceAll("\\n", "\n" + indent(""));
+
+        return matrix;
+    }
+
+    private String makeVector(String rows) {
+        String vector = filesNstuff.ImportStringFromResource("codesnippets/makeVector.c");
+        vector = vector.replaceAll("§ROWS§", rows);
+        vector = vector.replaceAll("\\n", "\n" + indent(""));
+
+        return vector;
+    }
+
 }

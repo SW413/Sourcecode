@@ -39,8 +39,8 @@ public class Main {
         errorReporter.HandleErrors(errors, ErrorType.ALL);
 
         //Code Generation
-        //CodeGenerator codeGenerator = new CodeGenerator();
-        //codeGenerator.GenerateCodeAndWriteToFile(abstractSyntaxTree);
+        CodeGenerator codeGenerator = new CodeGenerator();
+        codeGenerator.GenerateCodeAndWriteToFile(abstractSyntaxTree);
 
         System.exit(0);
     }

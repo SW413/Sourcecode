@@ -1,3 +1,4 @@
+
 global_size[0] = §MATRIX_A§.cols * §MATRIX_A§.rows;
 local_size[0] = 1;
 software = sclGetCLSoftware("matrixAdd.cl", "matrixAdd", hardware);
