@@ -1,5 +1,4 @@
 /* Simple-OpenCL Hardware setup  */
-
 	sclHard* allHardware;
 	sclHard hardware;
 	sclSoft software;
@@ -10,4 +9,5 @@
     size_t local_size[2];
     size_t global_size[2];
 
+    printf("\n");
 /* END Hardware setup */

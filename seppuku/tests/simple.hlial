@@ -1,7 +1,6 @@
-import<fib.hlial>
-int a = 1000;
+int a = 20;
 
-int b = 1000;
+int b = 20;
 
 matrix<int>[a, b] Am;
 
@@ -9,11 +8,24 @@ matrix<int>[b, a] Bm;
 
 matrix<int>[a, a] RESm;
 
-RESm = Am - Bm;
-
-if(a == b){
-    print(Am);
+for(int i = 0; i < a+1; i++){
+    for(int j = 0; j < b; j++){
+        Am[i,j] = i-j;
+    }
 }
+
+for(int i = 0; i < a; i++){
+    Bm[i,i] = Am[i,i] + 1;
+}
+
+print("Am matrix");
+print(Am);
+
+
+RESm = Am * Bm;
+
+print("RESm Matrix");
+print(RESm);
 
 if((a < b) == true){
     print(a + b);

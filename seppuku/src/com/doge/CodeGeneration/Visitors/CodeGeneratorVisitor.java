@@ -5,6 +5,7 @@ import com.doge.ContextualAnalysis.Visitors.BaseASTVisitor;
 import com.doge.MiscComponents.FileHandling;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
+import com.doge.MiscComponents.Types.ValueType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private Stack<Variable> resultVarStack = new Stack<Variable>();
     private Stack<String> aIdStack = new Stack<String>();
     private Stack<String> bIdStack = new Stack<String>();
+    private boolean special = false;
 
     public CodeGeneratorVisitor(StringBuilder outputCode) {
         this.outputCode = outputCode;
@@ -28,11 +30,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitTopNode(TopNode node) {
-        outputCode.append(
-                "#include \"simpleCL.h\"\n" +
-                        "#include \"complexTypes.h\"\n" +
-                        "#define true 1\n" +
-                        "#define false 0\n");
+        outputCode.append(filesNstuff.ImportStringFromResource("codesnippets/preprocessor.c"));
 
         //make prototypes
         outputCode.append("\n\n/*--= PROTOTYPES =--*/\n");
@@ -120,6 +118,16 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (node.getExpression() == null) {
             return node.getVariable().getId() + node.getAssignmentOperator() + ";";
         } else if (node.getVariable().isComplex()) {
+            if (node.getVariable().getEntrance() != null){
+                String entrance = filesNstuff.ImportStringFromResource("codesnippets/matrixOutOfBounds.c");
+                return entrance
+                        .replaceAll("§ROW§", visit(node.getVariable().getEntrance().getCoordinates()[0]))
+                        .replaceAll("§COL§", visit(node.getVariable().getEntrance().getCoordinates()[1]))
+                        .replaceAll("§MATRIX§", node.getVariable().getId())
+                        .replaceAll("§CODE§",
+                        complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";")
+                        .replaceAll("\\n", "\n" + indent(""));
+            }
             resultVarStack.push(node.getVariable());
             String kernelAss = visit(node.getExpression());
             resultVarStack.pop();
@@ -199,19 +207,20 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (resultVarStack.size() > 0) {
             if (node.getLValue().getClass() == VariableExpressionNode.class) {
                 aIdStack.push(visit(node.getLValue()));
-            }else{
+            } else {
                 aIdStack.push(resultVarStack.peek().getId());
                 expression.append(visit(node.getLValue()));
             }
             if (node.getRValue().getClass() == VariableExpressionNode.class) {
                 bIdStack.push(visit(node.getRValue()));
-            }else{
+            } else {
                 aIdStack.push(resultVarStack.peek().getId());
                 expression.append(visit(node.getRValue()));
             }
 
             switch (node.getOperatorType()) {
                 case ADD:
+                    System.out.println("A: " + aIdStack.peek() + " B: " + bIdStack.peek());
                     expression.append(matrixKernel(
                             "matrixAdd",
                             aIdStack.pop(),
@@ -239,7 +248,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
             return expression.toString();
         }
-
 
 
         if (node.getRValue() != null)
@@ -283,6 +291,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     public String VisitVariableExpressionNode(VariableExpressionNode node) {
         if (node.getVariable().isFunction()) {
             return functionWithArgs(node.getVariable());
+        }else if (node.getVariable().getEntrance() != null){
+            return complexEntrance(node.getVariable());
         }
         return node.getVariable().getId();
     }
@@ -338,7 +348,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             for (Object arg : func.getPrintArguments()) {
                 if (arg != null && arg.getClass() != null) {
                     if (arg.getClass().getSuperclass() == ExpressionNode.class || arg.getClass() == ExpressionNode.class) {
-                        switch (((ExpressionNode) arg).getValueType()) {
+                        ValueType type = ((ExpressionNode) arg).getValueType();
+                        switch (type) {
                             case BOOLEAN:
                                 formatString.append("%s ");
                                 printArgs.append(visit((ExpressionNode) arg) + "? \"true\" : \"false\", ");
@@ -358,12 +369,20 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 formatString.append("%f ");
                                 printArgs.append(visit((ExpressionNode) arg) + ", ");
                                 break;
-                            case MATRIX_INT:
-                                String tmp = filesNstuff.ImportStringFromResource("codesnippets/printMatrix.c");
-                                tmp = tmp.replaceAll("§MATRIX§", visit((ExpressionNode) arg));
-                                return tmp + "\n" + indent("printf(\"%c\", '\\n')");
                             default:
-                                break;
+                                //TODO can only print int matrices...
+                                String complexPrint = "";
+                                switch (TypeChecker.MatrixOrVector(type)){
+                                    case MATRIX:
+                                        complexPrint = filesNstuff.ImportStringFromResource("codesnippets/printMatrix.c");
+                                        break;
+                                    case VECTOR:
+                                        complexPrint = filesNstuff.ImportStringFromResource("codesnippets/printVector.c");
+                                        break;
+                                }
+                                complexPrint = complexPrint.replaceAll("§ID§", visit((ExpressionNode) arg));
+                                complexPrint = complexPrint.replaceAll("\\n", "\n" + indent(""));
+                                return complexPrint;
                         }
                     } else {
                         formatString.append("%s");
@@ -414,4 +433,15 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return vector;
     }
 
+    private String complexEntrance(Variable variable){
+        String complexEntrance = filesNstuff.ImportStringFromResource("codesnippets/complexEntrance.c");
+        complexEntrance = complexEntrance.replaceAll("§SIMPLETYPE§",
+                (TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(variable.getValueType()))));
+        complexEntrance = complexEntrance.replaceAll("§ID§", variable.getId());
+        complexEntrance = complexEntrance.replaceAll("§ROW§", visit(variable.getEntrance().getCoordinates()[0]));
+        complexEntrance = complexEntrance.replaceAll("§COL§", visit(variable.getEntrance().getCoordinates()[1]));
+        complexEntrance = complexEntrance.replaceAll("\\n", "");
+
+        return complexEntrance;
+    }
 }
