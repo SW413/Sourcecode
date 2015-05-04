@@ -1,4 +1,5 @@
-printf("%c", '\n');
-for(int i = 0; i < §MATRIX§.cols * §MATRIX§.rows; i++){
-    printf("%d %c", ((int*)§MATRIX§.dataStart)[i], i % §MATRIX§.cols == §MATRIX§.cols - 1 ? '\n' : ' ');
+printf("\n");
+for(int i = 0; i < §ID§.cols * §ID§.rows; i++){
+    printf("%3d%c", ((int*)§ID§.dataStart)[i], i % §ID§.cols == §ID§.cols - 1 ? '\n' : ' ');
 }
+printf("\n");

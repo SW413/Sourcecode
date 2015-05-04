@@ -7,6 +7,7 @@ import com.doge.MiscComponents.ErrorReporting.UnDeclaredError;
 import com.doge.ContextualAnalysis.checking.Symbol;
 import com.doge.ContextualAnalysis.checking.SymbolTable;
 import com.doge.MiscComponents.Types.ScopeType;
+import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
 
@@ -189,7 +190,11 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
                 tmpSymbol.setUsed(true);
                 variable.setComplex(tmpSymbol.getVariable().isComplex());
                 node.setScope(symbolTable.currentScope());
-                node.setValueType(tmpSymbol.getType());
+                if (variable.getEntrance() != null){
+                    node.setValueType(TypeChecker.ComplexToSimple(variable.getValueType()));
+                } else {
+                    node.setValueType(tmpSymbol.getType());
+                }
                 symbolTable.currentScope().define(tmpSymbol);
             }
         }

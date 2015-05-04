@@ -1,0 +1,1 @@
+((§SIMPLETYPE§ *) §ID§.dataStart)[§ROW§ * §ID§.cols + §COL§]
