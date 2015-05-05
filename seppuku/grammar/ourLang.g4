@@ -63,8 +63,10 @@ parameter
     ;
 
 functioncall
-    : ID '(' argumentlist ')'          #customFunc
-    | PRINT '(' argumentlist ')'       #printFunc
+    : ID '(' argumentlist ')'               #customFunc
+    | PRINT '(' argumentlist ')'            #printFunc
+    | COMPLEXTOFILE '(' argumentlist ')'    #complexToFileFunc
+    | FILETOCOMPLEX  '(' argumentlist ')'   #fileToComplexFunc
     ;
 
 argumentlist
@@ -148,7 +150,7 @@ collectiontype
     ;
 
 postUnaryOperator 
-    : '++' | '--' | '!' | '^' ;
+    : '++' | '--' | '^' ;
 
 assignmentOperator
     : '=' | '+=' | '-=' | '*=' | '/=' ;
@@ -190,7 +192,9 @@ STRING: '"' .*? '"' ;
 
 SIGN: '-' ;   
 
-PRINT: 'print' ; 
+PRINT: 'print' ;
+COMPLEXTOFILE: 'complexToFile' ;
+FILETOCOMPLEX: 'fileToComplex' ;
 
 ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
 
