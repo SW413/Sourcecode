@@ -193,8 +193,8 @@ STRING: '"' .*? '"' ;
 SIGN: '-' ;   
 
 PRINT: 'print' ;
-COMPLEXTOFILE: 'complexToFile' ;
-FILETOCOMPLEX: 'fileToComplex' ;
+COMPLEXTOFILE: 'matrixToFile' ;
+FILETOCOMPLEX: 'fileToMatrix' ;
 
 ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
 
