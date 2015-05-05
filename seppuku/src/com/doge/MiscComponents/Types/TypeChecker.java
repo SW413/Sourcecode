@@ -77,6 +77,8 @@ public class TypeChecker {
             case INT16:
                 switch (typeB) {
                     case INT16:
+                    case MATRIX_INT16:
+                    case VECTOR_INT16:
                         return ValueType.INT16;
                     default:
                         return ValueType.INVALID;
@@ -85,6 +87,10 @@ public class TypeChecker {
                 switch (typeB) {
                     case INT16:
                     case INT:
+                    case MATRIX_INT:
+                    case MATRIX_INT16:
+                    case VECTOR_INT:
+                    case VECTOR_INT16:
                         return ValueType.INT;
                     default:
                         return ValueType.INVALID;
@@ -94,6 +100,12 @@ public class TypeChecker {
                     case INT16:
                     case INT:
                     case INT64:
+                    case MATRIX_INT:
+                    case MATRIX_INT16:
+                    case MATRIX_INT64:
+                    case VECTOR_INT:
+                    case VECTOR_INT16:
+                    case VECTOR_INT64:
                         return ValueType.INT64;
                     default:
                         return ValueType.INVALID;
@@ -101,6 +113,8 @@ public class TypeChecker {
             case FLOAT16:
                 switch (typeB) {
                     case FLOAT16:
+                    case MATRIX_FLOAT16:
+                    case VECTOR_FLOAT16:
                         return ValueType.FLOAT16;
                     default:
                         return ValueType.INVALID;
@@ -109,6 +123,10 @@ public class TypeChecker {
                 switch (typeB) {
                     case FLOAT16:
                     case FLOAT:
+                    case MATRIX_FLOAT:
+                    case MATRIX_FLOAT16:
+                    case VECTOR_FLOAT:
+                    case VECTOR_FLOAT16:
                         return ValueType.FLOAT;
                     default:
                         return ValueType.INVALID;
@@ -118,6 +136,12 @@ public class TypeChecker {
                     case FLOAT16:
                     case FLOAT:
                     case FLOAT64:
+                    case MATRIX_FLOAT:
+                    case MATRIX_FLOAT16:
+                    case MATRIX_FLOAT64:
+                    case VECTOR_FLOAT:
+                    case VECTOR_FLOAT16:
+                    case VECTOR_FLOAT64:
                         return ValueType.FLOAT64;
                     default:
                         return ValueType.INVALID;
@@ -126,6 +150,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case MATRIX_INT16:
                         return ValueType.MATRIX_INT16;
+                    case INT16:
+                        return ValueType.INT16;
                     default:
                         return ValueType.INVALID;
                 }
@@ -133,6 +159,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case MATRIX_INT16: case MATRIX_INT:
                         return ValueType.MATRIX_INT;
+                    case INT16: case INT:
+                        return ValueType.INT;
                     default:
                         return ValueType.INVALID;
                 }
@@ -140,6 +168,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case MATRIX_INT16: case MATRIX_INT: case MATRIX_INT64:
                         return ValueType.MATRIX_INT64;
+                    case INT16: case INT: case INT64:
+                        return ValueType.INT64;
                     default:
                         return ValueType.INVALID;
                 }
@@ -147,6 +177,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case MATRIX_FLOAT16:
                         return ValueType.MATRIX_FLOAT16;
+                    case FLOAT16:
+                        return ValueType.FLOAT16;
                     default:
                         return ValueType.INVALID;
                 }
@@ -154,6 +186,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case MATRIX_FLOAT16: case MATRIX_FLOAT:
                         return ValueType.MATRIX_FLOAT;
+                    case FLOAT: case FLOAT16:
+                        return ValueType.FLOAT;
                     default:
                         return ValueType.INVALID;
                 }
@@ -161,6 +195,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case MATRIX_FLOAT16: case MATRIX_FLOAT: case MATRIX_FLOAT64:
                         return ValueType.MATRIX_FLOAT64;
+                    case FLOAT16: case FLOAT: case FLOAT64:
+                        return ValueType.FLOAT64;
                     default:
                         return ValueType.INVALID;
                 }
@@ -175,6 +211,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case VECTOR_INT16:
                         return ValueType.VECTOR_INT16;
+                    case INT16:
+                        return ValueType.INT16;
                     default:
                         return ValueType.INVALID;
                 }
@@ -182,6 +220,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case VECTOR_INT16: case VECTOR_INT:
                         return ValueType.VECTOR_INT;
+                    case INT16: case INT:
+                        return ValueType.INT;
                     default:
                         return ValueType.INVALID;
                 }
@@ -189,6 +229,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case VECTOR_INT16: case VECTOR_INT: case VECTOR_INT64:
                         return ValueType.VECTOR_INT64;
+                    case INT16: case INT: case INT64:
+                        return ValueType.INT64;
                     default:
                         return ValueType.INVALID;
                 }
@@ -196,6 +238,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case VECTOR_FLOAT16:
                         return ValueType.VECTOR_FLOAT16;
+                    case FLOAT16:
+                        return ValueType.FLOAT16;
                     default:
                         return ValueType.INVALID;
                 }
@@ -203,6 +247,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case VECTOR_FLOAT16: case VECTOR_FLOAT:
                         return ValueType.VECTOR_FLOAT;
+                    case FLOAT16: case FLOAT:
+                        return ValueType.FLOAT;
                     default:
                         return ValueType.INVALID;
                 }
@@ -210,6 +256,8 @@ public class TypeChecker {
                 switch (typeB) {
                     case VECTOR_FLOAT16: case VECTOR_FLOAT:case VECTOR_FLOAT64:
                         return ValueType.VECTOR_FLOAT64;
+                    case FLOAT16: case FLOAT: case FLOAT64:
+                        return ValueType.FLOAT64;
                     default:
                         return ValueType.INVALID;
                 }

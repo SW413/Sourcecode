@@ -46,7 +46,7 @@ public enum OperatorType {
 
     public static boolean isAllowed(OperatorType opp){
         switch (opp){
-            case ADD:case SUB: case MUL:
+            case ADD:case SUB: case MUL: case TRANSPOSE: case MULENTRY:
                 return true;
             default:
                 return false;

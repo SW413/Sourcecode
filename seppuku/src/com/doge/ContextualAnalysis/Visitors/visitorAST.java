@@ -257,7 +257,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
                     ((MatrixValNode) expr).getRows().get(0).getValues().size()};
             var.setSize(tmpSize);
         } else if (expr.getClass() == VectorValNode.class) {
-            int[] tmpSize = {((VectorValNode) expr).getValues().size(), ((VectorValNode) expr).getValues().size()};
+            int[] tmpSize = {((VectorValNode) expr).getValues().size(), 1};
             var.setSize(tmpSize);
         }
         return new DeclarationNode(parentStack.peek(), var, expr, ctx.start.getLine());

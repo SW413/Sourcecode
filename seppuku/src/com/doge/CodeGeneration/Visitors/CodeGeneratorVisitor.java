@@ -20,9 +20,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private FileHandling filesNstuff = new FileHandling();
 
     private Stack<Variable> resultVarStack = new Stack<Variable>();
-    private Stack<String> aIdStack = new Stack<String>();
-    private Stack<String> bIdStack = new Stack<String>();
-    private boolean special = false;
+    private Stack<Variable> aStack = new Stack<Variable>();
+    private Stack<Variable> bStack = new Stack<Variable>();
+    private int scalarNum = 0;
 
     public CodeGeneratorVisitor(StringBuilder outputCode) {
         this.outputCode = outputCode;
@@ -93,14 +93,14 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                 case MATRIX:
                     complexType = makeMatrix(
                             node.getVariable().getSize() != null ?
-                                    String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]),
+                                    Integer.toString(node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]),
                             node.getVariable().getSize() != null ?
-                                    String.format("%d", node.getVariable().getSize()[1]) : visit(node.getVariable().getDynamicSize()[1]));
+                                    Integer.toString(node.getVariable().getSize()[1]) : visit(node.getVariable().getDynamicSize()[1]));
                     break;
                 case VECTOR:
                     complexType = makeVector(
                             node.getVariable().getSize() != null ?
-                                    String.format("%d", node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
+                                    Integer.toString(node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
                     break;
             }
             complexType = complexType.replaceAll("§ID§", node.getVariable().getId());
@@ -119,14 +119,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             return node.getVariable().getId() + node.getAssignmentOperator() + ";";
         } else if (node.getVariable().isComplex()) {
             if (node.getVariable().getEntrance() != null){
-                String entrance = filesNstuff.ImportStringFromResource("codesnippets/matrixOutOfBounds.c");
-                return entrance
-                        .replaceAll("§ROW§", visit(node.getVariable().getEntrance().getCoordinates()[0]))
-                        .replaceAll("§COL§", visit(node.getVariable().getEntrance().getCoordinates()[1]))
-                        .replaceAll("§MATRIX§", node.getVariable().getId())
-                        .replaceAll("§CODE§",
-                        complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";")
-                        .replaceAll("\\n", "\n" + indent(""));
+                return applyBoundsCheck(node.getVariable(), complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";");
+
             }
             resultVarStack.push(node.getVariable());
             String kernelAss = visit(node.getExpression());
@@ -205,44 +199,93 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     public String VisitExpressionNode(ExpressionNode node) {
         StringBuilder expression = new StringBuilder();
         if (resultVarStack.size() > 0) {
-            if (node.getLValue().getClass() == VariableExpressionNode.class) {
-                aIdStack.push(visit(node.getLValue()));
+            if (node.getLValue().getClass() == VariableExpressionNode.class || node.getLValue().getClass() == ConstantExpressionNode.class) {
+                aStack.push(null);
+                visit(node.getLValue());
             } else {
-                aIdStack.push(resultVarStack.peek().getId());
+                aStack.push(resultVarStack.peek());
                 expression.append(visit(node.getLValue()));
             }
-            if (node.getRValue().getClass() == VariableExpressionNode.class) {
-                bIdStack.push(visit(node.getRValue()));
+            if (node.getRValue() == null) {
+                bStack.push(new Variable(null, ""));
+            } else if (node.getRValue().getClass() == VariableExpressionNode.class || node.getRValue().getClass() == ConstantExpressionNode.class) {
+                bStack.push(null);
+                visit(node.getRValue());
             } else {
-                aIdStack.push(resultVarStack.peek().getId());
+                aStack.push(resultVarStack.peek());
                 expression.append(visit(node.getRValue()));
             }
 
             switch (node.getOperatorType()) {
                 case ADD:
-                    System.out.println("A: " + aIdStack.peek() + " B: " + bIdStack.peek());
-                    expression.append(matrixKernel(
-                            "matrixAdd",
-                            aIdStack.pop(),
-                            bIdStack.pop(),
-                            resultVarStack.peek().getId(),
-                            TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                    if(!aStack.peek().isComplex() || !bStack.peek().isComplex()){
+                        expression.append(matrixKernel(
+                                "matrixAddScalar",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                        scalarNum++;
+                    } else {
+                        expression.append(matrixKernel(
+                                "matrixAdd",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                    }
                     break;
                 case SUB:
+                    if(!aStack.peek().isComplex() || !bStack.peek().isComplex()){
+                        expression.append(matrixKernel(
+                                "matrixSubScalar",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                        scalarNum++;
+                    } else {
+                        expression.append(matrixKernel(
+                                "matrixSub",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                    }
+                    break;
+                case MUL:
+                    if(!aStack.peek().isComplex() || !bStack.peek().isComplex()){
+                        expression.append(matrixKernel(
+                                "matrixMulScalar",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                        scalarNum++;
+                    } else {
+                        expression.append(matrixKernel(
+                                "matrixMul",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                    }
+                    break;
+                case TRANSPOSE:
                     expression.append(matrixKernel(
-                            "matrixSub",
-                            aIdStack.pop(),
-                            bIdStack.pop(),
+                            "matrixTranspose",
+                            aStack.pop().getId(),
+                            bStack.pop().getId(),
                             resultVarStack.peek().getId(),
                             TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     break;
-                case MUL:
-                    expression.append(matrixKernel(
-                            "matrixMul",
-                            aIdStack.pop(),
-                            bIdStack.pop(),
+                case MULENTRY:
+                    expression.append(applySameSizeCheck(aStack.peek(), bStack.peek(),matrixKernel(
+                            "matrixIndexMul",
+                            aStack.pop().getId(),
+                            bStack.pop().getId(),
                             resultVarStack.peek().getId(),
-                            TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                            TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())))));
                     break;
             }
 
@@ -289,7 +332,20 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitVariableExpressionNode(VariableExpressionNode node) {
+        if (aStack.size() > 0 && aStack.peek() == null){
+            aStack.pop();
+            aStack.push(node.getVariable());
+        } else if (bStack.size() > 0 && bStack.peek() == null) {
+            bStack.pop();
+            bStack.push(node.getVariable());
+        }
+
         if (node.getVariable().isFunction()) {
+            if (node.getVariable().getId().equals("cols")) {
+                return visit(node.getVariable().getArgument(0)) + ".cols ";
+            } else if (node.getVariable().getId().equals("rows")) {
+                return visit(node.getVariable().getArgument(0)) + ".rows ";
+            }
             return functionWithArgs(node.getVariable());
         }else if (node.getVariable().getEntrance() != null){
             return complexEntrance(node.getVariable());
@@ -299,6 +355,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitConstantExpressionNode(ConstantExpressionNode node) {
+        if (aStack.size() > 0 && aStack.peek() == null){
+            aStack.pop();
+            aStack.push(new Variable(node.getValueType(), node.getValue().toString()));
+        } else if (bStack.size() > 0 && bStack.peek() == null) {
+            bStack.pop();
+            bStack.push(new Variable(node.getValueType(), node.getValue().toString()));
+        }
         return node.getValue().toString();
     }
 
@@ -371,15 +434,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 break;
                             default:
                                 //TODO can only print int matrices...
-                                String complexPrint = "";
-                                switch (TypeChecker.MatrixOrVector(type)){
-                                    case MATRIX:
-                                        complexPrint = filesNstuff.ImportStringFromResource("codesnippets/printMatrix.c");
-                                        break;
-                                    case VECTOR:
-                                        complexPrint = filesNstuff.ImportStringFromResource("codesnippets/printVector.c");
-                                        break;
-                                }
+                                String complexPrint = filesNstuff.ImportStringFromResource("codesnippets/printMatrix.c");
+
                                 complexPrint = complexPrint.replaceAll("§ID§", visit((ExpressionNode) arg));
                                 complexPrint = complexPrint.replaceAll("§SIMPLETYPE§",
                                         TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(((ExpressionNode) arg).getValueType())));
@@ -428,6 +484,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         argsNlauch = argsNlauch.replaceAll("§MATRIX_A§", aID);
         argsNlauch = argsNlauch.replaceAll("§MATRIX_B§", bID);
         argsNlauch = argsNlauch.replaceAll("§MATRIX_RES§", resID);
+        argsNlauch = argsNlauch.replaceAll("§MATRIXTYPE§", simpleType);
+        argsNlauch = argsNlauch.replaceAll("§NUM§", Integer.toString(this.scalarNum));
 
         argsNlauch = argsNlauch.replaceAll("\\n", "\n" + indent(""));
 
@@ -444,22 +502,39 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     }
 
     private String makeVector(String rows) {
-        String vector = filesNstuff.ImportStringFromResource("codesnippets/makeVector.c");
-        vector = vector.replaceAll("§ROWS§", rows);
-        vector = vector.replaceAll("\\n", "\n" + indent(""));
-
-        return vector;
+        return makeMatrix(rows, "1");
     }
 
     private String complexEntrance(Variable variable){
-        String complexEntrance = filesNstuff.ImportStringFromResource("codesnippets/complexEntrance.c");
-        complexEntrance = complexEntrance.replaceAll("§SIMPLETYPE§",
-                (TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(variable.getValueType()))));
-        complexEntrance = complexEntrance.replaceAll("§ID§", variable.getId());
-        complexEntrance = complexEntrance.replaceAll("§ROW§", visit(variable.getEntrance().getCoordinates()[0]));
-        complexEntrance = complexEntrance.replaceAll("§COL§", visit(variable.getEntrance().getCoordinates()[1]));
-        complexEntrance = complexEntrance.replaceAll("\\n", "");
+        return filesNstuff.ImportStringFromResource("codesnippets/complexEntrance.c")
+                .replaceAll("§SIMPLETYPE§",
+                        (TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(variable.getValueType()))))
+                .replaceAll("§ID§", variable.getId())
+                .replaceAll("§ROW§", visit(variable.getEntrance().getCoordinates()[0]))
+                .replaceAll("§COL§",
+                variable.getEntrance().getCoordinates()[1] != null ?
+                        visit(variable.getEntrance().getCoordinates()[1]) :
+                        "0")
+                .replaceAll("\\n", "");
+    }
 
-        return complexEntrance;
+    private String applyBoundsCheck(Variable variable, String code){
+        return filesNstuff.ImportStringFromResource("codesnippets/matrixOutOfBounds.c")
+                .replaceAll("§ROW§", visit(variable.getEntrance().getCoordinates()[0]))
+                .replaceAll("§COL§",
+                        variable.getEntrance().getCoordinates()[1] != null ?
+                                visit(variable.getEntrance().getCoordinates()[1]) :
+                                "0")
+                .replaceAll("§MATRIX§", variable.getId())
+                .replaceAll("§CODE§", code)
+                .replaceAll("\\n", "\n" + indent(""));
+    }
+
+    private String applySameSizeCheck(Variable matrixA, Variable matrixB, String code){
+        return filesNstuff.ImportStringFromResource("codesnippets/matrixSameSizeCheck.c")
+                .replaceAll("§MATRIX_A§", matrixA.getId())
+                .replaceAll("§MATRIX_B§", matrixB.getId())
+                .replaceAll("§CODE§", code)
+                .replaceAll("\\n", "\n" + indent(""));
     }
 }
