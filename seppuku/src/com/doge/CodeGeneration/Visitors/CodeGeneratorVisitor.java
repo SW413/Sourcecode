@@ -381,7 +381,25 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                         break;
                                 }
                                 complexPrint = complexPrint.replaceAll("§ID§", visit((ExpressionNode) arg));
+                                complexPrint = complexPrint.replaceAll("§SIMPLETYPE§",
+                                        TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(((ExpressionNode) arg).getValueType())));
+                                switch (TypeChecker.ComplexToSimple(((ExpressionNode) arg).getValueType())){
+                                    case FLOAT: case FLOAT16: case FLOAT64:
+                                        complexPrint = complexPrint.replaceAll("§FORMATSTRING§", "%6.2f");
+                                        break;
+                                    case INT:
+                                        complexPrint = complexPrint.replaceAll("§FORMATSTRING§", "%4d");
+                                        break;
+                                    case INT16:
+                                        complexPrint = complexPrint.replaceAll("§FORMATSTRING§", "%3h");
+                                        break;
+                                    case INT64:
+                                        complexPrint = complexPrint.replaceAll("§FORMATSTRING§", "%5l");
+                                        break;
+
+                                }
                                 complexPrint = complexPrint.replaceAll("\\n", "\n" + indent(""));
+                                complexPrint = complexPrint.substring(0, complexPrint.length()-2).trim();
                                 return complexPrint;
                         }
                     } else {

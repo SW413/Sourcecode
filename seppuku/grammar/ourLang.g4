@@ -179,7 +179,7 @@ INT: 'int' | 'int16' | 'int32' | 'int64' ;
 INTNUM: '0' | SIGN? [1-9][0-9]* ;
 
 FLOAT: 'float' | 'float16' | 'float32' | 'float64' ;  
-FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
+FLOATNUM: SIGN? ([1-9][0-9]* | '0') '.' ([0-9]* [1-9] | '0') ;
 
 BOOL: 'bool' ;
 BOOLVAL: 'true' | 'false' ;
