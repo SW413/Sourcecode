@@ -68,14 +68,30 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitFunctionCallNode(FunctionCallNode node) {
-        if (node.getVariable().getId() != "print")
-            checkIfUndeclared(node.getVariable(), node);
-        else if (node.getVariable().getId() == "print")
+        if (node.getVariable().getId() == "print") {
             if (node.getVariable().getPrintArguments() != null)
-                for(Object arg : node.getVariable().getPrintArguments()) {
+                for (Object arg : node.getVariable().getPrintArguments()) {
                     if (arg != null && arg.getClass().getSuperclass() == ExpressionNode.class || arg.getClass() == ExpressionNode.class)
                         visit((ExpressionNode) arg);
                 }
+        } else if (node.getVariable().getId().equals("matrixToFile")) {
+            if (node.getVariable().getPrintArguments() != null && node.getVariable().getPrintArguments().size() == 2) {
+                if (node.getVariable().getPrintArguments().get(0).getClass() == VariableExpressionNode.class) {
+                    visit((ExpressionNode) node.getVariable().getPrintArguments().get(0));
+                } else {
+                    System.out.println("Panic: in matrixToFile!");
+                }
+
+                if (node.getVariable().getPrintArguments().get(1).getClass() != String.class) {
+                    System.out.println("Panic: in matrixToFile! 2nd argument is not a string");
+                }
+            } else {
+                System.out.println("Panic: in matrixToFile! Error in arguments");
+            }
+        } else {
+            // Default
+            checkIfUndeclared(node.getVariable(), node);
+        }
         return null;
     }
 

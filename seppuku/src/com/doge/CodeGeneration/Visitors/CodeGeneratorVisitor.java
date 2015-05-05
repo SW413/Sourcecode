@@ -6,6 +6,7 @@ import com.doge.MiscComponents.FileHandling;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
+import com.sun.javafx.fxml.expression.VariableExpression;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -326,6 +327,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     public String VisitFunctionCallNode(FunctionCallNode node) {
         if (node.getVariable().getId() == "print") {
             return printFunction(node.getVariable()) + ";";
+        } else if (node.getVariable().getId().equals("matrixToFile")) {
+            // TODO: Add functions to source code
+            return matrixToFileFunction(node.getVariable()) + ";";
         }
         return functionWithArgs(node.getVariable()) + ";";
     }
@@ -402,6 +406,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         indentationLevel--;
 
         return body.toString();
+    }
+
+    private String matrixToFileFunction(Variable func) {
+
+        return "saveToFile(" + func.getPrintArguments().get(1) + ", \"" + ((VariableExpressionNode) func.getPrintArguments().get(0)).getValueType().name() + "\", " + visit((ExpressionNode) func.getPrintArguments().get(0)) + ")";
     }
 
     private String printFunction(Variable func) {

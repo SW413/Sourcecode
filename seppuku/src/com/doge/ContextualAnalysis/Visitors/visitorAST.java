@@ -448,6 +448,22 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         return new FunctionCallNode(parentStack.peek(), new Variable(null, "print", arguments, true), ctx.start.getLine());
     }
 
+    @Override
+    public BaseASTNode visitComplexToFileFunc(ourLangParser.ComplexToFileFuncContext ctx) {
+        ArrayList<Object> arguments = new ArrayList<Object>();
+
+        if (ctx.argumentlist().getChildCount() > 0){
+            for(int i = 0; i < ctx.argumentlist().getChildCount(); i++){
+                if(!ctx.argumentlist().getChild(i).getText().equals(","))
+                    if (ctx.argumentlist().getChild(i).getClass() == TerminalNodeImpl.class)
+                        arguments.add(ctx.argumentlist().getChild(i).getText());
+                    else
+                        arguments.add(visit(ctx.argumentlist().getChild(i)));
+            }
+        }
+
+        return new FunctionCallNode(parentStack.peek(), new Variable(null, ctx.children.get(0).toString(), arguments, true), ctx.start.getLine());
+    }
 
     @Override
     public BaseASTNode visitValCollectionEntrance(ourLangParser.ValCollectionEntranceContext ctx) {
