@@ -22,7 +22,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     private Stack<Variable> resultVarStack = new Stack<Variable>();
     private Stack<Variable> aStack = new Stack<Variable>();
     private Stack<Variable> bStack = new Stack<Variable>();
-    private int scalarNum = 0;
+    private int unique = 0;
 
     public CodeGeneratorVisitor(StringBuilder outputCode) {
         this.outputCode = outputCode;
@@ -87,9 +87,15 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitDeclarationNode(DeclarationNode node) {
+        String expr = "";
+        String complexType = "";
+        if (node.getExpression() != null){
+            resultVarStack.push(node.getVariable());
+            expr = visit(node.getExpression());
+            resultVarStack.pop();
+        }
+
         if (node.getVariable().isComplex()) {
-            StringBuilder complexDecl = new StringBuilder();
-            String complexType = "";
             switch (TypeChecker.MatrixOrVector(node.getVariable())) {
                 case MATRIX:
                     complexType = makeMatrix(
@@ -107,33 +113,31 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             complexType = complexType.replaceAll("§ID§", node.getVariable().getId());
             complexType = complexType.replaceAll("§SIMPLETYPE§",
                     (TypeParser.OpenCL_TypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType()))));
-
-            complexDecl.append(complexType);
-            if (node.getExpression() != null){
-                System.out.println(" ASdaasdsa " + node.getExpression());
-                resultVarStack.push(node.getVariable());
-                visit(node.getExpression());
-                resultVarStack.pop();
-            }
-            return complexDecl.toString();
         }
-        return node.getVariable().toOpenCLcode() + " = " + visit(node.getExpression()) + ";";
+
+        if (expr.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
+            return (complexType.length() > 0 ? complexType : node.getVariable().toCcode() + ";\n") + expr;
+        }
+
+        return node.getVariable().toCcode() + " = " + expr + ";";
     }
 
     @Override
     public String VisitAssignmentNode(AssignmentNode node) {
         if (node.getExpression() == null) {
             return node.getVariable().getId() + node.getAssignmentOperator() + ";";
-        } else if (node.getVariable().isComplex()) {
-            if (node.getVariable().getEntrance() != null) {
-                return applyBoundsCheck(node.getVariable(), complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";");
-            }
-            resultVarStack.push(node.getVariable());
-            String kernelAss = visit(node.getExpression());
-            resultVarStack.pop();
-            return kernelAss;
         }
-        return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
+        if (node.getVariable().getEntrance() != null) {
+                return applyBoundsCheck(node.getVariable(), complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";");
+        }
+        resultVarStack.push(node.getVariable());
+        String expression = visit(node.getExpression());
+        resultVarStack.pop();
+        if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
+           return expression;
+        }
+
+        return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + expression + ";";
     }
 
     @Override
@@ -204,7 +208,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     public String VisitExpressionNode(ExpressionNode node) {
         StringBuilder expression = new StringBuilder();
         if (resultVarStack.size() > 0) {
-            System.out.println("expr class " + node.getLValue().getClass().getSimpleName() + " LOL " + resultVarStack.peek());
             if (node.getLValue().getClass() == VariableExpressionNode.class || node.getLValue().getClass() == ConstantExpressionNode.class) {
                 aStack.push(null);
                 visit(node.getLValue());
@@ -224,14 +227,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
             switch (node.getOperatorType()) {
                 case ADD:
-                    if(!aStack.peek().isComplex() ^ !bStack.peek().isComplex()){
+                    if (!aStack.peek().isComplex() ^ !bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixAddScalar",
                                 aStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                        scalarNum++;
                     } else {
                         expression.append(matrixKernel(
                                 "matrixAdd",
@@ -242,14 +244,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case SUB:
-                    if(!aStack.peek().isComplex() ^ !bStack.peek().isComplex()){
+                    if (!aStack.peek().isComplex() ^ !bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixSubScalar",
                                 aStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                        scalarNum++;
                     } else {
                         expression.append(matrixKernel(
                                 "matrixSub",
@@ -260,21 +261,28 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case MUL:
-                    if(!aStack.peek().isComplex() ^ !bStack.peek().isComplex()){
+                    if (!aStack.peek().isComplex() ^ !bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixMulScalar",
                                 aStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                        scalarNum++;
+                    } else if (TypeChecker.MatrixOrVector(aStack.peek().getValueType()) == ValueType.VECTOR &&
+                            TypeChecker.MatrixOrVector(bStack.peek().getValueType()) == ValueType.VECTOR){
+                        expression.append(matrixKernel(
+                                "vectorDotProduct",
+                                aStack.pop().getId(),
+                                bStack.pop().getId(),
+                                resultVarStack.peek().getId(),
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     } else {
                         expression.append(matrixKernel(
                                 "matrixMul",
                                 aStack.pop().getId(),
                                 bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
-                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                                TypeParser.cTypeFromValueType(resultVarStack.peek().getValueType())));
                     }
                     break;
                 case TRANSPOSE:
@@ -306,21 +314,38 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitMatrixValNode(MatrixValNode node) {
-        StringBuilder matrix = new StringBuilder();
-        matrix.append("{ ");
+        resultVarStack.push(null);
+        StringBuilder innerExpr = new StringBuilder();
+        int size = 0;
+        innerExpr.append("{ ");
         int i = 1;
         for (VectorValNode row : node.getRows()) {
-            matrix.append(visit(row));
+            size += row.getValues().size();
+            innerExpr.append(visit(row));
             if (i++ != node.getRows().size())
-                matrix.append(", ");
+                innerExpr.append(", ");
         }
-        matrix.append(" }");
-        return matrix.toString();
+        innerExpr.append(" }");
+        resultVarStack.pop();
+
+        return makeFillArray(resultVarStack.peek().getId(),
+                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())),
+                Integer.toString(size),
+                innerExpr.toString()) +
+                ";\n" +
+                makeFillLoop(resultVarStack.peek().getId(), TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())));
     }
 
     @Override
     public String VisitVectorValNode(VectorValNode node) {
-        return "{ " + commaSepExprList(node.getValues()) + " }";
+        if (resultVarStack.peek() == null)
+            return commaSepExprList(node.getValues());
+        return makeFillArray(resultVarStack.peek().getId(),
+                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())),
+                Integer.toString(node.getValues().size()),
+                "{ " + commaSepExprList(node.getValues()) + " }") +
+                ";\n" +
+                makeFillLoop(resultVarStack.peek().getId(), TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())));
     }
 
     @Override
@@ -491,7 +516,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         argsNlauch = argsNlauch.replaceAll("§MATRIX_B§", bID);
         argsNlauch = argsNlauch.replaceAll("§MATRIX_RES§", resID);
         argsNlauch = argsNlauch.replaceAll("§MATRIXTYPE§", simpleType);
-        argsNlauch = argsNlauch.replaceAll("§NUM§", Integer.toString(this.scalarNum));
+        argsNlauch = argsNlauch.replaceAll("§NUM§", Integer.toString(this.unique++));
 
         argsNlauch = argsNlauch.replaceAll("\\n", "\n" + indent(""));
 
@@ -542,5 +567,17 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                 .replaceAll("§MATRIX_B§", matrixB.getId())
                 .replaceAll("§CODE§", code)
                 .replaceAll("\\n", "\n" + indent(""));
+    }
+
+    private String makeFillArray(String id, String simpletype, String size, String expression){
+        return simpletype + " " + id + "_fillArray[ " + size + " ] = " + expression;
+    }
+
+    private String makeFillLoop(String id, String simpleType){
+        return indent("").concat(filesNstuff.ImportStringFromResource("codesnippets/complexFillLoop.c")
+                .replaceAll("§ID§", id)
+                .replaceAll("§NUM§", Integer.toString(this.unique++))
+                .replaceAll("§SIMPLETYPE§", simpleType)
+                .replaceAll("\\n", "\n" + indent("")));
     }
 }

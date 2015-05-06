@@ -1,4 +1,4 @@
-int a = 9;
+int a = 7;
 
 int b = 7;
 
@@ -6,11 +6,20 @@ matrix<int>[7, b] Am;
 
 matrix<int>[b, 7] Bm;
 
-matrix<int>[7, 7] RESm;
+matrix<int>[a, b] RESm;
 
 vector<int>[4] Av;
 
-vector<int> Bv = [1, 1, 1];
+vector<int> Bv = [1, 3, 3, 7];
+
+matrix<int> Cm = [0, 0, 1, 0, 0;
+                  0, 1, 0, 1, 0;
+                  1, 0, 1, 0, 1;
+                  0, 1, 0, 1, 0;
+                  0, 0, 1, 0, 0];
+
+print(Bv);
+print(Cm);
 
 for(int i = 0; i < 4; i++){
     Av[i] = i+1;
