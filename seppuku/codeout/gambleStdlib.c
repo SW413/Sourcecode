@@ -1,3 +1,8 @@
+#include "complexTypes.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 void saveToFile(char* str, char* type, matrix m)
 {
     FILE * file = fopen(str, "w");

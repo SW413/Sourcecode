@@ -1,1 +1,1 @@
-saveToFile(char*, char*, matrix);
+void saveToFile(char*, char*, matrix);

@@ -104,6 +104,7 @@ public class FileHandling {
 
             scanner.close();
         } catch (IOException e) {
+            System.out.println("CANT FIND:" + resourceName);
             e.printStackTrace();
         }
 
@@ -117,6 +118,8 @@ public class FileHandling {
             if (file != null)
                 return file;
         } catch (Exception e) {
+            System.out.println("CANT FIND: " + resourceName);
+            System.out.println(file.getAbsolutePath());
             e.printStackTrace();
         }
         return null;
