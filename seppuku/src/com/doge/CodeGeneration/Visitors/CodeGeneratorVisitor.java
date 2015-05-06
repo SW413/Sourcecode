@@ -88,6 +88,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     @Override
     public String VisitDeclarationNode(DeclarationNode node) {
         if (node.getVariable().isComplex()) {
+            StringBuilder complexDecl = new StringBuilder();
             String complexType = "";
             switch (TypeChecker.MatrixOrVector(node.getVariable())) {
                 case MATRIX:
@@ -107,8 +108,14 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             complexType = complexType.replaceAll("§SIMPLETYPE§",
                     (TypeParser.OpenCL_TypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType()))));
 
-
-            return complexType;
+            complexDecl.append(complexType);
+            if (node.getExpression() != null){
+                System.out.println(" ASdaasdsa " + node.getExpression());
+                resultVarStack.push(node.getVariable());
+                visit(node.getExpression());
+                resultVarStack.pop();
+            }
+            return complexDecl.toString();
         }
         return node.getVariable().toOpenCLcode() + " = " + visit(node.getExpression()) + ";";
     }
@@ -118,16 +125,14 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (node.getExpression() == null) {
             return node.getVariable().getId() + node.getAssignmentOperator() + ";";
         } else if (node.getVariable().isComplex()) {
-            if (node.getVariable().getEntrance() != null){
+            if (node.getVariable().getEntrance() != null) {
                 return applyBoundsCheck(node.getVariable(), complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";");
-
             }
             resultVarStack.push(node.getVariable());
             String kernelAss = visit(node.getExpression());
             resultVarStack.pop();
             return kernelAss;
         }
-
         return node.getVariable().getId() + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";";
     }
 
@@ -199,6 +204,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     public String VisitExpressionNode(ExpressionNode node) {
         StringBuilder expression = new StringBuilder();
         if (resultVarStack.size() > 0) {
+            System.out.println("expr class " + node.getLValue().getClass().getSimpleName() + " LOL " + resultVarStack.peek());
             if (node.getLValue().getClass() == VariableExpressionNode.class || node.getLValue().getClass() == ConstantExpressionNode.class) {
                 aStack.push(null);
                 visit(node.getLValue());
@@ -218,11 +224,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
             switch (node.getOperatorType()) {
                 case ADD:
-                    if(!aStack.peek().isComplex() || !bStack.peek().isComplex()){
+                    if(!aStack.peek().isComplex() ^ !bStack.peek().isComplex()){
                         expression.append(matrixKernel(
                                 "matrixAddScalar",
-                                aStack.pop().getId(),
-                                bStack.pop().getId(),
+                                aStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
+                                bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                         scalarNum++;
@@ -236,11 +242,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case SUB:
-                    if(!aStack.peek().isComplex() || !bStack.peek().isComplex()){
+                    if(!aStack.peek().isComplex() ^ !bStack.peek().isComplex()){
                         expression.append(matrixKernel(
                                 "matrixSubScalar",
-                                aStack.pop().getId(),
-                                bStack.pop().getId(),
+                                aStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
+                                bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                         scalarNum++;
@@ -254,11 +260,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case MUL:
-                    if(!aStack.peek().isComplex() || !bStack.peek().isComplex()){
+                    if(!aStack.peek().isComplex() ^ !bStack.peek().isComplex()){
                         expression.append(matrixKernel(
                                 "matrixMulScalar",
-                                aStack.pop().getId(),
-                                bStack.pop().getId(),
+                                aStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
+                                bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                         scalarNum++;

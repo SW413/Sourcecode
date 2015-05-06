@@ -10,6 +10,8 @@ matrix<int>[7, 7] RESm;
 
 vector<int>[4] Av;
 
+vector<int> Bv = [1, 1, 1];
+
 for(int i = 0; i < 4; i++){
     Av[i] = i+1;
 }
