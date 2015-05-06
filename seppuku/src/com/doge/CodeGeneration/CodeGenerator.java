@@ -22,5 +22,7 @@ public class CodeGenerator {
         filesNstuff.ExportResource("simpleCL.c", "../../../codeout/");
         filesNstuff.ExportResource("complexTypes.h", "../../../codeout/");
         filesNstuff.ExportResource("Makefile", "../../../codeout/");
+        filesNstuff.ExportResource("gambleStdlib.c", "../../../codeout/");
+        filesNstuff.ExportResource("gambleStdlib.h", "../../../codeout/");
     }
 }

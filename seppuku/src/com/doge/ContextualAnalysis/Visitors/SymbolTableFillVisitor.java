@@ -88,6 +88,16 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
             } else {
                 System.out.println("Panic: in matrixToFile! Error in arguments");
             }
+        } else if (node.getVariable().getId().equals("fileToMatrix")) {
+            if(node.getVariable().getPrintArguments() != null && node.getVariable().getPrintArguments().size() == 1) {
+                if (node.getVariable().getPrintArguments().get(0).getClass() == String.class) {
+                    // All good!
+                } else {
+                    //TODO: Error! proper handling?
+                }
+            } else  {
+                //TODO: Error! proper handling?
+            }
         } else {
             // Default
             checkIfUndeclared(node.getVariable(), node);

@@ -21,8 +21,8 @@
 HOME    = $(PWD)
 EXEC    = $(HOME)/test
 CC      = gcc
-SRC = code.c simpleCL.c gambleStdlib.c
-CFLAGS  = -Wall -Wextra -pedantic -O3 -std=c99
+SRC     = code.c simpleCL.c gambleStdlib.c
+CFLAGS  = -Wall -Wextra -pedantic -O3
 
 UNAME := $(shell uname)
 

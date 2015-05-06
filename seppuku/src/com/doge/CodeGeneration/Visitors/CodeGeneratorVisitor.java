@@ -359,8 +359,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (node.getVariable().getId() == "print") {
             return printFunction(node.getVariable()) + ";";
         } else if (node.getVariable().getId().equals("matrixToFile")) {
-            // TODO: Add functions to source code
             return matrixToFileFunction(node.getVariable()) + ";";
+        } else if (node.getVariable().getId().equals("fileToMatrix")) {
+            return fileToMatrixFunction(node.getVariable()) + ";";
         }
         return functionWithArgs(node.getVariable()) + ";";
     }
@@ -440,8 +441,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     }
 
     private String matrixToFileFunction(Variable func) {
-
         return "saveToFile(" + func.getPrintArguments().get(1) + ", \"" + ((VariableExpressionNode) func.getPrintArguments().get(0)).getValueType().name() + "\", " + visit((ExpressionNode) func.getPrintArguments().get(0)) + ")";
+    }
+
+    private String fileToMatrixFunction(Variable func) {
+        return "loadFromFile(" + func.getPrintArguments().get(0) + ")";
     }
 
     private String printFunction(Variable func) {
