@@ -38,8 +38,8 @@ matrix loadFromFile(char* str)
     FILE * file = fopen(str, "r");
     if(file == NULL)
     {
-        printf("FILE NOT FOUND\n");
-        exit(0);
+    	printf("FILE NOT FOUND\n");
+    	exit(0);
     }
 
     char buffer[128];
