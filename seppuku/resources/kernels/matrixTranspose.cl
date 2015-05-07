@@ -1,4 +1,4 @@
-__kernel void matrixTranspose(__global §MATRIXTYPE§ *odata, __global §MATRIXTYPE§* idata, int width, int height)
+__kernel void matrixTranspose(__global §SIMPLETYPE§ *odata, __global §SIMPLETYPE§* idata, int width, int height)
 {
     unsigned int xIndex = get_global_id(0);
     unsigned int yIndex = get_global_id(1);

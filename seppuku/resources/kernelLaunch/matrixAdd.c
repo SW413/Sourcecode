@@ -1,6 +1,6 @@
-//MATRIX ADDITION OF §MATRIX_A§ AND §MATRIX_B§ INTO §MATRIX_RES§
-global_size[0] = §MATRIX_A§.cols * §MATRIX_A§.rows;
+//MATRIX ADDITION OF §A_ID§ AND §B_ID§ INTO §RES_ID§
+global_size[0] = §A_ID§.cols * §A_ID§.rows;
 software = sclGetCLSoftware("matrixAdd.cl", "matrixAdd", hardware);
 sclManageArgsLaunchKernel(hardware, software, global_size, local_size, "%R %R %R",
-	§MATRIX_A§.dataSize, §MATRIX_A§.dataStart, §MATRIX_B§.dataSize, §MATRIX_B§.dataStart, §MATRIX_RES§.dataSize, §MATRIX_RES§.dataStart);
+	§A_ID§.dataSize, §A_ID§.dataStart, §B_ID§.dataSize, §B_ID§.dataStart, §RES_ID§.dataSize, §RES_ID§.dataStart);
 //END OF MATRIX ADDITION

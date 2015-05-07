@@ -1,7 +1,7 @@
-__kernel void vectorDotProduct(__global §MATRIXTYPE§ *res, __global §MATRIXTYPE§ ma, __global §MATRIXTYPE§ *mb){
+__kernel void vectorDotProduct(__global §SIMPLETYPE§ *res, __global §SIMPLETYPE§ *ma, __global §SIMPLETYPE§ *mb){
 
-	int global_x = get_global_id(0)
+	int global_x = get_global_id(0);
 
-	§MATRIXTYPE§ tmp =  ma[global_x]*mb[global_x];
+	§SIMPLETYPE§ tmp =  ma[global_x]*mb[global_x];
 	atomic_add(res, tmp);
 }

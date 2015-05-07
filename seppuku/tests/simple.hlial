@@ -21,9 +21,16 @@ matrix<int> Cm = [0, 0, 1, 0, 0;
 print(Bv);
 print(Cm);
 
+
 for(int i = 0; i < 4; i++){
     Av[i] = i+1;
 }
+
+int Ap = Av * Bv;
+int Ap2 = 0;
+Ap2 = Av * Bv;
+
+print("dot P Ap:", Ap, "Ap2", Ap2);
 
 print(Av);
 

@@ -1,6 +1,6 @@
-__kernel void matrixAdd(__global §MATRIXTYPE§ *a,
-					    __global §MATRIXTYPE§ *b,
-					    __global §MATRIXTYPE§ *result
+__kernel void matrixAdd(__global §SIMPLETYPE§ *a,
+					    __global §SIMPLETYPE§ *b,
+					    __global §SIMPLETYPE§ *result
 					    )
 {
 	int global_x = get_global_id( 0);
