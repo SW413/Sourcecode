@@ -1,4 +1,4 @@
-matrix<int>[2,2] m = [0,1;2,3];
+matrix<int> m = [0,1;2,3];
 matrix<int>[2,2] a;
 
 matrixToFile(m, "derpfilout");

@@ -1,4 +1,4 @@
-__kernel void matrixAddScalar(__global §MATRIXTYPE§ *ma, §MATRIXTYPE§ scalar){
+__kernel void matrixAddScalar(__global §SIMPLETYPE§ *ma, §SIMPLETYPE§ scalar){
 
 	int global_x = get_global_id( 0);
 

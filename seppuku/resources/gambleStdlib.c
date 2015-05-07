@@ -28,21 +28,24 @@ void saveToFile(char* str, char* type, matrix m)
         for(int i = 0; i < m.cols * m.rows; i++){
             fprintf(file, "%f %c", ((float*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
         }
-    } /*else if (strcmp(type, "float16matrix") == 0) {
-        for(int i = 0; i < m.cols * m.rows; i++){
-            fprintf(file, "%lf %c", ((double*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
-        }
-    } */
+    } else {
+        printf("Error!");
+    }
 }
 
 matrix loadFromFile(char* str)
 {
     FILE * file = fopen(str, "r");
+    if(file == NULL)
+    {
+        printf("FILE NOT FOUND\n");
+        exit(0);
+    }
 
     char buffer[128];
 
-    fscanf(file, "%s ", buffer);
-    if(strcmp(buffer, "MATRIX_INT") == 0 || strcmp(buffer, "int32matrix") == 0){
+    fscanf(file, "%s", buffer);
+    if(strcmp(buffer, "MATRIX_INT") == 0){
         int dim[2];
         fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
@@ -128,12 +131,12 @@ matrix loadFromFile(char* str)
            {
                for (int j = 0; j < dim[0]; ++j)
                {
-                   fscanf(file, " %lf ", &((float*)m.dataStart)[i * dim[0] + j]);
+                   fscanf(file, " %f ", &((float*)m.dataStart)[i * dim[0] + j]);
                }
            }
            return m;
        } else {
-           printf("Unknown type: %s\n", buffer);
+           printf("Unknown type: %s\n", str);
        exit(1);
     }
 }

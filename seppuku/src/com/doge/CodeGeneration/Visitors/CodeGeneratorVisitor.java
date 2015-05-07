@@ -120,7 +120,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             return (complexType.length() > 0 ? complexType : node.getVariable().toCcode() + ";\n") + expr;
         }
 
-        return node.getVariable().toCcode() + " = " + expr + ";";
+        return complexType.length() > 0 ? complexType + expr : (node.getVariable().toCcode() + " = " + expr + ";");
     }
 
     @Override
@@ -276,14 +276,14 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 aStack.pop().getId(),
                                 bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
-                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                                TypeParser.cTypeFromValueType(resultVarStack.peek().getValueType())));
                     } else {
                         expression.append(matrixKernel(
                                 "matrixMul",
                                 aStack.pop().getId(),
                                 bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
-                                TypeParser.cTypeFromValueType(resultVarStack.peek().getValueType())));
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     }
                     break;
                 case TRANSPOSE:
@@ -520,15 +520,15 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
 
         String kernel = filesNstuff.ImportStringFromResource("kernels/" + kernelName + ".cl");
-        kernel = kernel.replaceAll("§MATRIXTYPE§", simpleType);
+        kernel = kernel.replaceAll("§SIMPLETYPE§", simpleType);
         filesNstuff.WriteToFile(new File("../../../codeout/" + kernelName + ".cl"), kernel);
 
         String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/" + kernelName + ".c");
 
-        argsNlauch = argsNlauch.replaceAll("§MATRIX_A§", aID);
-        argsNlauch = argsNlauch.replaceAll("§MATRIX_B§", bID);
-        argsNlauch = argsNlauch.replaceAll("§MATRIX_RES§", resID);
-        argsNlauch = argsNlauch.replaceAll("§MATRIXTYPE§", simpleType);
+        argsNlauch = argsNlauch.replaceAll("§A_ID§", aID);
+        argsNlauch = argsNlauch.replaceAll("§B_ID§", bID);
+        argsNlauch = argsNlauch.replaceAll("§RES_ID§", resID);
+        argsNlauch = argsNlauch.replaceAll("§SIMPLETYPE§", simpleType);
         argsNlauch = argsNlauch.replaceAll("§NUM§", Integer.toString(this.unique++));
 
         argsNlauch = argsNlauch.replaceAll("\\n", "\n" + indent(""));
@@ -576,8 +576,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     private String applySameSizeCheck(Variable matrixA, Variable matrixB, String code){
         return filesNstuff.ImportStringFromResource("codesnippets/matrixSameSizeCheck.c")
-                .replaceAll("§MATRIX_A§", matrixA.getId())
-                .replaceAll("§MATRIX_B§", matrixB.getId())
+                .replaceAll("§A_ID§", matrixA.getId())
+                .replaceAll("§B_ID§", matrixB.getId())
                 .replaceAll("§CODE§", code)
                 .replaceAll("\\n", "\n" + indent(""));
     }

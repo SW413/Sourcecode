@@ -1,7 +1,7 @@
-//MATRIX §MATRIX_A§ ADDED WITH A SCALAR §MATRIX_B§
-global_size[0] = §MATRIX_A§.rows*§MATRIX_A§.cols;
+//MATRIX §A_ID§ ADDED WITH A SCALAR §B_ID§
+global_size[0] = §A_ID§.rows*§A_ID§.cols;
 software = sclGetCLSoftware("matrixAddScalar.cl", "matrixAddScalar", hardware);
-§MATRIXTYPE§ scl_scalar_add§NUM§ = §MATRIX_B§;
+§SIMPLETYPE§ scl_scalar_add§NUM§ = §B_ID§;
 sclManageArgsLaunchKernel(hardware, software, global_size, local_size, "%R %a",
-    §MATRIX_A§.dataSize, §MATRIX_A§.dataStart, sizeof(§MATRIXTYPE§), &scl_scalar_add§NUM§);
+    §A_ID§.dataSize, §A_ID§.dataStart, sizeof(§SIMPLETYPE§), &scl_scalar_add§NUM§);
 //END MATRIX SCALAR ADDITION

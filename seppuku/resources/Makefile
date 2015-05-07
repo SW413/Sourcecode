@@ -22,12 +22,12 @@ HOME    = $(PWD)
 EXEC    = $(HOME)/test
 CC      = gcc
 SRC     = code.c simpleCL.c gambleStdlib.c
-CFLAGS  = -Wall -Wextra -pedantic -O3
+CFLAGS  = -Wall -Wextra -pedantic -O3 -std=c99
 
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
-INCL_P  = -I$(HOME)/inc -I/usr/local/cuda/include
+INCL_P  = -I$(HOME)/inc -I/usr/local/cuda/include -I/opt/opencl-headers/include/
 LIBS   = -lm -lOpenCL -lrt
 INCL_AMD = -I$(HOME)/inc -I/opt/AMDAPP/include
 LIBS_AMD = -L/opt/AMDAPP/lib/x86_64 $(LIBS)
