@@ -3,6 +3,7 @@ package com.doge.CodeGeneration.Visitors;
 import com.doge.ContextualAnalysis.AST.*;
 import com.doge.ContextualAnalysis.Visitors.BaseASTVisitor;
 import com.doge.MiscComponents.FileHandling;
+import com.doge.MiscComponents.Types.OperatorType;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
@@ -306,6 +307,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             return expression.toString();
         }
 
+        if (node.getOperatorType() == OperatorType.POWER){
+            return "pow( " + visit(node.getLValue()) + ", " + visit(node.getRValue()) + ")";
+        }
 
         if (node.getRValue() != null)
             return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());
