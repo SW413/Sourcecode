@@ -235,7 +235,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                    } else {
+                    } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixAdd",
                                 aStack.pop().getId(),
@@ -252,7 +252,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                    } else {
+                    } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixSub",
                                 aStack.pop().getId(),
@@ -277,7 +277,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(resultVarStack.peek().getValueType())));
-                    } else {
+                    } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixMul",
                                 aStack.pop().getId(),
@@ -287,6 +287,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case TRANSPOSE:
+                    if(aStack.peek().isComplex() && bStack.peek().isComplex())
                     expression.append(matrixKernel(
                             "matrixTranspose",
                             aStack.pop().getId(),
@@ -295,6 +296,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                             TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     break;
                 case MULENTRY:
+                    if(aStack.peek().isComplex() && bStack.peek().isComplex())
                     expression.append(applySameSizeCheck(aStack.peek(), bStack.peek(),matrixKernel(
                             "matrixIndexMul",
                             aStack.pop().getId(),
@@ -303,8 +305,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                             TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())))));
                     break;
             }
-
-            return expression.toString();
+            if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0)
+                return expression.toString();
         }
 
         if (node.getOperatorType() == OperatorType.POWER){
