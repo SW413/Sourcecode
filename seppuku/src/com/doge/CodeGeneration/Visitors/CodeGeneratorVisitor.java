@@ -3,6 +3,7 @@ package com.doge.CodeGeneration.Visitors;
 import com.doge.ContextualAnalysis.AST.*;
 import com.doge.ContextualAnalysis.Visitors.BaseASTVisitor;
 import com.doge.MiscComponents.FileHandling;
+import com.doge.MiscComponents.Types.OperatorType;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
@@ -128,12 +129,15 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (node.getExpression() == null) {
             return node.getVariable().getId() + node.getAssignmentOperator() + ";";
         }
+
         if (node.getVariable().getEntrance() != null) {
                 return applyBoundsCheck(node.getVariable(), complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";");
         }
+
         resultVarStack.push(node.getVariable());
         String expression = visit(node.getExpression());
         resultVarStack.pop();
+
         if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
            return expression;
         }
@@ -235,7 +239,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                    } else {
+                    } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixAdd",
                                 aStack.pop().getId(),
@@ -252,7 +256,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 bStack.peek().isComplex() ? aStack.pop().getId() : bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
-                    } else {
+                    } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixSub",
                                 aStack.pop().getId(),
@@ -277,7 +281,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(resultVarStack.peek().getValueType())));
-                    } else {
+                    } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
                         expression.append(matrixKernel(
                                 "matrixMul",
                                 aStack.pop().getId(),
@@ -287,6 +291,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case TRANSPOSE:
+                    if(aStack.peek().isComplex())
                     expression.append(matrixKernel(
                             "matrixTranspose",
                             aStack.pop().getId(),
@@ -295,6 +300,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                             TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
                     break;
                 case MULENTRY:
+                    if(aStack.peek().isComplex() && bStack.peek().isComplex())
                     expression.append(applySameSizeCheck(aStack.peek(), bStack.peek(),matrixKernel(
                             "matrixIndexMul",
                             aStack.pop().getId(),
@@ -303,10 +309,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                             TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())))));
                     break;
             }
-
-            return expression.toString();
+            if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0)
+                return expression.toString();
         }
 
+        if (node.getOperatorType() == OperatorType.POWER){
+            return "pow( " + visit(node.getLValue()) + ", " + visit(node.getRValue()) + ")";
+        }
 
         if (node.getRValue() != null)
             return visit(node.getLValue()) + " " + node.getOperatorType() + " " + visit(node.getRValue());

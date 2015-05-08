@@ -28,7 +28,8 @@ for(int i = 0; i < 4; i++){
 
 int Ap = Av * Bv;
 int Ap2 = 0;
-Ap2 = Av * Bv;
+Ap2 = 2 ^ 2;
+Ap2 = 2 + 2 * 2 + 4 - 22;
 
 print("dot P Ap:", Ap, "Ap2", Ap2);
 

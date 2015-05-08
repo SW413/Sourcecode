@@ -75,7 +75,8 @@ argumentlist
     ;
 
 expression
-    : expression ( '*' | '/' | '%' | '#' ) expression   #mulExpr
+    : expression '^' expression                         #powerExpr
+    | expression ( '*' | '/' | '%' | '#' ) expression   #mulExpr
     | expression ( '+' | '-' ) expression               #addExpr
     | '(' expression ')'                                #parenExpr
     | value                                             #valueExpr
@@ -150,7 +151,7 @@ collectiontype
     ;
 
 postUnaryOperator 
-    : '++' | '--' | '^' ;
+    : '++' | '--' | '^T' ;
 
 assignmentOperator
     : '=' | '+=' | '-=' | '*=' | '/=' ;

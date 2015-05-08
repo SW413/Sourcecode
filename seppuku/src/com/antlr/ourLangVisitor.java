@@ -169,6 +169,13 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitValueExpr(ourLangParser.ValueExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code powerExpr}
+	 * labeled alternative in {@link ourLangParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPowerExpr(ourLangParser.PowerExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code addExpr}
 	 * labeled alternative in {@link ourLangParser#expression}.
 	 * @param ctx the parse tree

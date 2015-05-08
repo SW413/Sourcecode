@@ -506,6 +506,19 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
      *
      */
     @Override
+    public BaseASTNode visitPowerExpr(ourLangParser.PowerExprContext ctx) {
+        parentStack.push(null);
+        ExpressionNode tmp = new ExpressionNode(
+                null,
+                (ExpressionNode) visit(ctx.expression(0)),
+                OperatorType.POWER,
+                (ExpressionNode) visit(ctx.expression(1)),
+                ctx.start.getLine());
+        parentStack.pop();
+        return tmp;
+    }
+
+    @Override
     public ExpressionNode visitAddExpr(ourLangParser.AddExprContext ctx) {
         return new ExpressionNode(
                 null,
