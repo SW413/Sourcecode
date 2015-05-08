@@ -128,12 +128,15 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (node.getExpression() == null) {
             return node.getVariable().getId() + node.getAssignmentOperator() + ";";
         }
+
         if (node.getVariable().getEntrance() != null) {
                 return applyBoundsCheck(node.getVariable(), complexEntrance(node.getVariable()) + " " + node.getAssignmentOperator() + " " + visit(node.getExpression()) + ";");
         }
+
         resultVarStack.push(node.getVariable());
         String expression = visit(node.getExpression());
         resultVarStack.pop();
+
         if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
            return expression;
         }
@@ -287,7 +290,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     }
                     break;
                 case TRANSPOSE:
-                    if(aStack.peek().isComplex() && bStack.peek().isComplex())
+                    if(aStack.peek().isComplex())
                     expression.append(matrixKernel(
                             "matrixTranspose",
                             aStack.pop().getId(),

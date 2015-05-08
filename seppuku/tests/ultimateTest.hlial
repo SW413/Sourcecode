@@ -1,0 +1,25 @@
+//matrix decl
+matrix<int>[3, 3] aMatrix;
+
+matrix<int>[3, 3] resMatrix;
+
+matrix<int> bMatrix = [1, 2, 3;
+                       4, 5, 6;
+                       7, 8, 9];
+
+//matrix assginment
+    //matrix mul
+resMatrix = aMatrix * bMatrix;
+print(resMatrix);
+    //matrix add
+resMatrix = aMatrix + bMatrix;
+print(resMatrix);
+    //matrix sub
+resMatrix = aMatrix - bMatrix;
+print(resMatrix);
+    //matrix index mul
+resMatrix = aMatrix # bMatrix;
+print(resMatrix);
+    //matrix tanspose
+resMatrix = bMatrix ^T;
+print(resMatrix);
