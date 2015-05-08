@@ -282,12 +282,12 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 resultVarStack.peek().getId(),
                                 TypeParser.cTypeFromValueType(resultVarStack.peek().getValueType())));
                     } else if(aStack.peek().isComplex() && bStack.peek().isComplex()) {
-                        expression.append(matrixKernel(
+                        expression.append(applyMulCheck(aStack.peek(), bStack.peek(), resultVarStack.peek(), matrixKernel(
                                 "matrixMul",
                                 aStack.pop().getId(),
                                 bStack.pop().getId(),
                                 resultVarStack.peek().getId(),
-                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType()))));
+                                TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(resultVarStack.peek().getValueType())))));
                     }
                     break;
                 case TRANSPOSE:
@@ -587,6 +587,16 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return filesNstuff.ImportStringFromResource("codesnippets/matrixSameSizeCheck.c")
                 .replaceAll("§A_ID§", matrixA.getId())
                 .replaceAll("§B_ID§", matrixB.getId())
+                .replaceAll("§CODE§", code)
+                .replaceAll("\\n", "\n" + indent(""));
+    }
+
+
+    private String applyMulCheck(Variable matrixA, Variable matrixB, Variable matrixRes, String code){
+        return filesNstuff.ImportStringFromResource("codesnippets/matrixMulSizeCheck.c")
+                .replaceAll("§A_ID§", matrixA.getId())
+                .replaceAll("§B_ID§", matrixB.getId())
+                .replaceAll("§RES_ID§", matrixRes.getId())
                 .replaceAll("§CODE§", code)
                 .replaceAll("\\n", "\n" + indent(""));
     }
