@@ -1,6 +1,6 @@
-__kernel void matrixMulScalar(__global §SIMPLETYPE§ *ma, §SIMPLETYPE§ scalar){
+__kernel void matrixMulScalar(__global §SIMPLETYPE§ *ma,__global §SIMPLETYPE§ *res, §SIMPLETYPE§ scalar){
 
-	int global_x = get_global_id( 0);
+	int global_x = get_global_id(0);
 
-	ma[ global_x] *=  scalar;
+	res[global_x] = ma[global_x] * scalar;
 }
