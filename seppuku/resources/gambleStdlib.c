@@ -31,6 +31,8 @@ void saveToFile(char* str, char* type, matrix m)
     } else {
         printf("Error!");
     }
+
+    fclose(file);
 }
 
 matrix loadFromFile(char* str)
@@ -62,7 +64,6 @@ matrix loadFromFile(char* str)
                 fscanf(file, " %d ", &((int*)m.dataStart)[i * dim[0] + j]);
             }
         }
-        return m;
     } else if(strcmp(buffer, "MATRIX_INT64") == 0){
         int dim[2];
         fscanf(file, " %d %d ", &dim[0], &dim[1]);
@@ -80,7 +81,6 @@ matrix loadFromFile(char* str)
                 fscanf(file, " %lli ", &((long long*)m.dataStart)[i * dim[0] + j]);
             }
         }
-        return m;
     } else if(strcmp(buffer, "MATRIX_INT16") == 0){
         int dim[2];
         fscanf(file, " %d %d ", &dim[0], &dim[1]);
@@ -98,7 +98,6 @@ matrix loadFromFile(char* str)
                 fscanf(file, " %hd ", &((short*)m.dataStart)[i * dim[0] + j]);
             }
         }
-        return m;
     } else if (strcmp(buffer, "MATRIX_FLOAT64") == 0) {
           int dim[2];
           fscanf(file, " %d %d ", &dim[0], &dim[1]);
@@ -116,8 +115,7 @@ matrix loadFromFile(char* str)
                   fscanf(file, " %lf ", &((double*)m.dataStart)[i * dim[0] + j]);
               }
           }
-          return m;
-     }else if (strcmp(buffer, "MATRIX_FLOAT") == 0) {
+    } else if (strcmp(buffer, "MATRIX_FLOAT") == 0) {
            int dim[2];
            fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
@@ -134,9 +132,11 @@ matrix loadFromFile(char* str)
                    fscanf(file, " %f ", &((float*)m.dataStart)[i * dim[0] + j]);
                }
            }
-           return m;
-       } else {
-           printf("Unknown type: %s\n", str);
-       exit(1);
+    } else {
+        printf("Unknown type: %s\n", str);
+        fclose(file);
+        exit(1);
     }
+    fclose(file);
+    return m;
 }
