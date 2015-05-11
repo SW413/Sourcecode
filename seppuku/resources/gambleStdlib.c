@@ -44,6 +44,7 @@ matrix loadFromFile(char* str)
     	exit(0);
     }
 
+    matrix m;
     char buffer[128];
 
     fscanf(file, "%s", buffer);
@@ -51,7 +52,6 @@ matrix loadFromFile(char* str)
         int dim[2];
         fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
-        matrix m;
         m.cols = dim[0];
         m.rows = dim[1];
         m.dataSize = sizeof(int) * dim[0] * dim[1];
@@ -68,7 +68,6 @@ matrix loadFromFile(char* str)
         int dim[2];
         fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
-        matrix m;
         m.cols = dim[0];
         m.rows = dim[1];
         m.dataSize = sizeof(long long) * dim[0] * dim[1];
@@ -85,7 +84,6 @@ matrix loadFromFile(char* str)
         int dim[2];
         fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
-        matrix m;
         m.cols = dim[0];
         m.rows = dim[1];
         m.dataSize = sizeof(short) * dim[0] * dim[1];
@@ -102,7 +100,6 @@ matrix loadFromFile(char* str)
           int dim[2];
           fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
-          matrix m;
           m.cols = dim[0];
           m.rows = dim[1];
           m.dataSize = sizeof(double) * dim[0] * dim[1];
@@ -119,7 +116,6 @@ matrix loadFromFile(char* str)
            int dim[2];
            fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
-           matrix m;
            m.cols = dim[0];
            m.rows = dim[1];
            m.dataSize = sizeof(float) * dim[0] * dim[1];

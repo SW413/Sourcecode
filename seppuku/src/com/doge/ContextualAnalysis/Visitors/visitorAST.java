@@ -450,6 +450,8 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
     @Override
     public BaseASTNode visitComplexToFileFunc(ourLangParser.ComplexToFileFuncContext ctx) {
+        if (parentStack.peek().getClass() == VariableExpressionNode.class)
+            parentStack.pop();
         ArrayList<Object> arguments = new ArrayList<Object>();
 
         if (ctx.argumentlist().getChildCount() > 0){
@@ -467,6 +469,8 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
     @Override
     public BaseASTNode visitFileToComplexFunc(ourLangParser.FileToComplexFuncContext ctx) {
+        if (parentStack.peek().getClass() == VariableExpressionNode.class)
+            parentStack.pop();
         ArrayList<Object> arguments = new ArrayList<Object>();
 
         if (ctx.argumentlist().getChildCount() > 0){
