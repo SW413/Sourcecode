@@ -29,7 +29,7 @@ public class FunctionImports {
         ParseTree tree = parser.GenerateParseTreeFromSourcecode(FileHandling.compatible(sourcecodePath + relativePath));
         if (parser.getOurLangParser().getNumberOfSyntaxErrors() == 0) {
             BaseASTNode abstractSyntaxTree = new BaseASTNode(null);
-            tree.accept(new visitorAST(abstractSyntaxTree));
+            tree.accept(new visitorAST(abstractSyntaxTree, true, relativePath));
             return ((TopNode) abstractSyntaxTree.getChild(0)).getFunctionDeclarations();
         }
         System.out.println("Syntax errors in import files!");

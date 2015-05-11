@@ -1,5 +1,6 @@
 package com.doge.ContextualAnalysis.AST;
 
+import com.antlr.ourLangParser;
 import com.doge.ContextualAnalysis.Visitors.IASTVisitor;
 import com.doge.MiscComponents.Types.ValueType;
 
@@ -16,11 +17,26 @@ public class FunctionDclNode extends BaseASTNode {
     private StatementNode functionBody;
     private FunctionReturnNode functionReturn;
     private ValueType valueType;
+    private Boolean isFromImport;
+    private String fileName;
 
     public FunctionDclNode(BaseASTNode parent, Variable variable) {
         super(parent);
         this.variable = variable;
+        this.isFromImport = false;
     }
+
+    public FunctionDclNode(BaseASTNode parent, Variable variable, Boolean isFromImport, String fileName) {
+        super(parent);
+        variable.setFunctionDclNode(this);
+        this.variable = variable;
+        this.isFromImport = isFromImport;
+        this.fileName = fileName;
+    }
+
+    public String getFileName() { return isFromImport ? fileName : ""; }
+
+    public Boolean getIsFromImport() {return this.isFromImport; }
 
     public Variable getVariable(){
         return this.variable;

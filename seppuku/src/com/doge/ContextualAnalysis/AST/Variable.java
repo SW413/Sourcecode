@@ -18,6 +18,7 @@ public class Variable {
     private ExpressionNode[] dynamicSize;
     private boolean isFunction;
     private boolean isComplex;
+    private FunctionDclNode functionDclNode;
     //private int funcDeclScope;
 
     public Variable(ValueType valueType, String id, ArrayList<ExpressionNode> arguments){
@@ -53,6 +54,10 @@ public class Variable {
         this.id = id;
         this.isFunction = true;
     }
+
+    public void setFunctionDclNode(FunctionDclNode node) {this.functionDclNode = node;}
+
+    public FunctionDclNode getFunctionDclNode() {return this.functionDclNode;}
 
     public boolean isFunction() {return this.isFunction; }
 
