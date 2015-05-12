@@ -1,10 +1,9 @@
 #!/bin/bash
-for i in {1..1000}
+for i in {1..100}
 do
-   for j in {1..1000}
+   for j in {1..100}
     do
-    number=($RANDOM %= 20)
-    echo -n $number
+    echo -n $(((RANDOM % 10) + 1))
     echo -n " "
     done
     echo
