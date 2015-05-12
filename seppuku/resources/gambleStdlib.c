@@ -35,7 +35,7 @@ void saveToFile(char* str, char* type, matrix m)
     fclose(file);
 }
 
-matrix loadFromFile(char* str)
+matrix loadFromFile(char* str, matrix m)
 {
     FILE * file = fopen(str, "r");
     if(file == NULL)
@@ -44,90 +44,124 @@ matrix loadFromFile(char* str)
     	exit(0);
     }
 
-    matrix m;
     char buffer[128];
+    int bytes;
 
-    fscanf(file, "%s", buffer);
+    if(!fscanf(file, "%s%n", buffer, &bytes)){
+        printf("Error");
+        exit(-1);
+    }
+
+    if(bytes > 100) {
+        printf("Filetype identifier too big. EXITING\n");
+        exit(-1);
+    }
+
+    int dim[2];
+    int reallocate = 0;
+
+    if(!fscanf(file, " %d %d ", &dim[0], &dim[1])){
+        printf("Error");
+        exit(-1);
+    }
+
+    if(0 == m.cols || 0 == m.rows)
+    {
+        reallocate = 1;
+        m.cols = dim[0];
+        m.rows = dim[1];
+    } else if(m.cols != dim[0] || m.rows != dim[1]) {
+        // This should be an error.
+        printf("Size of input cols and rows differ from the ones read from file. EXITING\n");
+        exit(-1);
+    } // else all is ok!
+
+    int oldDataSize = m.dataSize;
+
     if(strcmp(buffer, "MATRIX_INT") == 0){
-        int dim[2];
-        fscanf(file, " %d %d ", &dim[0], &dim[1]);
-
-        m.cols = dim[0];
-        m.rows = dim[1];
         m.dataSize = sizeof(int) * dim[0] * dim[1];
-        m.dataStart = malloc(m.dataSize);
+
+        if(reallocate || m.dataSize != oldDataSize) {
+            m.dataStart = realloc(m.dataStart, m.dataSize);
+        }
 
         for (int i = 0; i < dim[1]; ++i)
         {
             for (int j = 0; j < dim[0]; ++j)
             {
-                fscanf(file, " %d ", &((int*)m.dataStart)[i * dim[0] + j]);
+                if(!fscanf(file, " %d ", &((int*)m.dataStart)[i * dim[0] + j])){
+                    printf("Error!");
+                }
             }
         }
+
     } else if(strcmp(buffer, "MATRIX_INT64") == 0){
-        int dim[2];
-        fscanf(file, " %d %d ", &dim[0], &dim[1]);
-
-        m.cols = dim[0];
-        m.rows = dim[1];
         m.dataSize = sizeof(long long) * dim[0] * dim[1];
-        m.dataStart = malloc(m.dataSize);
+
+        if(reallocate || m.dataSize != oldDataSize) {
+            m.dataStart = realloc(m.dataStart, m.dataSize);
+        }
 
         for (int i = 0; i < dim[1]; ++i)
         {
             for (int j = 0; j < dim[0]; ++j)
             {
-                fscanf(file, " %lli ", &((long long*)m.dataStart)[i * dim[0] + j]);
+                if(!fscanf(file, " %lli ", &((long long*)m.dataStart)[i * dim[0] + j])) {
+                    printf("Error!");
+                }
             }
         }
-    } else if(strcmp(buffer, "MATRIX_INT16") == 0){
-        int dim[2];
-        fscanf(file, " %d %d ", &dim[0], &dim[1]);
 
-        m.cols = dim[0];
-        m.rows = dim[1];
+    } else if(strcmp(buffer, "MATRIX_INT16") == 0){
         m.dataSize = sizeof(short) * dim[0] * dim[1];
-        m.dataStart = malloc(m.dataSize);
+
+        if(reallocate || m.dataSize != oldDataSize) {
+            m.dataStart = realloc(m.dataStart, m.dataSize);
+        }
 
         for (int i = 0; i < dim[1]; ++i)
         {
             for (int j = 0; j < dim[0]; ++j)
             {
-                fscanf(file, " %hd ", &((short*)m.dataStart)[i * dim[0] + j]);
+                if(!fscanf(file, " %hd ", &((short*)m.dataStart)[i * dim[0] + j])) {
+                    printf("Error!");
+                }
             }
         }
     } else if (strcmp(buffer, "MATRIX_FLOAT64") == 0) {
-          int dim[2];
-          fscanf(file, " %d %d ", &dim[0], &dim[1]);
+        m.dataSize = sizeof(double) * dim[0] * dim[1];
 
-          m.cols = dim[0];
-          m.rows = dim[1];
-          m.dataSize = sizeof(double) * dim[0] * dim[1];
-          m.dataStart = malloc(m.dataSize);
+        if(reallocate || m.dataSize != oldDataSize) {
+            m.dataStart = realloc(m.dataStart, m.dataSize);
+        }
 
-          for (int i = 0; i < dim[1]; ++i)
-          {
-              for (int j = 0; j < dim[0]; ++j)
-              {
-                  fscanf(file, " %lf ", &((double*)m.dataStart)[i * dim[0] + j]);
-              }
-          }
+        for (int i = 0; i < dim[1]; ++i)
+        {
+            for (int j = 0; j < dim[0]; ++j)
+            {
+                if(!fscanf(file, " %lf ", &((double*)m.dataStart)[i * dim[0] + j])) {
+                    printf("Error!");
+                }
+            }
+        }
+
     } else if (strcmp(buffer, "MATRIX_FLOAT") == 0) {
-           int dim[2];
-           fscanf(file, " %d %d ", &dim[0], &dim[1]);
+        m.dataSize = sizeof(float) * dim[0] * dim[1];
 
-           m.cols = dim[0];
-           m.rows = dim[1];
-           m.dataSize = sizeof(float) * dim[0] * dim[1];
-           m.dataStart = malloc(m.dataSize);
+        if(reallocate || m.dataSize != oldDataSize) {
+            m.dataStart = realloc(m.dataStart, m.dataSize);
+        }
 
-           for (int i = 0; i < dim[1]; ++i)
-           {
-               for (int j = 0; j < dim[0]; ++j)
-               {
-                   fscanf(file, " %f ", &((float*)m.dataStart)[i * dim[0] + j]);
-               }
-           }
+        for (int i = 0; i < dim[1]; ++i)
+        {
+            for (int j = 0; j < dim[0]; ++j)
+            {
+                if(!fscanf(file, " %f ", &((float*)m.dataStart)[i * dim[0] + j])) {
+                    printf("Error!");
+                }
+            }
+        }
+
     } else {
         printf("Unknown type: %s\n", str);
         fclose(file);
