@@ -44,6 +44,8 @@ public class TypeChecker {
         } else if (rValue == null) {
             return lValue.getValueType();
         } else {
+            if (rValue.isFunction() && rValue.getId().equals("fileToMatrix"))
+                return lValue.getValueType();
             ValueType combined = compatibleTypes(
                     lValue.getEntrance() != null ? ComplexToSimple(lValue.getValueType()) : lValue.getValueType(),
                     rValue.getEntrance() != null ? ComplexToSimple(rValue.getValueType()) : rValue.getValueType());

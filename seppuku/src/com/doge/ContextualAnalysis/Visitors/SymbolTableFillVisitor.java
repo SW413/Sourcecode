@@ -1,9 +1,7 @@
 package com.doge.ContextualAnalysis.Visitors;
 
 import com.doge.ContextualAnalysis.AST.*;
-import com.doge.MiscComponents.ErrorReporting.LanguageError;
-import com.doge.MiscComponents.ErrorReporting.ReDeclarationError;
-import com.doge.MiscComponents.ErrorReporting.UnDeclaredError;
+import com.doge.MiscComponents.ErrorReporting.*;
 import com.doge.ContextualAnalysis.checking.Symbol;
 import com.doge.ContextualAnalysis.checking.SymbolTable;
 import com.doge.MiscComponents.Types.ScopeType;
@@ -87,16 +85,6 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
                 }
             } else {
                 System.out.println("Panic: in matrixToFile! Error in arguments");
-            }
-        } else if (node.getVariable().getId().equals("fileToMatrix")) {
-            if(node.getVariable().getPrintArguments() != null && node.getVariable().getPrintArguments().size() == 1) {
-                if (node.getVariable().getPrintArguments().get(0).getClass() == String.class) {
-                    // All good!
-                } else {
-                    //TODO: Error! proper handling?
-                }
-            } else  {
-                //TODO: Error! proper handling?
             }
         } else {
             // Default
@@ -193,6 +181,22 @@ public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
 
     @Override
     public Void VisitVariableExpressionNode(VariableExpressionNode node) {
+        if (node.getVariable().getId().equals("fileToMatrix")) {
+            if(node.getVariable().getPrintArguments() != null && node.getVariable().getPrintArguments().size() == 1) {
+                if (node.getVariable().getPrintArguments().get(0).getClass() == String.class) {
+                    return null;
+                    // All good!
+                } else {
+                    errors.add(new TypeMismatchError(new Variable(null, "string"), new Variable(null, node.getVariable().getPrintArguments().get(0).getClass().toString()), node.getLineNumber()));
+                }
+            } else  {
+                errors.add(
+                        new ArgumentsError(node.getVariable(),
+                        1,
+                        node.getVariable().getPrintArguments() == null ? 0 : node.getVariable().getPrintArguments().size(),
+                        node.getLineNumber()));
+            }
+        }
         checkIfUndeclared(node.getVariable(), node);
         return null;
     }

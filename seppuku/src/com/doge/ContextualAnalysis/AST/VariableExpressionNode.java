@@ -1,6 +1,7 @@
 package com.doge.ContextualAnalysis.AST;
 
 import com.doge.ContextualAnalysis.Visitors.IASTVisitor;
+import com.doge.MiscComponents.Types.OperatorType;
 
 /**
  * Created by michno on 24/3/15.
@@ -10,6 +11,11 @@ public class VariableExpressionNode extends ExpressionNode {
 
     public VariableExpressionNode(BaseASTNode parent, Variable variable) {
         super(parent, null, null, null);
+        this.variable = variable;
+    }
+
+    public VariableExpressionNode(BaseASTNode parent, Variable variable, int lineNum) {
+        super(parent, null, null, null, lineNum);
         this.variable = variable;
     }
 

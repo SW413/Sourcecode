@@ -7,7 +7,6 @@ import com.doge.MiscComponents.Types.OperatorType;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
-import com.sun.javafx.fxml.expression.VariableExpression;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -102,14 +101,20 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                 case MATRIX:
                     complexType = makeMatrix(
                             node.getVariable().getSize() != null ?
-                                    Integer.toString(node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]),
+                                    Integer.toString(node.getVariable().getSize()[0]) :
+                                    node.getVariable().getDynamicSize() != null ?
+                                            visit(node.getVariable().getDynamicSize()[0]) : "0",
                             node.getVariable().getSize() != null ?
-                                    Integer.toString(node.getVariable().getSize()[1]) : visit(node.getVariable().getDynamicSize()[1]));
+                                    Integer.toString(node.getVariable().getSize()[1]) :
+                                    node.getVariable().getDynamicSize() != null ?
+                                            visit(node.getVariable().getDynamicSize()[1]) : "0");
                     break;
                 case VECTOR:
                     complexType = makeVector(
                             node.getVariable().getSize() != null ?
-                                    Integer.toString(node.getVariable().getSize()[0]) : visit(node.getVariable().getDynamicSize()[0]));
+                                    Integer.toString(node.getVariable().getSize()[0]) :
+                                    node.getVariable().getDynamicSize() != null ?
+                                            visit(node.getVariable().getDynamicSize()[0]) : "0");
                     break;
             }
             complexType = complexType.replaceAll("§ID§", node.getVariable().getId());
@@ -369,8 +374,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             return printFunction(node.getVariable()) + ";";
         } else if (node.getVariable().getId().equals("matrixToFile")) {
             return matrixToFileFunction(node.getVariable()) + ";";
-        } else if (node.getVariable().getId().equals("fileToMatrix")) {
-            return fileToMatrixFunction(node.getVariable()) + ";";
         }
         return functionWithArgs(node.getVariable()) + ";";
     }
@@ -390,6 +393,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                 return visit(node.getVariable().getArgument(0)) + ".cols ";
             } else if (node.getVariable().getId().equals("rows")) {
                 return visit(node.getVariable().getArgument(0)) + ".rows ";
+            } else if (node.getVariable().getId().equals("fileToMatrix")){
+                return fileToMatrixFunction(node.getVariable(), resultVarStack.peek().getId()) + ";";
             }
             return functionWithArgs(node.getVariable());
         }else if (node.getVariable().getEntrance() != null){
@@ -453,8 +458,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         return "saveToFile(" + func.getPrintArguments().get(1) + ", \"" + ((VariableExpressionNode) func.getPrintArguments().get(0)).getValueType().name() + "\", " + visit((ExpressionNode) func.getPrintArguments().get(0)) + ")";
     }
 
-    private String fileToMatrixFunction(Variable func) {
-        return "loadFromFile(" + func.getPrintArguments().get(0) + ")";
+    private String fileToMatrixFunction(Variable func, String complexId) {
+        return "loadFromFile(" + func.getPrintArguments().get(0) + ", " + complexId + ")";
     }
 
     private String printFunction(Variable func) {

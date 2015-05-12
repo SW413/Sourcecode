@@ -464,7 +464,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
             }
         }
 
-        return new FunctionCallNode(parentStack.peek(), new Variable(null, ctx.children.get(0).toString(), arguments, true), ctx.start.getLine());
+        return new FunctionCallNode(parentStack.peek(), new Variable(null, ctx.children.get(0).getText(), arguments, true), ctx.start.getLine());
     }
 
     @Override
@@ -483,7 +483,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
             }
         }
 
-        return new FunctionCallNode(parentStack.peek(), new Variable(null, ctx.children.get(0).toString(), arguments, true), ctx.start.getLine());
+        return new VariableExpressionNode(null, new Variable(null, ctx.children.get(0).toString(), arguments, true), ctx.start.getLine());
     }
 
     @Override

@@ -1,10 +1,7 @@
 //Matrix multiplycation of large matrices on GPU
-matrix<float>[2000, 3000] a;
-matrix<float>[3000, 4000] b;
+matrix<float> a = fileToMatrix("a.matrix");
+matrix<float> b = fileToMatrix("b.matrix");
 matrix<float>[2000, 4000] res;
-
-a = fileToMatrix("a.matrix");
-b = fileToMatrix("b.matrix");
 
 res = a * b;
 
