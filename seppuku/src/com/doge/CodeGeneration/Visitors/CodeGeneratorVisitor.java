@@ -459,7 +459,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
     }
 
     private String fileToMatrixFunction(Variable func, String complexId) {
-        return "loadFromFile(" + func.getPrintArguments().get(0) + ", " + complexId + ")";
+        return "loadFromFile(" + func.getPrintArguments().get(0) + ", &" + complexId + ")";
     }
 
     private String printFunction(Variable func) {

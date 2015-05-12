@@ -1,7 +1,7 @@
 #!/bin/bash
-for i in {1..3000}
+for i in {1..1000}
 do
-   for j in {1..4000}
+   for j in {1..1000}
     do
     number=($RANDOM %= 20)
     echo -n $number

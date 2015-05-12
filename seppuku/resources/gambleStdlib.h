@@ -1,2 +1,2 @@
-void saveToFile(char*, char*, matrix);
-matrix loadFromFile(char* str);
+void saveToFile(char* str, char* type, matrix m);
+void loadFromFile(char* str, matrix* m);
