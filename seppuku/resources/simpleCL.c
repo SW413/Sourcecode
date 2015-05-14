@@ -536,18 +536,18 @@ sclHard* sclGetAllHardware( int* found ) {
 
 	int i, j; 
 	cl_uint nPlatforms=0, nDevices=0;
-	char* platformName;
+	//char* platformName;
 	sclHard* hardList;
 	
 	*found=0;
 
-	cl_platform_id *GPUplatforms, *platforms;
+	cl_platform_id /**GPUplatforms,*/ *platforms;
 	cl_int err;
 	cl_device_id *devices;
 	
 	platforms = (cl_platform_id *)malloc( sizeof(cl_platform_id) * 8 );
-	GPUplatforms = (cl_platform_id *)malloc( sizeof(cl_platform_id) * 8 );
-	platformName = (char *)malloc( sizeof(char) * 30 );
+	//GPUplatforms = (cl_platform_id *)malloc( sizeof(cl_platform_id) * 8 );
+	//platformName = (char *)malloc( sizeof(char) * 30 );
 	devices = (cl_device_id *)malloc( sizeof(cl_device_id) * 16 );
 	hardList = (sclHard*)malloc( 16*sizeof(sclHard) );
 

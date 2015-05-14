@@ -1,18 +1,16 @@
-//Matrix multiplycation of large matrices on CPU
-matrix<float>[2000, 3000] a;
-matrix<float>[3000, 4000] b;
-matrix<float>[2000, 4000] res;
+//Matrix multiplication of large matrices on CPU
+matrix<float> a = fileToMatrix("a.matrix");
+matrix<float> b = fileToMatrix("b.matrix");
+matrix<float>[4000, 2000] res;
 
-a = fileToMatrix("a.matrix");
-b = fileToMatrix("b.matrix");
 
-for (int i = 0; i < rows(a); ++i)
+for (int i = 0; i < rows(a); i++)
 {
-    for (int j = 0; j < cols(b); ++j)
+    for (int j = 0; j < cols(b); j++)
     {
-        for (int k = 0; k < cols(a); ++k)
+        for (int k = 0; k < cols(a); k++)
         {
-            res[i * cols(b) + j] += a[i * cols(a) + k] * b[k * cols(b) + j];
+            res[i, j] += a[i, k] * b[k, j];
         }
     }
 }

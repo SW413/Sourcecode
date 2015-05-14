@@ -6,5 +6,7 @@ local_size[1] = 1;
 software = sclGetCLSoftware("matrixMul.cl", "matrixMul", hardware);
 sclManageArgsLaunchKernel(hardware, software, global_size, local_size, "%r %r %R %a %a",
 	§A_ID§.dataSize, §A_ID§.dataStart, §B_ID§.dataSize, §B_ID§.dataStart, §RES_ID§.dataSize, §RES_ID§.dataStart,
-	sizeof(int), &§A_ID§.cols, sizeof(int), &§B_ID§.cols);
+	sizeof(unsigned int), &§A_ID§.cols, sizeof(unsigned int), &§B_ID§.cols);
+global_size[0] = 1;
+global_size[1] = 1;
 //END OF MATRIX MULTIPLICATION

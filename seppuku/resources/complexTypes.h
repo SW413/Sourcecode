@@ -1,12 +1,8 @@
-typedef struct{
-	int cols;
-	int rows;
-	int dataSize;
-	void* dataStart;
-} matrix;
+#include<stdlib.h>
 
 typedef struct{
-	int rows;
-	int dataSize;
+	size_t cols;
+	size_t rows;
+	size_t dataSize;
 	void* dataStart;
-} vector;
+} matrix;

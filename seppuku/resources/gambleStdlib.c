@@ -7,25 +7,25 @@ void saveToFile(char* str, char* type, matrix m)
 {
     FILE * file = fopen(str, "w");
 
-    fprintf(file, "%s %d %d\n", type, m.cols, m.rows);
+    fprintf(file, "%s\n%zd %zd\n", type, m.rows, m.cols);
     if(strcmp(type, "MATRIX_INT") == 0){
-        for(int i = 0; i < m.cols * m.rows; i++){
+        for(size_t i = 0; i < m.cols * m.rows; i++){
             fprintf(file, "%d %c", ((int*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
         }
     } else if(strcmp(type, "MATRIX_INT16") == 0){
-        for(int i = 0; i < m.cols * m.rows; i++){
+        for(size_t i = 0; i < m.cols * m.rows; i++){
             fprintf(file, "%hi %c", ((short*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
         }
     } else if(strcmp(type, "MATRIX_INT64") == 0){
-        for(int i = 0; i < m.cols * m.rows; i++){
+        for(size_t i = 0; i < m.cols * m.rows; i++){
             fprintf(file, "%lli %c", ((long long*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
         }
     } else if (strcmp(type, "MATRIX_FLOAT64") == 0) {
-        for(int i = 0; i < m.cols * m.rows; i++){
+        for(size_t i = 0; i < m.cols * m.rows; i++){
             fprintf(file, "%f %c", ((double*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
         }
     } else if (strcmp(type, "MATRIX_FLOAT") == 0) {
-        for(int i = 0; i < m.cols * m.rows; i++){
+        for(size_t i = 0; i < m.cols * m.rows; i++){
             fprintf(file, "%f %c", ((float*)m.dataStart)[i], i % m.cols == m.cols - 1 ? '\n' : ' ');
         }
     } else {
@@ -57,10 +57,10 @@ void loadFromFile(char* str, matrix* m)
         exit(-1);
     }
 
-    int dim[2];
-    int reallocate = 0;
+    size_t dim[2];
+    size_t reallocate = 0;
 
-    if(!fscanf(file, " %d %d ", &dim[0], &dim[1])){
+    if(!fscanf(file, " %zu %zu ", &dim[0], &dim[1])){
         printf("Error");
         exit(-1);
     }
@@ -76,7 +76,7 @@ void loadFromFile(char* str, matrix* m)
         exit(-1);
     } // else all is ok!
 
-    int oldDataSize = m->dataSize;
+    size_t oldDataSize = m->dataSize;
 
     if(strcmp(buffer, "MATRIX_INT") == 0){
         m->dataSize = sizeof(int) * dim[0] * dim[1];
@@ -85,9 +85,9 @@ void loadFromFile(char* str, matrix* m)
             m->dataStart = realloc(m->dataStart, m->dataSize);
         }
 
-        for (int i = 0; i < dim[1]; ++i)
+        for (size_t i = 0; i < dim[1]; ++i)
         {
-            for (int j = 0; j < dim[0]; ++j)
+            for (size_t j = 0; j < dim[0]; ++j)
             {
                 if(!fscanf(file, " %d ", &((int*)m->dataStart)[i * dim[0] + j])){
                     printf("Error!");
@@ -102,9 +102,9 @@ void loadFromFile(char* str, matrix* m)
             m->dataStart = realloc(m->dataStart, m->dataSize);
         }
 
-        for (int i = 0; i < dim[1]; ++i)
+        for (size_t i = 0; i < dim[1]; ++i)
         {
-            for (int j = 0; j < dim[0]; ++j)
+            for (size_t j = 0; j < dim[0]; ++j)
             {
                 if(!fscanf(file, " %lli ", &((long long*)m->dataStart)[i * dim[0] + j])) {
                     printf("Error!");
@@ -119,9 +119,9 @@ void loadFromFile(char* str, matrix* m)
             m->dataStart = realloc(m->dataStart, m->dataSize);
         }
 
-        for (int i = 0; i < dim[1]; ++i)
+        for (size_t i = 0; i < dim[1]; ++i)
         {
-            for (int j = 0; j < dim[0]; ++j)
+            for (size_t j = 0; j < dim[0]; ++j)
             {
                 if(!fscanf(file, " %hd ", &((short*)m->dataStart)[i * dim[0] + j])) {
                     printf("Error!");
@@ -135,9 +135,9 @@ void loadFromFile(char* str, matrix* m)
             m->dataStart = realloc(m->dataStart, m->dataSize);
         }
 
-        for (int i = 0; i < dim[1]; ++i)
+        for (size_t i = 0; i < dim[1]; ++i)
         {
-            for (int j = 0; j < dim[0]; ++j)
+            for (size_t j = 0; j < dim[0]; ++j)
             {
                 if(!fscanf(file, " %lf ", &((double*)m->dataStart)[i * dim[0] + j])) {
                     printf("Error!");
@@ -152,9 +152,9 @@ void loadFromFile(char* str, matrix* m)
             m->dataStart = realloc(m->dataStart, m->dataSize);
         }
 
-        for (int i = 0; i < dim[1]; ++i)
+        for (size_t i = 0; i < dim[1]; ++i)
         {
-            for (int j = 0; j < dim[0]; ++j)
+            for (size_t j = 0; j < dim[0]; ++j)
             {
                 if(!fscanf(file, " %f ", &((float*)m->dataStart)[i * dim[0] + j])) {
                     printf("Error!");

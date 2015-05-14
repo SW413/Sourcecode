@@ -119,7 +119,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             }
             complexType = complexType.replaceAll("§ID§", node.getVariable().getId());
             complexType = complexType.replaceAll("§SIMPLETYPE§",
-                    (TypeParser.OpenCL_TypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType()))));
+                    (TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType()))));
         }
 
         if (expr.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
