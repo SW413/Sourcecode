@@ -124,6 +124,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
         if (expr.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
             return (complexType.length() > 0 ? complexType : node.getVariable().toCcode() + ";\n") + expr;
+        } else if (expr.indexOf("loadFromFile(") >= 0) {
+            return complexType + expr + ";";
         }
 
         return complexType.length() > 0 ? complexType + expr : (node.getVariable().toCcode() + " = " + expr + ";");
@@ -394,7 +396,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             } else if (node.getVariable().getId().equals("rows")) {
                 return visit(node.getVariable().getArgument(0)) + ".rows ";
             } else if (node.getVariable().getId().equals("fileToMatrix")){
-                return fileToMatrixFunction(node.getVariable(), resultVarStack.peek().getId()) + ";";
+                return fileToMatrixFunction(node.getVariable(), resultVarStack.peek().getId());
             }
             return functionWithArgs(node.getVariable());
         }else if (node.getVariable().getEntrance() != null){
