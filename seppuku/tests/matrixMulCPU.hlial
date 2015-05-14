@@ -1,7 +1,7 @@
 //Matrix multiplication of large matrices on CPU
 matrix<float> a = fileToMatrix("a.matrix");
 matrix<float> b = fileToMatrix("b.matrix");
-matrix<float>[4000, 2000] res;
+matrix<float> res = fileToMatrix("res.matrix");
 
 
 for (int i = 0; i < rows(a); i++)
@@ -15,4 +15,4 @@ for (int i = 0; i < rows(a); i++)
     }
 }
 
-matrixToFile(res, "res.matrix");
+matrixToFile(res, "res.matrix.out");

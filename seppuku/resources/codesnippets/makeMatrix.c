@@ -1,3 +1,3 @@
-//MATRIX GENERATION FOR §ID§ {cols, rows, dataSize, dataStart}
-matrix §ID§ = {§COLS§, §ROWS§, sizeof(§SIMPLETYPE§) * §COLS§ * §ROWS§, calloc(§COLS§ * §ROWS§, sizeof(§SIMPLETYPE§))};
+//MATRIX GENERATION FOR §ID§ {rows, cols, dataSize, dataStart}
+matrix §ID§ = {§ROWS§, §COLS§, sizeof(§SIMPLETYPE§) * §ROWS§ * §COLS§, calloc(§ROWS§ * §COLS§, sizeof(§SIMPLETYPE§))};
 //END MATRIX GENERATION
