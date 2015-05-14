@@ -1,9 +1,11 @@
 package com.doge.ContextualAnalysis.Visitors;
 
 import com.doge.ContextualAnalysis.AST.*;
+import com.doge.MiscComponents.ErrorReporting.ANSIEscapeCodes;
 import com.doge.MiscComponents.Types.AssignmentOperatorType;
 import com.doge.MiscComponents.Types.OperatorType;
 import com.antlr.*;
+import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.ValueType;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
@@ -251,6 +253,10 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
         Variable var =  new Variable(ValueType.fromString(ctx.complexdatatype().getText()), ctx.ID().getText());
         var.setComplex(true);
 
+        if(TypeChecker.ComplexToSimple(var.getValueType()) == ValueType.BOOLEAN){
+            noBooleanATM(ctx.start.getLine());
+        }
+
         //Set size if matrix decl
         if (expr.getClass() == MatrixValNode.class) {
             int[] tmpSize = {((MatrixValNode) expr).getRows().size(),
@@ -268,6 +274,11 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
         Variable complex = new Variable(ValueType.fromString(ctx.complexdatatype().getText()), ctx.ID().getText());
         complex.setComplex(true);
+
+        if(TypeChecker.ComplexToSimple(complex.getValueType()) == ValueType.BOOLEAN){
+            noBooleanATM(ctx.start.getLine());
+        }
+
         CollectionCoordinateNode sizeNode = (CollectionCoordinateNode) visit(ctx.entranceCoordinate());
         if(sizeNode.getCoordinates()[1] != null){
             ExpressionNode[] size = {sizeNode.getCoordinates()[0], sizeNode.getCoordinates()[1]};
@@ -692,4 +703,13 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
                 ctx.start.getLine()
         );
     }
+
+    private void noBooleanATM(int lineNum){
+        System.out.println(ANSIEscapeCodes.ANSI_RED +
+                "Error[line " + lineNum + "]->" +
+                ANSIEscapeCodes.ANSI_RESET +
+                "Boolean complex datatypes not supported at the moment! Sorry...");
+        System.exit(1);
+    }
 }
+
