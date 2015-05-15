@@ -41,7 +41,6 @@ public class Main {
         //Code Generation
         CodeGenerator codeGenerator = new CodeGenerator();
         codeGenerator.GenerateCodeAndWriteToFile(abstractSyntaxTree);
-        codeGenerator.executableOrTargetCode(args);
 
         System.exit(0);
     }
