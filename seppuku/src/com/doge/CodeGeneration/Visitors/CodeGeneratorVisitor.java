@@ -537,7 +537,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
         String kernel = filesNstuff.ImportStringFromResource("kernels/" + kernelName + ".cl");
         kernel = kernel.replaceAll("§SIMPLETYPE§", simpleType);
-        filesNstuff.WriteToFile(new File("../../../codeout/" + kernelName + ".cl"), kernel);
+        File kernelOut = new File("../../../codeout/kernels/" + kernelName + ".cl");
+        kernelOut.getParentFile().mkdirs();
+        filesNstuff.WriteToFile(kernelOut, kernel);
 
         String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/" + kernelName + ".c");
 

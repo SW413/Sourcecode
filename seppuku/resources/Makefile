@@ -19,7 +19,7 @@
 #   SimpleOpenCL Version 0.09_01_10_2011 
 
 HOME    = $(PWD)
-EXEC    = $(HOME)/test
+EXEC    = $(HOME)/out
 CC      = gcc
 SRC     = code.c simpleCL.c gambleStdlib.c
 CFLAGS  = -Wall -Wextra -pedantic -O3 -std=c99
@@ -54,6 +54,9 @@ amd:
 
 clean:
 	rm -f *.o $(EXEC)
+
+clear:
+	rm -f $(SRC) *.h Makefile
 
 cleanbin:
 	rm -f snapshot* image*

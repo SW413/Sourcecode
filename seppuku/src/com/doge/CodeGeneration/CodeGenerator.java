@@ -4,6 +4,9 @@ import com.doge.CodeGeneration.Visitors.CodeGeneratorVisitor;
 import com.doge.ContextualAnalysis.AST.BaseASTNode;
 import com.doge.MiscComponents.FileHandling;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Created by Mathias on 02-05-2015.
  */
