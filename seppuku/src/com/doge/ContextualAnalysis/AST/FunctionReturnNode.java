@@ -1,6 +1,6 @@
 package com.doge.ContextualAnalysis.AST;
 
-import com.doge.ContextualAnalysis.Visitors.IASTVisitor;
+import com.doge.SyntaxAnalysis.Visitors.IASTVisitor;
 
 /**
  * Created by michno on 23/3/15.

@@ -1,5 +1,5 @@
 package com.doge.ContextualAnalysis.AST;
-import com.doge.ContextualAnalysis.Visitors.IASTVisitor;
+import com.doge.SyntaxAnalysis.Visitors.IASTVisitor;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.misc.Interval;
 

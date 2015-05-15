@@ -11,19 +11,19 @@ import com.doge.MiscComponents.Types.OperatorType;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
+import com.doge.SyntaxAnalysis.Visitors.BaseASTVisitor;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by michno on 25-03-2015.
  */
-public class ASTTypeCheckVisitor extends BaseASTVisitor<Variable> {
+public class TypeCheckVisitor extends BaseASTVisitor<Variable> {
 
     private SymbolTable symbolTable;
     private ArrayList<LanguageError> errors;
 
-    public ASTTypeCheckVisitor(SymbolTable symbolTable, ArrayList<LanguageError> errors) {
+    public TypeCheckVisitor(SymbolTable symbolTable, ArrayList<LanguageError> errors) {
         this.symbolTable = symbolTable;
         this.errors = errors;
     }

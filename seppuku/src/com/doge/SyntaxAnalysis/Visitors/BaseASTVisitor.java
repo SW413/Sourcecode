@@ -1,4 +1,4 @@
-package com.doge.ContextualAnalysis.Visitors;
+package com.doge.SyntaxAnalysis.Visitors;
 import com.doge.ContextualAnalysis.AST.*;
 
 

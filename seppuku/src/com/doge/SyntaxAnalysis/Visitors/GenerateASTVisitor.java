@@ -1,4 +1,4 @@
-package com.doge.ContextualAnalysis.Visitors;
+package com.doge.SyntaxAnalysis.Visitors;
 
 import com.doge.ContextualAnalysis.AST.*;
 import com.doge.MiscComponents.ErrorReporting.ANSIEscapeCodes;
@@ -20,14 +20,14 @@ import java.util.Stack;
  * @author michno
  * @since 2015-03-19
  **/
-public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
+public class GenerateASTVisitor extends ourLangBaseVisitor<BaseASTNode> {
 
     private BaseASTNode baseAstNode;
     //Stack to keep track of parents when building the BaseASTNode
     private Stack<BaseASTNode> parentStack = new Stack<BaseASTNode>();
 
     //Constructor
-    public visitorAST(BaseASTNode baseAstNode){
+    public GenerateASTVisitor(BaseASTNode baseAstNode){
         this.baseAstNode = baseAstNode;
     }
 
@@ -242,7 +242,7 @@ public class visitorAST extends ourLangBaseVisitor<BaseASTNode> {
 
     /**
      * Used for declaration of complex datatypes.
-     * @see visitorAST#visitPrimitiveDecl
+     * @see GenerateASTVisitor#visitPrimitiveDecl
      *
      * @param ctx
      * @return

@@ -1,7 +1,7 @@
 package com.doge.CodeGeneration.Visitors;
 
 import com.doge.ContextualAnalysis.AST.*;
-import com.doge.ContextualAnalysis.Visitors.BaseASTVisitor;
+import com.doge.SyntaxAnalysis.Visitors.BaseASTVisitor;
 import com.doge.MiscComponents.FileHandling;
 import com.doge.MiscComponents.Types.OperatorType;
 import com.doge.MiscComponents.Types.TypeChecker;

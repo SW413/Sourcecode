@@ -1,7 +1,7 @@
 package com.doge.MiscComponents.PrettyPrinter.Visitors;
 
 import com.doge.ContextualAnalysis.AST.*;
-import com.doge.ContextualAnalysis.Visitors.BaseASTVisitor;
+import com.doge.SyntaxAnalysis.Visitors.BaseASTVisitor;
 import com.doge.MiscComponents.Types.AssignmentOperatorType;
 
 /**

@@ -8,18 +8,19 @@ import com.doge.MiscComponents.Types.ScopeType;
 import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
+import com.doge.SyntaxAnalysis.Visitors.BaseASTVisitor;
 
 import java.util.ArrayList;
 
 /**
  * Created by Søren on 25-03-2015.
  */
-public class SymbolTableFillVisitor extends BaseASTVisitor<Void> {
+public class ScopeCheckVisitor extends BaseASTVisitor<Void> {
 
     private SymbolTable symbolTable;
     private ArrayList<LanguageError> errors;
 
-    public SymbolTableFillVisitor(SymbolTable symbolTable, ArrayList<LanguageError> errors) {
+    public ScopeCheckVisitor(SymbolTable symbolTable, ArrayList<LanguageError> errors) {
         this.symbolTable = symbolTable;
         this.errors = errors;
     }

@@ -3,8 +3,8 @@ package com.doge.MiscComponents;
 import com.doge.ContextualAnalysis.AST.BaseASTNode;
 import com.doge.ContextualAnalysis.AST.FunctionDclNode;
 import com.doge.ContextualAnalysis.AST.TopNode;
-import com.doge.ContextualAnalysis.Visitors.visitorAST;
-import com.doge.SyntaxAnalysis.Parser;
+import com.doge.SyntaxAnalysis.Visitors.GenerateASTVisitor;
+import com.doge.SyntaxAnalysis.SyntaxAnalyser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ public class FunctionImports {
     }
 
     private ArrayList<FunctionDclNode> parseImportFile(String relativePath, String sourcecodePath){
-        Parser parser = new Parser();
-        ParseTree tree = parser.GenerateParseTreeFromSourcecode(FileHandling.compatible(sourcecodePath + relativePath));
-        if (parser.getOurLangParser().getNumberOfSyntaxErrors() == 0) {
+        SyntaxAnalyser syntaxAnalyser = new SyntaxAnalyser();
+        ParseTree tree = syntaxAnalyser.GenerateParseTreeFromSourcecode(FileHandling.compatible(sourcecodePath + relativePath));
+        if (syntaxAnalyser.getOurLangParser().getNumberOfSyntaxErrors() == 0) {
             BaseASTNode abstractSyntaxTree = new BaseASTNode(null);
-            tree.accept(new visitorAST(abstractSyntaxTree));
+            tree.accept(new GenerateASTVisitor(abstractSyntaxTree));
             return ((TopNode) abstractSyntaxTree.getChild(0)).getFunctionDeclarations();
         }
         System.out.println("Syntax errors in import files!");

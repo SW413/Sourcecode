@@ -2,13 +2,13 @@ package com.doge;
 
 import com.doge.CodeGeneration.CodeGenerator;
 import com.doge.ContextualAnalysis.AST.BaseASTNode;
-import com.doge.ContextualAnalysis.Analyser;
+import com.doge.ContextualAnalysis.ContextualAnalyser;
 import com.doge.MiscComponents.ErrorReporting.ErrorReporter;
 import com.doge.MiscComponents.ErrorReporting.ErrorType;
 import com.doge.MiscComponents.ErrorReporting.LanguageError;
 import com.doge.MiscComponents.FileHandling;
 import com.doge.MiscComponents.PrettyPrinter.PrettyPrintTester;
-import com.doge.SyntaxAnalysis.Parser;
+import com.doge.SyntaxAnalysis.SyntaxAnalyser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.ArrayList;
@@ -21,22 +21,19 @@ public class Main {
         String inputFile = filesNstuff.CheckArgs(args);
 
         //Syntax Analysis
-        Parser parser = new Parser();
-        ParseTree tree = parser.GenerateParseTreeFromSourcecode(inputFile);
+        SyntaxAnalyser syntaxAnalyser = new SyntaxAnalyser();
+        BaseASTNode abstractSyntaxTree = syntaxAnalyser.GenerateASTFromSourcecode(inputFile);
 
         ArrayList<LanguageError> errors = new ArrayList<LanguageError>();
 
         //Contextual Analysis
-        Analyser analyser = new Analyser(inputFile, errors);
-        BaseASTNode abstractSyntaxTree = analyser.GenerateDecoratedASTFromParseTree(tree);
+        ContextualAnalyser contextualAnalyser = new ContextualAnalyser(inputFile, errors);
+        abstractSyntaxTree = contextualAnalyser.GenerateDecoratedASTFromParseTree(abstractSyntaxTree);
 
         //Pretty Print Testing (activated by '--prettyTest' flag)
         PrettyPrintTester prettyPrintTester = new PrettyPrintTester();
         prettyPrintTester.PrettyTest(args, abstractSyntaxTree);
 
-        //Error Handling
-        ErrorReporter errorReporter = new ErrorReporter();
-        errorReporter.HandleErrors(errors, ErrorType.ALL);
 
         //Code Generation
         CodeGenerator codeGenerator = new CodeGenerator();
