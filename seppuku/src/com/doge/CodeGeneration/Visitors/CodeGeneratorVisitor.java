@@ -88,11 +88,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
     @Override
     public String VisitDeclarationNode(DeclarationNode node) {
-        String expr = "";
+        String expression = "";
         String complexType = "";
         if (node.getExpression() != null){
             resultVarStack.push(node.getVariable());
-            expr = visit(node.getExpression());
+            expression = visit(node.getExpression());
             resultVarStack.pop();
         }
 
@@ -122,13 +122,14 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                     (TypeParser.cTypeFromValueType(TypeChecker.ComplexToSimple(node.getVariable().getValueType()))));
         }
 
-        if (expr.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
-            return (complexType.length() > 0 ? complexType : node.getVariable().toCcode() + ";\n") + expr;
-        } else if (expr.indexOf("loadFromFile(") >= 0) {
-            return complexType + expr + ";";
+        if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0 ||
+                expression.indexOf("memcpy(") >= 0){
+            return (complexType.length() > 0 ? complexType : node.getVariable().toCcode() + ";\n") + expression;
+        } else if (expression.indexOf("loadFromFile(") >= 0) {
+            return complexType + expression + ";";
         }
 
-        return complexType.length() > 0 ? complexType + expr : (node.getVariable().toCcode() + " = " + expr + ";");
+        return complexType.length() > 0 ? complexType + expression : (node.getVariable().toCcode() + " = " + expression + ";");
     }
 
     @Override
@@ -145,7 +146,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         String expression = visit(node.getExpression());
         resultVarStack.pop();
 
-        if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0){
+        if (expression.indexOf("sclManageArgsLaunchKernel(hardware, software, global_size, local_size") >= 0 ||
+                expression.indexOf("memcpy(") >= 0){
            return expression;
         }
 
@@ -385,9 +387,11 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         if (aStack.size() > 0 && aStack.peek() == null){
             aStack.pop();
             aStack.push(node.getVariable());
+            return null;
         } else if (bStack.size() > 0 && bStack.peek() == null) {
             bStack.pop();
             bStack.push(node.getVariable());
+            return null;
         }
 
         if (node.getVariable().isFunction()) {
@@ -401,6 +405,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
             return functionWithArgs(node.getVariable());
         }else if (node.getVariable().getEntrance() != null){
             return complexEntrance(node.getVariable());
+        } else if(node.getVariable().isComplex() && resultVarStack.size() > 0) {
+            return applySameSizeCheck(resultVarStack.peek(), node.getVariable(),
+                    makeMemcpy(node.getVariable().getId(), resultVarStack.peek().getId()));
         }
         return node.getVariable().getId();
     }
@@ -619,6 +626,13 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                 .replaceAll("§ID§", id)
                 .replaceAll("§NUM§", Integer.toString(this.unique++))
                 .replaceAll("§SIMPLETYPE§", simpleType)
+                .replaceAll("\\n", "\n" + indent("")));
+    }
+
+    private String makeMemcpy(String srcId, String desId){
+        return indent("").concat(filesNstuff.ImportStringFromResource("codesnippets/memcpy.c")
+                .replaceAll("§SRC_ID§", srcId)
+                .replaceAll("§DES_ID§", desId)
                 .replaceAll("\\n", "\n" + indent("")));
     }
 }

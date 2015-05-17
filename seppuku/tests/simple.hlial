@@ -20,12 +20,7 @@ print(RESm);
 
 matrix<int>[5, 4] Cm;
 
-Cm = Am * 2;
-print(Cm);
-Cm = Am + 100;
-print(Cm);
-Cm = Am - 66;
-print(Cm);
+Cm = Am;
 
 /*vector<int>[4] Av;
 
