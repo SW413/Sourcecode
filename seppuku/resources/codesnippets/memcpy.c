@@ -1,1 +1,1 @@
-memcpy(§SRC_ID§.dataStart, §DES_ID§.dataStart, §SRC_ID§.dataSize);
+memcpy(§DES_ID§.dataStart, §SRC_ID§.dataStart, §SRC_ID§.dataSize);

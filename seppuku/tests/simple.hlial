@@ -19,8 +19,9 @@ print(Bm);
 print(RESm);
 
 matrix<int>[5, 4] Cm;
-
+print(Cm);
 Cm = Am;
+print(Cm);
 
 /*vector<int>[4] Av;
 
