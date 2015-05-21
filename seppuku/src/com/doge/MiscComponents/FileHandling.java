@@ -7,11 +7,19 @@ import java.util.Scanner;
  * Created by michno on 28/4/15.
  */
 public class FileHandling {
+    static String sourcecodePath;
+
+    public FileHandling(String inputSourcecodePath){
+        sourcecodePath = inputSourcecodePath;
+    }
+
+    public FileHandling(){}
 
     public String CheckArgs(String[] args){
         String inputFile = null;
         if (args.length > 0 && !args[0].equals("--prettyTest")) {
             inputFile = args[0];
+            sourcecodePath = inputFile.substring(0, inputFile.lastIndexOf('/')+1);
         } else {
             System.out.println("Something is wrong with the input file argument!");
             System.exit(1);
@@ -22,7 +30,7 @@ public class FileHandling {
     public File GetFileForOutputCode(String filename, String dest){
         File outputSourcecode = null;
         try {
-            outputSourcecode = new File(dest + filename);
+            outputSourcecode = new File(sourcecodePath + dest + filename);
             if (!outputSourcecode.exists()) {
                 if (!outputSourcecode.getParentFile().exists())
                     outputSourcecode.getParentFile().mkdirs();
@@ -52,6 +60,12 @@ public class FileHandling {
     public boolean WriteToFile(File file, String text){
         return WriteToFile(file, new StringBuilder(text));
     }
+    public boolean WriteToFile(String filename, String dest, String text){
+        System.out.println("GG" + sourcecodePath);
+        File outFile = new File(sourcecodePath + dest + filename);
+        outFile.getParentFile().mkdirs();
+        return WriteToFile(outFile, text);
+    }
 
     public FileInputStream GetFileInputStreamFromPath(String path){
         String inputFile = path;
@@ -76,7 +90,7 @@ public class FileHandling {
 
             int readBytes;
             byte[] buffer = new byte[4096];
-            OutputStream resStreamOut = new FileOutputStream(dest + resourceName);
+            OutputStream resStreamOut = new FileOutputStream(sourcecodePath + dest + resourceName);
 
             while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);

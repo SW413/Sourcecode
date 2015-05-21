@@ -8,7 +8,6 @@ import com.doge.MiscComponents.Types.TypeChecker;
 import com.doge.MiscComponents.Types.TypeParser;
 import com.doge.MiscComponents.Types.ValueType;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -34,7 +33,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         outputCode.append(filesNstuff.ImportStringFromResource("codesnippets/preprocessor.c"));
 
         //make prototypes
-        outputCode.append("\n\n/*--= PROTOTYPES =--*/\n");
+        if (node.getFunctionDeclarations().size() > 0)
+            outputCode.append("\n\n/*--= PROTOTYPES =--*/\n");
         for (FunctionDclNode funcDecl : node.getFunctionDeclarations()) {
             outputCode.append(funcDecl.getVariable().toOpenCLcode() + "(");
             int i = 1;
@@ -62,7 +62,8 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         indentationLevel--;
 
         //functions
-        outputCode.append("\n\n/*--= CUSTOM FUNCTIONS =--*/\n");
+        if (node.getFunctionDeclarations().size() > 0)
+            outputCode.append("\n\n/*--= CUSTOM FUNCTIONS =--*/\n");
         for (FunctionDclNode func : node.getFunctionDeclarations()) {
             outputCode.append(func.getVariable().toOpenCLcode() + "(");
             int i = 1;
@@ -544,9 +545,7 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
 
         String kernel = filesNstuff.ImportStringFromResource("kernels/" + kernelName + ".cl");
         kernel = kernel.replaceAll("§SIMPLETYPE§", simpleType);
-        File kernelOut = new File("../../../codeout/kernels/" + kernelName + ".cl");
-        kernelOut.getParentFile().mkdirs();
-        filesNstuff.WriteToFile(kernelOut, kernel);
+        filesNstuff.WriteToFile(kernelName + ".cl", "codeout/kernels/", kernel);
 
         String argsNlauch = filesNstuff.ImportStringFromResource("kernelLaunch/" + kernelName + ".c");
 

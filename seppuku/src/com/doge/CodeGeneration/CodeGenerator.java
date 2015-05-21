@@ -18,14 +18,14 @@ public class CodeGenerator {
         abstractSyntaxTree.accept(new CodeGeneratorVisitor(output));
 
         filesNstuff.WriteToFile(
-                filesNstuff.GetFileForOutputCode("code.c", "../../../codeout/"),
+                filesNstuff.GetFileForOutputCode("code.c", "codeout/"),
                 output);
 
-        filesNstuff.ExportResource("simpleCL.h", "../../../codeout/");
-        filesNstuff.ExportResource("simpleCL.c", "../../../codeout/");
-        filesNstuff.ExportResource("complexTypes.h", "../../../codeout/");
-        filesNstuff.ExportResource("Makefile", "../../../codeout/");
-        filesNstuff.ExportResource("gambleStdlib.c", "../../../codeout/");
-        filesNstuff.ExportResource("gambleStdlib.h", "../../../codeout/");
+        filesNstuff.ExportResource("simpleCL.h", "codeout/");
+        filesNstuff.ExportResource("simpleCL.c", "codeout/");
+        filesNstuff.ExportResource("complexTypes.h", "codeout/");
+        filesNstuff.ExportResource("Makefile", "codeout/");
+        filesNstuff.ExportResource("gambleStdlib.c", "codeout/");
+        filesNstuff.ExportResource("gambleStdlib.h", "codeout/");
     }
 }

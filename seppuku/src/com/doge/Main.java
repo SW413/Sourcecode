@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        //Check if path from args is valid
+        //Check if path from args is valid and set sourcecode path
         FileHandling filesNstuff = new FileHandling();
         String inputFile = filesNstuff.CheckArgs(args);
 
