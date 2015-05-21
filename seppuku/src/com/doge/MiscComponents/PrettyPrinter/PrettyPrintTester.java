@@ -5,8 +5,6 @@ import com.doge.MiscComponents.PrettyPrinter.Visitors.*;
 
 import java.io.*;
 
-import static com.doge.Main.main;
-
 /**
  * Created by Mathias on 02-05-2015.
  */
@@ -16,7 +14,7 @@ public class PrettyPrintTester {
 
         if (args.length > 1 && args[1].equals("--prettyTest")) {
             StringBuilder printTest = new StringBuilder();
-            abstractSyntaxTree.accept(new PrettyPrint(printTest));
+            abstractSyntaxTree.accept(new PrettyPrintVisitor(printTest));
             System.out.println("DEBUG PRETTYPRINT:\n" + printTest.toString());
             if (args[0].equals("prettyTest.hlial")) {
 

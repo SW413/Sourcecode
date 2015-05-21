@@ -8,10 +8,10 @@ import java.util.ArrayList;
 /**
  * Pretty printing which prints the AST out as the code it was before MiscComponents.
  */
-public class PrettyPrint extends BaseASTVisitor<String> {
+public class PrettyPrintVisitor extends BaseASTVisitor<String> {
     private StringBuilder printer;
 
-    public PrettyPrint(StringBuilder printer) {
+    public PrettyPrintVisitor(StringBuilder printer) {
         this.printer = printer;
     }
 
