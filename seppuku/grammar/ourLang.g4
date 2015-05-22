@@ -89,8 +89,8 @@ assignment
     ;
 
 valassignment
-	: ID assignmentOperator ( expression | BOOLVAL ) #stdAssignment
-    | ID postUnaryOperator                           #postUnaryAssignment
+	: ID assignmentOperator ( expression | BOOLVAL | conditionalExpression )#stdAssignment
+    | ID postUnaryOperator                                                  #postUnaryAssignment
 	;
 
 collectionassignment
@@ -99,9 +99,9 @@ collectionassignment
 	;
 	
 declaration
-    : valueType ID '=' expression                       #primitiveDecl
-    | complexdatatype ID '=' expression                 #complexDecl  
-    | complexdatatype '[' entranceCoordinate ']' ID     #specialComplexDecl
+    : valueType ID '=' (expression | conditionalExpression) #primitiveDecl
+    | complexdatatype ID '=' expression                     #complexDecl
+    | complexdatatype '[' entranceCoordinate ']' ID         #specialComplexDecl
     ; 
     
 valueType
@@ -171,8 +171,7 @@ IF: 'if' ;
 ELSE: 'else' ;
 
 WHILE: 'while' ;
-FOR: 'for' ;   
-PFOR: 'pfor' ;
+FOR: 'for' ;
 
 MATRIX: 'matrix' ;
 VECTOR: 'vector' ;

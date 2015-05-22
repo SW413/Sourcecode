@@ -314,7 +314,7 @@ public class GenerateASTVisitor extends ourLangBaseVisitor<BaseASTNode> {
                 parent,
                 new Variable(null, ctx.ID().getText()),
                 AssignmentOperatorType.fromString(ctx.assignmentOperator().getText()),
-                (ExpressionNode) visit(ctx.expression()));
+                ctx.expression() != null ? (ExpressionNode) visit(ctx.expression()) : (ConditionalExpressionNode) visit(ctx.conditionalExpression()));
 
         parentStack.pop();
         assNode.setLineNumber(ctx.start.getLine());
