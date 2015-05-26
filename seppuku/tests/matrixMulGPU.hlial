@@ -1,0 +1,8 @@
+//Matrix multiplication of large matrices on GPU
+matrix<float> a = fileToMatrix("a.matrix");
+matrix<float> b = fileToMatrix("b.matrix");
+matrix<float> res = fileToMatrix("res.matrix");
+
+res = a * b;
+
+matrixToFile(res, "res.matrix");

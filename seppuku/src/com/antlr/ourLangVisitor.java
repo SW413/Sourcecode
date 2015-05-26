@@ -142,6 +142,20 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintFunc(ourLangParser.PrintFuncContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code complexToFileFunc}
+	 * labeled alternative in {@link ourLangParser#functioncall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComplexToFileFunc(ourLangParser.ComplexToFileFuncContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code fileToComplexFunc}
+	 * labeled alternative in {@link ourLangParser#functioncall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFileToComplexFunc(ourLangParser.FileToComplexFuncContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ourLangParser#argumentlist}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -154,6 +168,13 @@ public interface ourLangVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitValueExpr(ourLangParser.ValueExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code powerExpr}
+	 * labeled alternative in {@link ourLangParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPowerExpr(ourLangParser.PowerExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code addExpr}
 	 * labeled alternative in {@link ourLangParser#expression}.

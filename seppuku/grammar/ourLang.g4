@@ -63,8 +63,10 @@ parameter
     ;
 
 functioncall
-    : ID '(' argumentlist ')'          #customFunc
-    | PRINT '(' argumentlist ')'       #printFunc
+    : ID '(' argumentlist ')'               #customFunc
+    | PRINT '(' argumentlist ')'            #printFunc
+    | COMPLEXTOFILE '(' argumentlist ')'    #complexToFileFunc
+    | FILETOCOMPLEX  '(' argumentlist ')'   #fileToComplexFunc
     ;
 
 argumentlist
@@ -73,11 +75,12 @@ argumentlist
     ;
 
 expression
-    : expression ( '*' | '/' | '%' ) expression     #mulExpr
-    | expression ( '+' | '-' ) expression           #addExpr
-    | '(' expression ')'                            #parenExpr
-    | value                                         #valueExpr
-    | ID postUnaryOperator                          #postIDExpr
+    : expression '^' expression                         #powerExpr
+    | expression ( '*' | '/' | '%' | '#' ) expression   #mulExpr
+    | expression ( '+' | '-' ) expression               #addExpr
+    | '(' expression ')'                                #parenExpr
+    | value                                             #valueExpr
+    | ID postUnaryOperator                              #postIDExpr
     ;
 
 assignment
@@ -86,8 +89,8 @@ assignment
     ;
 
 valassignment
-	: ID assignmentOperator ( expression | BOOLVAL ) #stdAssignment
-    | ID postUnaryOperator                           #postUnaryAssignment
+	: ID assignmentOperator ( expression | BOOLVAL | conditionalExpression )#stdAssignment
+    | ID postUnaryOperator                                                  #postUnaryAssignment
 	;
 
 collectionassignment
@@ -96,9 +99,9 @@ collectionassignment
 	;
 	
 declaration
-    : valueType ID '=' expression                       #primitiveDecl
-    | complexdatatype ID '=' expression                 #complexDecl  
-    | complexdatatype '[' entranceCoordinate ']' ID     #specialComplexDecl
+    : valueType ID '=' (expression | conditionalExpression) #primitiveDecl
+    | complexdatatype ID '=' expression                     #complexDecl
+    | complexdatatype '[' entranceCoordinate ']' ID         #specialComplexDecl
     ; 
     
 valueType
@@ -148,8 +151,7 @@ collectiontype
     ;
 
 postUnaryOperator 
-    : '++' | '--'
-    ;
+    : '++' | '--' | '^T' ;
 
 assignmentOperator
     : '=' | '+=' | '-=' | '*=' | '/=' ;
@@ -169,8 +171,7 @@ IF: 'if' ;
 ELSE: 'else' ;
 
 WHILE: 'while' ;
-FOR: 'for' ;   
-PFOR: 'pfor' ;
+FOR: 'for' ;
 
 MATRIX: 'matrix' ;
 VECTOR: 'vector' ;
@@ -180,7 +181,7 @@ INT: 'int' | 'int16' | 'int32' | 'int64' ;
 INTNUM: '0' | SIGN? [1-9][0-9]* ;
 
 FLOAT: 'float' | 'float16' | 'float32' | 'float64' ;  
-FLOATNUM: '0.0' | SIGN? ([1-9][0-9]* | '0') '.' [0-9]* [1-9] ;
+FLOATNUM: SIGN? ([1-9][0-9]* | '0') '.' ([0-9]* [1-9] | '0') ;
 
 BOOL: 'bool' ;
 BOOLVAL: 'true' | 'false' ;
@@ -191,11 +192,13 @@ STRING: '"' .*? '"' ;
 
 SIGN: '-' ;   
 
-PRINT: 'print' ; 
+PRINT: 'print' ;
+COMPLEXTOFILE: 'matrixToFile' ;
+FILETOCOMPLEX: 'fileToMatrix' ;
 
 ID: [a-zA-Z_][a-zA-Z0-9_]* ;    
 
-LIBRARY: [a-zA-Z0-9_\/]+('.')?[a-zA-Z0-9_]*;
+LIBRARY: [a-zA-Z0-9_\/'.']+;
 
 //Whitespace and comments
 

@@ -1,0 +1,7 @@
+matrix<int> m = [0,1;2,3];
+matrix<int>[2,2] a;
+
+matrixToFile(m, "derpfilout");
+//fileToMatrix("derpfilout");
+
+print(a);
