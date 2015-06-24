@@ -61,7 +61,6 @@ public class FileHandling {
         return WriteToFile(file, new StringBuilder(text));
     }
     public boolean WriteToFile(String filename, String dest, String text){
-        System.out.println("GG" + sourcecodePath);
         File outFile = new File(sourcecodePath + dest + filename);
         outFile.getParentFile().mkdirs();
         return WriteToFile(outFile, text);
@@ -108,14 +107,17 @@ public class FileHandling {
 
     public String ImportStringFromResource(String resourceName){
         StringBuilder stringBuilder = new StringBuilder();
-        File input = openResourceAsFile(resourceName);
-        try (Scanner scanner = new Scanner(input)){
-
-            while (scanner.hasNextLine()) {
+        //File input = openResourceAsFile("/" + resourceName);
+        try {
+            InputStream input = openResourceAsStream(resourceName);
+            Scanner scanner = new Scanner(input).useDelimiter("\\A");
+            if (scanner != null && scanner.hasNext())
+                stringBuilder.append(scanner.next());
+            /*while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 stringBuilder.append(line).append("\n");
-            }
-
+            }*/
+            input.close();
             scanner.close();
         } catch (IOException e) {
             System.out.println("CANT FIND:" + resourceName);
@@ -128,7 +130,7 @@ public class FileHandling {
     private File openResourceAsFile(String resourceName){
         File file = null;
         try {
-            file = new File(getClass().getClassLoader().getResource(resourceName).getFile());
+            file = new File(getClass().getClassLoader().getResource("/" + resourceName).getFile());
             if (file != null)
                 return file;
         } catch (Exception e) {
@@ -142,10 +144,13 @@ public class FileHandling {
     private InputStream openResourceAsStream(String resourceName){
         InputStream stream = null;
         try {
-            stream = getClass().getClassLoader().getResourceAsStream(resourceName);
+            stream = this.getClass().getClassLoader().getResourceAsStream(resourceName);
             if (stream != null)
                 return stream;
+            else
+                throw new Exception();
         } catch (Exception e) {
+            System.out.println("CANT FIND: " + resourceName + " <openResourceAsStream>");
             e.printStackTrace();
         }
         return null;
