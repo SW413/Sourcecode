@@ -24,7 +24,12 @@ controlblock
 
 loop
     : WHILE '(' conditionalExpression ')' whileBlock=block      #whileLoop
-    | FOR '(' (declaration | assignment) ';' conditionalExpression ';' expression ')' forBlock=block     #forLoop  
+    | FOR '(' (declaration | assignment) ';' conditionalExpression ';' update ')' forBlock=block     #forLoop  
+    ;
+ 
+update
+    : assignment
+    | ID postUnaryOperator
     ;
 
 block
@@ -89,8 +94,8 @@ assignment
     ;
 
 valassignment
-	: ID assignmentOperator ( expression | BOOLVAL | conditionalExpression )#stdAssignment
-    | ID postUnaryOperator                                                  #postUnaryAssignment
+	: ID assignmentOperator ( expression | BOOLVAL | conditionalExpression ) #stdAssignment
+    | ID postUnaryOperator                                                   #postUnaryAssignment
 	;
 
 collectionassignment

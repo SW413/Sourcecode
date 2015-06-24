@@ -2,6 +2,8 @@ package com.doge.ContextualAnalysis.AST;
 
 import com.doge.SyntaxAnalysis.Visitors.IASTVisitor;
 
+import javax.swing.plaf.nimbus.State;
+
 /**
  * Created by michno on 19/3/15.
  */
@@ -10,7 +12,7 @@ public class ForLoopNode extends StatementNode{
     private StatementNode body;
     private ConditionalExpressionNode condition;
     private BaseASTNode initialize;
-    private ExpressionNode update;
+    private BaseASTNode update;
 
     public ForLoopNode(BaseASTNode parent) {
         super(parent);
@@ -40,11 +42,11 @@ public class ForLoopNode extends StatementNode{
         this.initialize = initialize;
     }
 
-    public ExpressionNode getUpdate() {
+    public BaseASTNode getUpdate() {
         return update;
     }
 
-    public void setUpdate(ExpressionNode update) {
+    public void setUpdate(BaseASTNode update) {
         this.update = update;
     }
 

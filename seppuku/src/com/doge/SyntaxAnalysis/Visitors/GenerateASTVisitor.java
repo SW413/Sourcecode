@@ -594,10 +594,11 @@ public class GenerateASTVisitor extends ourLangBaseVisitor<BaseASTNode> {
         else if(ctx.declaration() == null && ctx.assignment() != null){
             forLoopNode.setInitialize(visit(ctx.assignment()));
         }
+        forLoopNode.setUpdate(visit(ctx.update()));
+        forLoopNode.setCondition((ConditionalExpressionNode) visit(ctx.conditionalExpression()));
         //Reestablishes the previous stack, hack is over.
         parentStack.pop();
-        forLoopNode.setCondition((ConditionalExpressionNode) visit(ctx.conditionalExpression()));
-        forLoopNode.setUpdate((ExpressionNode) visit(ctx.expression()));
+
 
         parentStack.push(forLoopNode);
         visitChildren(ctx.forBlock);

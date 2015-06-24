@@ -201,6 +201,9 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
         forLoop.append("; ");
         if (node.getUpdate() != null)
             forLoop.append(visit(node.getUpdate()));
+        //HACK!
+        forLoop.deleteCharAt(forLoop.length()-1);
+        
         forLoop.append(") {\n");
         forLoop.append(statementBody(node.getBody().getChildren()));
         forLoop.append(indent("}\n"));
