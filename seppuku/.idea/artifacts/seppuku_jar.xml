@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="seppuku:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/seppuku_jar</output-path>
+    <root id="archive" name="seppuku.jar">
+      <element id="module-output" name="seppuku" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/antlr-4.5-complete.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+    </root>
+  </artifact>
+</component>
