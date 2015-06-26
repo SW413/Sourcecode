@@ -504,7 +504,6 @@ public class CodeGeneratorVisitor extends BaseASTVisitor<String> {
                                 printArgs.append(visit((ExpressionNode) arg) + ", ");
                                 break;
                             default:
-                                //TODO can only print int matrices...
                                 String complexPrint = filesNstuff.ImportStringFromResource("codesnippets/printMatrix.c");
 
                                 complexPrint = complexPrint.replaceAll("§ID§", visit((ExpressionNode) arg));

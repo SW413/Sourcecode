@@ -1,3 +1,6 @@
 for(int a = 0; a < 3; a++){
     print(a);
 }
+
+int h = 2;
+float b = h;

@@ -66,7 +66,6 @@ public class GenerateASTVisitor extends ourLangBaseVisitor<BaseASTNode> {
      * @param ctx
      * @return      {@link com.doge.ContextualAnalysis.AST.ImportNode} of the {@link com.doge.ContextualAnalysis.AST.TopNode}
      */
-    //TODO currently filepath is relative to compiler location... maybe it should be relative to sourcecode location
     @Override
     public BaseASTNode visitImporting(ourLangParser.ImportingContext ctx) {
         TopNode tmp = (TopNode)parentStack.peek();
@@ -101,7 +100,6 @@ public class GenerateASTVisitor extends ourLangBaseVisitor<BaseASTNode> {
         return functionDclNode;
     }
 
-    //TODO doc comment...
     @Override
     public BaseASTNode visitStatement(ourLangParser.StatementContext ctx) {
 

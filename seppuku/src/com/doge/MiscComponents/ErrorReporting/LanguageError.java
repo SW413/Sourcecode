@@ -21,7 +21,9 @@ public abstract class LanguageError implements Comparable<LanguageError> {
         }
         return i;
     }
-    static public void PrintAllErrors(ArrayList<LanguageError> errorList, ErrorType typeOfErrors) {
+    static public Void PrintAllErrors(ArrayList<LanguageError> errorList, ErrorType typeOfErrors) {
+        if (errorList.size() == 0)
+            return null;
         Collections.sort(errorList);
         String out = "";
         for (LanguageError err : errorList) {
@@ -36,7 +38,8 @@ public abstract class LanguageError implements Comparable<LanguageError> {
                 }
             }
         }
-        System.out.println(out);
+        System.out.println(out.substring(0, out.length()-1));
+        return null;
     }
 
     @Override
