@@ -3,4 +3,4 @@ for(int a = 0; a < 3; a++){
 }
 
 int h = 2;
-float b = h;
+float b = 1.2;
